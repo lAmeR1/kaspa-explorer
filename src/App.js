@@ -1,23 +1,23 @@
 import logo from './logo.svg';
 import './App.css';
+import { Navbar, Nav, Form, Button } from 'react-bootstrap';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Navbar bg="light" expand="lg">
+        <Navbar.Brand>Kaspa EXPLORER</Navbar.Brand>
+        <Nav>
+          <Nav.Link href="#home">Dashboard</Nav.Link>
+          <Nav.Link href="#blocks">Blocks</Nav.Link>
+          <Nav.Link href="#transactions">Transactions</Nav.Link>
+        </Nav>
+      </Navbar>
+      <Form>
+        <Form.Control type="text" placeholder="Enter kaspa:address / block hash / transaction hash" />
+        <Button variant="primary">Go!</Button>
+      </Form>
     </div>
   );
 }
