@@ -43,13 +43,14 @@ body {
   letter-spacing:0.01em;
   margin-top: 6rem;
   margin-left: 8rem;
-  
+  text-shadow: -20px -10px 80px #3adbbd;
 }
 
 .midfont {
   font: bold 40px/0.9em anton,sans-serif;
   font-size: 3rem;
   letter-spacing:0.01em;
+  text-shadow: 0px 0px 20px #3adbbd;
 }
 
 .searchBox {
