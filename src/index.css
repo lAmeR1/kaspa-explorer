@@ -5,9 +5,26 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: red;
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+/* The animation code */
+@keyframes example {
+  from {transform: rotate(10deg)}
+  to {transform: rotate(-10deg)}
+}
+
+/* The element to apply the animation to */
+.shake {
+  width: 100px;
+  height: 100px;
+  animation-name: example;
+  animation-duration: 3s;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
 }
