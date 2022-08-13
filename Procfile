@@ -1,1 +1,1 @@
-serve: npm run serve
+serve: node app.js
