@@ -8,7 +8,7 @@ const KaspadInfoBox = () => {
     const [data, setData] = useState({});
 
     async function updateData() {
-        await fetch('http://api.kaspa.org/info/kaspad')
+        await fetch('https://kaspa.herokuapp.com/info/kaspad')
             .then((response) => response.json())
             .then(d => setData(d))
             .catch(err => console.log("Error", err))

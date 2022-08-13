@@ -9,7 +9,7 @@ const BlockDAGBox = () => {
     const [data, setData] = useState({});
 
     async function updateData() {
-        await fetch('http://api.kaspa.org/info/blockdag')
+        await fetch('https://kaspa.herokuapp.com/info/blockdag')
             .then((response) => response.json())
             .then(d => setData(d))
             .catch(err => console.log("Error", err))

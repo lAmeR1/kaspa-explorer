@@ -12,7 +12,7 @@ const CBox = () => {
     const [circCoins, setCircCoins] = useState("-");
 
     async function updateCircSupply() {
-        const coins = await fetch('http://api.kaspa.org/info/coinsupply/circulating')
+        const coins = await fetch('https://kaspa.herokuapp.com/info/coinsupply/circulating')
             .then((response) => response.text())
             .then(data => parseFloat(data))
             .catch(err => console.log("Error", err))
