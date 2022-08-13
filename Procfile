@@ -1,1 +1,1 @@
-serve: node app.js
+serve: node server.js
