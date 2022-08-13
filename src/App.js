@@ -1,11 +1,14 @@
 import logo from './logo.svg';
 
-import { Navbar, Nav, Form, Button, Container, Row, Col, InputGroup } from 'react-bootstrap';
+import { Navbar, Nav, Form, Button, Container, Row, Col, InputGroup, Card } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'font-awesome/css/font-awesome.min.css';
 import './App.css';
 import BalanceModal from './components/BalanceModal';
 import { useState } from 'react';
+import CoinsupplyBox from './components/CoinsupplyBox';
+import BlockDAGBox from './components/BlockDAG';
+import KaspadInfoBox from './components/KaspadInfoBox';
 
 
 
@@ -34,9 +37,11 @@ function App() {
 
     e.preventDefault()
   }
+
+
   //<Button variant="primary">Go!</Button>
   return (
-    <div className="App">
+    <div>
       <Navbar variant="dark" bg="dark" sticky="top">
         <Navbar.Brand className="navbar-title">
           <img className="shake" src="k-icon-glow.png" style={{ "margin": ".2rem", width: "4rem", height: "4rem" }} /> </Navbar.Brand>
@@ -47,7 +52,7 @@ function App() {
         </Nav>
       </Navbar>
       <Container className="firstRow" fluid>
-      <Row>
+        <Row>
           <Col md={12} className='text-light midfont d-md-none'>
             KASPA<br />EXPLORER
           </Col>
@@ -66,8 +71,16 @@ function App() {
               </InputGroup>
             </Form>
           </Col>
+        </Row>
+      </Container>
 
-
+      <Container className="secondRow" fluid>
+        <Row>
+          <Col sm={12} md={6} lg={4}><div className="infoBox">
+            <CoinsupplyBox />
+          </div></Col>
+          <Col sm={12} md={6} lg={4}><div className="infoBox"><BlockDAGBox /></div></Col>
+          <Col sm={12} md={6} lg={4}><div className="infoBox"><KaspadInfoBox /></div></Col>
         </Row>
       </Container>
 

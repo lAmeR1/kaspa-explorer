@@ -25,12 +25,23 @@ body {
 @media (max-width: 500px) {
   .firstRow {
     background-size: 1100px;
-    background-position: -23rem -29rem;
+    background-position: -16rem -29rem;
     background-clip: border-box;
     background-repeat: no-repeat;
     padding: 2rem
   }
-  
+
+}
+
+.secondRow {
+  background-color: #19322e;
+  padding: 3rem
+}
+
+.cardText {
+  font-size: 2em;
+  font: bold 20px/1.2em;
+  font-family: monospace
 }
 
 .navbar-title {
@@ -62,4 +73,31 @@ body {
 
 .searchButton {
   height: 100%;
+}
+
+.cardBox {
+  color: gainsboro;
+  margin: 2rem;
+  text-transform: uppercase;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 18rem;
+}
+
+.cardLight {
+  position: relative;
+  top: 50%;
+  left: 50%;
+  /* transform:translate(-50%, -50%); */
+  width:0px;
+  height: 0px;
+  box-shadow: 0px 0px 100px 35px #3adbbd;
+  z-index: 2;
+}
+
+.cardBoxElement {
+  padding-right: 1rem;
+  text-transform: none;
+  font-size: medium;
 }
