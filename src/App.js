@@ -9,6 +9,8 @@ import { useState } from 'react';
 import CoinsupplyBox from './components/CoinsupplyBox';
 import BlockDAGBox from './components/BlockDAG';
 import KaspadInfoBox from './components/KaspadInfoBox';
+import BlockDagVisualization from './components/BlockDagVisualization';
+import BlockOverview from './components/BlockOverview';
 
 
 
@@ -84,7 +86,21 @@ function App() {
         </Row>
       </Container>
 
+      <Container className="thirdRow" fluid>
+        <Row>
+          <Col xs={12}><BlockDagVisualization /></Col>
+        </Row>
+      </Container>
+      <Container className="fourthRow" fluid>
+      <Row>
+        <Col xs={12} md={6}><BlockOverview /></Col>
+      </Row>
+      
+    </Container>
       <BalanceModal handleClose={handleClose} show={show} address={address} balance={balance} />
+    
+
+
     </div>
 
   );

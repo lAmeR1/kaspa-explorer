@@ -34,7 +34,13 @@ body {
 }
 
 .secondRow {
-  background-color: #19322e;
+  background-color: #254861;
+  padding: 3rem
+}
+
+.fourthRow {
+  color: F3EEF1;
+  background-color: #254861;
   padding: 3rem
 }
 
@@ -48,20 +54,79 @@ body {
   font: bold 20px/1.2em anton,sans-serif;
 }
 
+.block-overview {
+  color: #F3EEF1;
+  background-color: #866C6F;
+  padding: 2rem;
+  border-radius: 0.4rem;
+}
+
+.block-overview-content {
+  width: 100%;
+  /* border-radius: 1rem; */
+  overflow: hidden;
+  /* font-size: small;  */
+}
+
+.block-overview thead th {
+  background-color: #866C6F;
+  color: #ffffff;
+  text-align: left;
+}
+
+.styled-table {
+  width: 100%
+}
+
+@keyframes anim {
+  0% {
+    transform: scaleY(0);
+  }
+  100% {
+    transform: scaleY(1);
+  }
+}
+
+.styled-table th,
+.styled-table td {
+    padding: 12px 15px;
+}
+.styled-table thead tr {
+  border-bottom: 2px solid #F3EEF1;
+}
+
+.styled-table tbody tr {
+  border-bottom: 1px solid #F3EEF140;
+  animation: anim;
+  animation-duration: 1s;
+}
+.styled-table tbody tr:nth-of-type(even) {
+  background-color: #866C6F;
+}
+
+.styled-table tbody tr:last-of-type {
+  border-bottom: 2px solid #F3EEF1;
+}
+
+.styled-table tbody tr:hover {
+  color: #798EAC;
+  text-decoration: none;
+}
+
 .bigfont {
   font: bold 80px/0.9em anton,sans-serif;
   font-size: 5rem;
   letter-spacing:0.01em;
   margin-top: 6rem;
   margin-left: 8rem;
-  text-shadow: -20px -10px 80px #3adbbd;
+  text-shadow: -20px -10px 80px #254861;
 }
 
 .midfont {
   font: bold 40px/0.9em anton,sans-serif;
   font-size: 3rem;
   letter-spacing:0.01em;
-  text-shadow: 0px 0px 20px #3adbbd;
+  text-shadow: 0px 0px 20px #254861;
 }
 
 .searchBox {
@@ -76,7 +141,7 @@ body {
 }
 
 .cardBox {
-  color: gainsboro;
+  color: #f3eef1;
   margin: 2rem;
   text-transform: uppercase;
   display: flex;
@@ -92,7 +157,7 @@ body {
   /* transform:translate(-50%, -50%); */
   width:0px;
   height: 0px;
-  box-shadow: 0px 0px 100px 35px #3adbbd;
+  box-shadow: 0px 0px 100px 35px #798EAC;
   z-index: 2;
 }
 
@@ -100,4 +165,26 @@ body {
   padding-right: 1rem;
   text-transform: none;
   font-size: medium;
+}
+
+.blockDagVis {
+  display: flex;
+  justify-content: space-around;
+}
+
+.kasBlock {
+  color: whitesmoke;
+  background-color: #254861;
+  border: 1px solid orange;
+  border-radius: 1rem;
+  min-height: 10rem;
+  padding: 1rem;
+  margin: 1rem;
+  display: block;  
+}
+
+
+.kasBlockHeader {
+  font-weight: bold;
+  font-size: large;
 }
