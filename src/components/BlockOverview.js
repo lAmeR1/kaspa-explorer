@@ -16,7 +16,7 @@ const BlockOverview = () => {
 
 
     return <div className="block-overview">
-        <h3 className="text-center">LATEST BLOCKS</h3>
+        <h3 className="block-overview-header text-center">LATEST 20 BLOCKS</h3>
         <div className="block-overview-content">
             <table className="styled-table">
                 <thead>

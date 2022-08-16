@@ -3,7 +3,7 @@ import logo from './logo.svg';
 import { Navbar, Nav, Form, Button, Container, Row, Col, InputGroup, Card } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'font-awesome/css/font-awesome.min.css';
-import './App.css';
+import './App.scss';
 import BalanceModal from './components/BalanceModal';
 import { useState } from 'react';
 import CoinsupplyBox from './components/CoinsupplyBox';
