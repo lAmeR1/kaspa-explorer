@@ -1,11 +1,12 @@
 @use "sass:color";
 
 
-$color1: #EDEADE;
-$color2: #7D9D94;
-$color3: #6C645B;
-$color4: #7E9594;
-$color5: #2A4048;
+$color1: #FAFAFA;
+$color2: #979DA0;
+$color3: #92AAB4;
+$color4: #7C949F;
+$color5: #496B79;
+$superdark: rgb(57, 78, 86);
 
 $theme-colors: (
   "primary": #6c645b,
@@ -64,8 +65,8 @@ body {
 }
 
 .thirdRow {
-  background-color: $color3;
-  padding: 7rem;
+  background-color: $color1;
+  padding: 10rem;
 }
 
 .fourthRow {
@@ -86,7 +87,7 @@ body {
 
 .block-overview {
   color: $color1;
-  background-color: $color4;
+  background-color: $superdark;
   padding: 4rem;
   border-radius: 0.4rem;
 }
@@ -100,12 +101,12 @@ body {
 
 .block-overview-header {
   padding-bottom: 4rem;
-  color: #f3eef1;
+  color: $color1;
   text-transform: uppercase;
 }
 
 .block-overview thead th {
-  background-color: rgba($color5, 0.5);
+  background-color: $superdark;
   color: #ffffff;
   text-align: left;
 }
@@ -154,6 +155,7 @@ body {
 }
 
 .bigfont {
+  color: $color1 !important;
   font: bold 80px/0.9em anton, sans-serif;
   font-size: 5rem;
   letter-spacing: 0.01em;
