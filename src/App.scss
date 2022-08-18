@@ -31,10 +31,55 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+.big-kaspa-icon {
+  position: absolute;
+  top: 6rem;
+  left: 1.7rem;
+  margin: .2rem;
+  width: 15rem;
+  height: 15rem;
+  transform: rotateX(90);
+  animation-name: rotate-icon;
+  animation-duration: 3s;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+}
+
+/* The animation code */
+@keyframes rotate-icon {
+  from {transform: rotate(10deg)}
+  to {transform: rotate(-10deg)}
+}
+
+.big-page {
+  text-align: center;
+}
+
+.navbar-ext {
+  display: flex;
+  justify-content: center;
+  border-bottom: 2px solid white;
+}
+
+.navbar-container {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  max-width: 1500px;
+}
+
+
+
+.webpage {
+  max-width: 1600px;
+}
+
 .firstRow {
   background-image: url("bg.jpg");
   background-position: -12rem -22rem;
-  padding: 3rem
+  padding: 3rem;
+  border-bottom: 2px solid $color1;
 }
 
 @media (max-width: 768px) {
@@ -141,7 +186,7 @@ body {
 }
 
 .styled-table tbody tr:nth-of-type(even) {
-  background-color: rgba($color5, 0.08)
+  background-color: rgba($color5, 0.5)
 }
 
 .styled-table tbody tr:last-of-type {
@@ -224,3 +269,5 @@ body {
   font-weight: bold;
   font-size: large;
 }
+
+@import "./components/blockinfo.scss"

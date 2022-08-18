@@ -8,6 +8,30 @@ body {
   background-color: red;
 }
 
+.navbar-title {
+  -webkit-transition: width 0.3s ease-in-out;
+  -moz-transition: width 0.3s ease-in-out;
+  -o-transition: width 0.3s ease-in-out;
+  opacity: 0;
+  transition: width 0.3s ease-in 0.5s, opacity 0.5s ease-out;
+  width: 0px;
+}
+
+/* .fixed-top .navbar-title {
+  transform: scale(0);
+  transition: 0.5s;
+} */
+
+.fixed-top .navbar-title {
+  -webkit-transition: width 0.3s ease-in-out;
+  -moz-transition: width 0.3s ease-in-out;
+  -o-transition: width 0.3s ease-in-out;
+  width:60px;
+  opacity: 1;
+  transition: width 0.5s ease-in, opacity 0.3s ease-out 0.5s;
+}
+
+
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;

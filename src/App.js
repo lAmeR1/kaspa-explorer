@@ -11,9 +11,20 @@ import BlockDAGBox from './components/BlockDAG';
 import KaspadInfoBox from './components/KaspadInfoBox';
 import BlockDagVisualization from './components/BlockDagVisualization';
 import BlockOverview from './components/BlockOverview';
+import { Routes, Route, Link } from "react-router-dom";
+import Dashboard from './Dashboard';
+import BlockInfo from './components/BlockInfo';
 
 
-
+document.addEventListener("DOMContentLoaded", function(){
+  window.addEventListener('scroll', function() {
+      if (window.scrollY > 200) {
+        document.getElementById('navbar_top').classList.add('fixed-top');
+      } else {
+        document.getElementById('navbar_top').classList.remove('fixed-top');
+      } 
+  });
+}); 
 
 function App() {
 
@@ -43,63 +54,24 @@ function App() {
 
   //<Button variant="primary">Go!</Button>
   return (
-    <div>
-      <Navbar variant="dark" bg="dark" sticky="top">
+    <div className="big-page">
+      <Navbar id="navbar_top" className="navbar-ext" variant="dark" bg="dark" sticky="top">
+        <div className="navbar-container">
         <Navbar.Brand className="navbar-title">
-          <img className="shake" src="k-icon-glow.png" style={{ "margin": ".2rem", width: "4rem", height: "4rem" }} /> </Navbar.Brand>
+          <img className="shake" src="/k-icon-glow.png" style={{ "margin": ".2rem", width: "4rem", height: "4rem" }} /> </Navbar.Brand>
         <Nav>
-          <Nav.Link href="#home">Dashboard</Nav.Link>
-          <Nav.Link href="#blocks">Blocks</Nav.Link>
-          <Nav.Link href="#transactions">Transactions</Nav.Link>
+          <Nav.Link href="#home" className="fs-4">Dashboard</Nav.Link>
+          <Nav.Link href="#blocks" className="fs-4">Blocks</Nav.Link>
+          <Nav.Link href="#transactions" className="fs-4">Transactions</Nav.Link>
         </Nav>
+        </div>
       </Navbar>
-      <Container className="firstRow" fluid>
-        <Row>
-          <Col md={12} className='text-light midfont d-md-none'>
-            KASPA<br />EXPLORER
-          </Col>
-        </Row>
-        <Row>
-          <Col md={6} className='text-light bigfont d-none d-md-block'>
-            KASPA<br />EXPLORER
-          </Col>
-        </Row>
-        <Row>
-          <Col xs="{12}">
-            <Form onSubmit={getBalance}>
-              <InputGroup className="ms-md-5 mt-5 searchBox">
-                <Form.Control className="shadow-none" variant="dark" name="searchInput" type="text" placeholder="kaspa:address / block / tx " />
-                <Button type="submit" className="shadow-none searchButton" variant="outline-secondary" ><i className='fa fa-search' /></Button>
-              </InputGroup>
-            </Form>
-          </Col>
-        </Row>
-      </Container>
+      <Routes>
+        <Route path="/" element={<Dashboard />} />
+        <Route path="/blocks/:id" element={<BlockInfo />} />
 
-      <Container className="secondRow" fluid>
-        <Row>
-          <Col sm={12} md={6} lg={4}><div className="infoBox">
-            <CoinsupplyBox />
-          </div></Col>
-          <Col sm={12} md={6} lg={4}><div className="infoBox"><BlockDAGBox /></div></Col>
-          <Col sm={12} md={6} lg={4}><div className="infoBox"><KaspadInfoBox /></div></Col>
-        </Row>
-      </Container>
-
-      <Container className="thirdRow" fluid>
-        <Row>
-          <Col xs={12}><BlockDagVisualization /></Col>
-        </Row>
-      </Container>
-      <Container className="fourthRow" fluid>
-      <Row>
-        <Col xs={12} md={6}><BlockOverview /></Col>
-      </Row>
-      
-    </Container>
-      <BalanceModal handleClose={handleClose} show={show} address={address} balance={balance} />
-    
-
+        <Route path="*" element={<Dashboard />} />
+      </Routes>
 
     </div>
 

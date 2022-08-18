@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { getNewBlocks } from './blocksupdater'
+import { FaDiceD20 } from 'react-icons/fa';
 
 const BlockOverview = () => {
 
@@ -16,7 +17,7 @@ const BlockOverview = () => {
 
 
     return <div className="block-overview">
-        <h3 className="block-overview-header text-center">LATEST 20 BLOCKS</h3>
+        <h3 className="block-overview-header text-center"><FaDiceD20 size="4rem"/><br />LATEST 20 BLOCKS</h3>
         <div className="block-overview-content">
             <table className="styled-table">
                 <thead>
