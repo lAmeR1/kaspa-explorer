@@ -14,17 +14,21 @@ import BlockOverview from './components/BlockOverview';
 import { Routes, Route, Link } from "react-router-dom";
 import Dashboard from './Dashboard';
 import BlockInfo from './components/BlockInfo';
+import { LinkContainer } from 'react-router-bootstrap';
 
 
-document.addEventListener("DOMContentLoaded", function(){
-  window.addEventListener('scroll', function() {
+document.addEventListener("DOMContentLoaded", function () {
+  window.addEventListener('scroll', function () {
+    if (window.location.pathname == "/") {
+
       if (window.scrollY > 200) {
         document.getElementById('navbar_top').classList.add('fixed-top');
       } else {
         document.getElementById('navbar_top').classList.remove('fixed-top');
-      } 
+      }
+    }
   });
-}); 
+});
 
 function App() {
 
@@ -51,19 +55,31 @@ function App() {
     e.preventDefault()
   }
 
+  console.log(window.location.pathname)
 
   //<Button variant="primary">Go!</Button>
   return (
     <div className="big-page">
-      <Navbar id="navbar_top" className="navbar-ext" variant="dark" bg="dark" sticky="top">
+      <Navbar id="navbar_top" className={window.location.pathname == "/" ? "navbar-ext" : "fixed-top navbar-ext"} variant="dark" sticky="top">
         <div className="navbar-container">
-        <Navbar.Brand className="navbar-title">
-          <img className="shake" src="/k-icon-glow.png" style={{ "margin": ".2rem", width: "4rem", height: "4rem" }} /> </Navbar.Brand>
-        <Nav>
-          <Nav.Link href="#home" className="fs-4">Dashboard</Nav.Link>
-          <Nav.Link href="#blocks" className="fs-4">Blocks</Nav.Link>
-          <Nav.Link href="#transactions" className="fs-4">Transactions</Nav.Link>
-        </Nav>
+
+          <Navbar.Brand className="navbar-title">
+            <Link to="/">
+              <img className="shake" src="/k-icon-glow.png" style={{ "margin": ".2rem", width: "4rem", height: "4rem" }} />
+            </Link>
+          </Navbar.Brand>
+
+          <Nav>
+            <LinkContainer to="/">
+              <Nav.Link className="fs-4">Dashboard</Nav.Link>
+            </LinkContainer>
+            <LinkContainer to="/blocks">
+              <Nav.Link className="fs-4">Blocks</Nav.Link>
+            </LinkContainer>
+            <LinkContainer to="/txs">
+              <Nav.Link className="fs-4">Transactions</Nav.Link>
+            </LinkContainer>
+          </Nav>
         </div>
       </Navbar>
       <Routes>

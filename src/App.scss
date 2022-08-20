@@ -1,4 +1,5 @@
 @use "sass:color";
+@import url(http://fonts.googleapis.com/css?family=Righteous);
 
 
 $color1: #FAFAFA;
@@ -29,13 +30,33 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: $superdark;
+}
+
+
+.bigfont {
+  color: $color1 !important;
+  font-family: 'Righteous', sans-serif;
+  // font: bold 80px/0.9em;
+  font-weight: normal;
+  font-size: 7rem;
+  line-height: 6rem;
+  // letter-spacing: 0.01em;
+  margin-top: 4rem;
+  // margin-left: 8rem;
+  text-shadow: -20px -10px 80px $color1;
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  text-align: left;
 }
 
 .big-kaspa-icon {
-  position: absolute;
-  top: 6rem;
-  left: 1.7rem;
-  margin: .2rem;
+  position: relative;
+  border: 2px solid tomato;
+  top: 0rem;
+  left: 0rem;
+  // margin: .2rem;
   width: 15rem;
   height: 15rem;
   transform: rotateX(90);
@@ -59,6 +80,8 @@ body {
   display: flex;
   justify-content: center;
   border-bottom: 2px solid white;
+  background-color: $superdark;
+  
 }
 
 .navbar-container {
@@ -69,54 +92,47 @@ body {
   max-width: 1500px;
 }
 
-
+.colsize > div {
+  max-width: 1600px;
+}
 
 .webpage {
   max-width: 1600px;
 }
 
-.firstRow {
-  background-image: url("bg.jpg");
-  background-position: -12rem -22rem;
-  padding: 3rem;
+.row1 {
+
+  background-color: $color5;
   border-bottom: 2px solid $color1;
+  padding: 2rem;
+  display: flex;
+  justify-content: start;
 }
 
-@media (max-width: 768px) {
-  .firstRow {
-    background-size: 1100px;
-    background-position: -14rem -27rem;
-    background-clip: border-box;
-    background-repeat: no-repeat;
-    padding: 2rem
-  }
-
-}
-
-@media (max-width: 500px) {
-  .firstRow {
-    background-size: 1100px;
-    background-position: -16rem -29rem;
-    background-clip: border-box;
-    background-repeat: no-repeat;
-    padding: 2rem
-  }
-
+.row2 {
+  background-color: $color5;
 }
 
 .secondRow {
-  background-color: $color5;
   padding: 3rem
 }
 
-.thirdRow {
+.row3 {
   background-color: $color1;
+}
+
+.thirdRow {
+  
   padding: 10rem;
 }
 
-.fourthRow {
+.row4 {
   color: F3EEF1;
   background-color: $color5;
+}
+
+.fourthRow {
+  
   padding: 3rem
 }
 
@@ -198,17 +214,6 @@ body {
   cursor: pointer;
   text-decoration: none;
 }
-
-.bigfont {
-  color: $color1 !important;
-  font: bold 80px/0.9em anton, sans-serif;
-  font-size: 5rem;
-  letter-spacing: 0.01em;
-  margin-top: 6rem;
-  margin-left: 8rem;
-  text-shadow: -20px -10px 80px $color1;
-}
-
 
 .searchBox {
 

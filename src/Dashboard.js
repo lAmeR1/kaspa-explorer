@@ -45,53 +45,61 @@ function Dashboard() {
   //<Button variant="primary">Go!</Button>
   return (
     <div>
-      <img className="big-kaspa-icon" src="/k-icon-glow.png" />
-      <Container className="firstRow" fluid>
-        <Row>
-          <Col md={12} className='text-light midfont d-md-none'>
-            KASPA<br />EXPLORER
-          </Col>
-        </Row>
-        <Row>
-          <Col md={6} className='text-light bigfont d-none d-md-block'>
-            KASPA<br />EXPLORER
-          </Col>
-        </Row>
-        <Row>
-          <Col xs="{12}">
-            <Form onSubmit={getBalance}>
-              <InputGroup className="ms-md-5 mt-5 searchBox">
-                <Form.Control className="shadow-none" variant="dark" name="searchInput" type="text" placeholder="kaspa:address / block / tx " />
-                <Button type="submit" className="shadow-none searchButton" variant="outline-secondary" ><i className='fa fa-search' /></Button>
-              </InputGroup>
-            </Form>
-          </Col>
-        </Row>
-      </Container>
+      <div className="row1">
+        <Container className="firstRow webpage" fluid>
+          <Row>
+            <Col md={12} className='text-light midfont d-md-none'>
+              KASPA<br />EXPLORER
+            </Col>
+          </Row>
+          <Row>
+            <Col md={12} className='d-flex flex-row justify-content-start text-light '>
+              <img className="big-kaspa-icon" src="/k-icon-glow.png" />
+              <div className="bigfont">
+                KASPA<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;EXPLORER
+              </div>
+            </Col>
+          </Row>
+          <Row>
+            <Col xs={12}>
+              <Form onSubmit={getBalance}>
+                <InputGroup className="ms-md-5 mt-5 searchBox">
+                  <Form.Control className="shadow-none" variant="dark" name="searchInput" type="text" placeholder="kaspa:address / block / tx " />
+                  <Button type="submit" className="shadow-none searchButton" variant="outline-secondary" ><i className='fa fa-search' /></Button>
+                </InputGroup>
+              </Form>
+            </Col>
+          </Row>
+        </Container>
 
-      <Container className="secondRow" fluid>
-        <Row>
-          <Col sm={12} md={6} lg={4}><div className="infoBox">
-            <CoinsupplyBox />
-          </div></Col>
-          <Col sm={12} md={6} lg={4}><div className="infoBox"><BlockDAGBox /></div></Col>
-          <Col sm={12} md={6} lg={4}><div className="infoBox"><KaspadInfoBox /></div></Col>
-        </Row>
-      </Container>
-
-      <Container className="thirdRow" fluid>
-        <Row>
-          <Col xs={12}><BlockDagVisualization /></Col>
-        </Row>
-      </Container>
-      <Container className="fourthRow" fluid>
-      <Row>
-        <Col xs={12} lg={6}><BlockOverview /></Col>
-      </Row>
-      
-    </Container>
+      </div>
+      <div className="row2">
+        <Container className="secondRow webpage" fluid>
+          <Row>
+            <Col sm={12} md={6} lg={4}><div className="infoBox">
+              <CoinsupplyBox />
+            </div></Col>
+            <Col sm={12} md={6} lg={4}><div className="infoBox"><BlockDAGBox /></div></Col>
+            <Col sm={12} md={6} lg={4}><div className="infoBox"><KaspadInfoBox /></div></Col>
+          </Row>
+        </Container>
+      </div>
+      <div className="row3">
+        <Container className="thirdRow webpage" fluid>
+          <Row>
+            <Col xs={12}><BlockDagVisualization /></Col>
+          </Row>
+        </Container>
+      </div>
+      <div className="row4">
+        <Container className="fourthRow webpage" fluid>
+          <Row>
+            <Col xs={12} lg={6}><BlockOverview /></Col>
+          </Row>
+        </Container>
+      </div>
       <BalanceModal handleClose={handleClose} show={show} address={address} balance={balance} />
-    
+
 
 
     </div>

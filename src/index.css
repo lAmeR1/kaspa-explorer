@@ -5,7 +5,6 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: red;
 }
 
 .navbar-title {
@@ -13,7 +12,7 @@ body {
   -moz-transition: width 0.3s ease-in-out;
   -o-transition: width 0.3s ease-in-out;
   opacity: 0;
-  transition: width 0.3s ease-in 0.5s, opacity 0.5s ease-out;
+  transition: width 0.2s ease-in 0.2s, opacity 0.2s ease-out;
   width: 0px;
 }
 
@@ -28,7 +27,7 @@ body {
   -o-transition: width 0.3s ease-in-out;
   width:60px;
   opacity: 1;
-  transition: width 0.5s ease-in, opacity 0.3s ease-out 0.5s;
+  transition: width 0.2s ease-in, opacity 0.2s ease-out 0.2s;
 }
 
 
