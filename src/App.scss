@@ -33,6 +33,16 @@ body {
   background-color: $superdark;
 }
 
+.alpha {
+  position: fixed;
+  top: -40px;
+  left: 600px;
+  font-size: 7rem;
+  color: tomato;
+  z-index: 9999999;
+  transform: rotateX(20deg);
+
+}
 
 .bigfont {
   color: $color1 !important;

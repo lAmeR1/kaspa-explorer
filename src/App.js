@@ -16,6 +16,8 @@ import Dashboard from './Dashboard';
 import BlockInfo from './components/BlockInfo';
 import { LinkContainer } from 'react-router-bootstrap';
 import { useLocation } from 'react-router';
+import NotFound from './components/NotFound';
+import AddressInfo from './components/AddressInfo';
 
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -87,11 +89,12 @@ function App() {
       </Navbar>
       <Routes>
         <Route path="/" element={<Dashboard />} />
+        <Route path="/blocks" element={<BlockOverview />} />
         <Route path="/blocks/:id" element={<BlockInfo />} />
-
-        <Route path="*" element={<Dashboard />} />
+        <Route path="/addresses/:addr" element={<AddressInfo />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
-
+      <div className="alpha">ALPHA VERSION</div>
     </div>
 
   );

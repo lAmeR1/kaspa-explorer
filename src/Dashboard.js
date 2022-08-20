@@ -66,12 +66,7 @@ function Dashboard() {
       <div className="row1">
         <Container className="firstRow webpage" fluid>
           <Row>
-            <Col md={12} className='text-light midfont d-md-none'>
-              KASPA<br />EXPLORER
-            </Col>
-          </Row>
-          <Row>
-            <Col md={12} className='d-flex flex-row justify-content-start text-light '>
+            <Col md={12} className='d-flex flex-row justify-content-start text-light d-xs-none'>
               <img className="big-kaspa-icon" src="/k-icon-glow.png" />
               <div className="bigfont">
                 KASPA<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;EXPLORER
