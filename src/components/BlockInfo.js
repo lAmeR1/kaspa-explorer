@@ -1,75 +1,97 @@
-import { Col, Container, Row } from "react-bootstrap";
+import { Col, Container, Row, Spinner } from "react-bootstrap";
 import { useParams } from "react-router";
+import { useEffect, useState } from 'react'
+import { getBlock } from '../kaspa-api-client.js'
 
 const BlockInfo = () => {
     const { id } = useParams();
+    const [blockInfo, setBlockInfo] = useState()
 
-
+    useEffect(() => {
+        getBlock(id).then(
+            (res) => {
+                setBlockInfo(res)
+                console.log(res)
+            }
+        )
+    }, [])
 
     return <div className="blockinfo-page">
         <Container className="webpage" fluid>
             <Row>
                 <Col>
-                    <div className="blockinfo-content">
-                        <div className="blockinfo-header"><h1>Details for block #{id}</h1></div>
-                        <table>
-                            <tr className="trow">
-                                <td className="tleft">Hash</td>
-                                <td className="tright">{id}</td>
-                            </tr>
-                            <tr>
-                                <td>Blue Score</td>
-                                <td>1212312</td>
-                            </tr>
-                            <tr>
-                                <td>Timestamp</td>
-                                <td>{id}</td>
-                            </tr>
-                            <tr>
-                                <td>Version</td>
-                                <td>1</td>
-                            </tr>
-                            <tr>
-                                <td>Parents</td>
-                                <td>abc<br />def<br />abbbbc</td>
-                            </tr>
-                            <tr>
-                                <td>Merkle Root</td>
-                                <td>abacacabs8ba9bc98ba8s9</td>
-                            </tr>
-                            <tr>
-                                <td>Accepted Merkle Root</td>
-                                <td>870990a8908saacan</td>
-                            </tr>
-                            <tr>
-                                <td>UTXO Commitment</td>
-                                <td>abasb0as0bb79bwb0a9dbw7ba</td>
-                            </tr>
-                            <tr>
-                                <td>Nonce</td>
-                                <td>abasb</td>
-                            </tr>
-                            <tr>
-                                <td>DAA Score</td>
-                                <td>123122441</td>
-                            </tr>
-                            <tr>
-                                <td>Blue Work</td>
-                                <td>76as5d65as765a</td>
-                            </tr>
-                            <tr>
-                                <td>Pruning Point</td>
-                                <td>abasb0as0bb79bwb0a9dbw7ba</td>
-                            </tr>
-                            <tr>
-                                <td>TX-IDs</td>
-                                <td>abasb0as0bb79bwb0a9dbw7ba<br />abasb0as0bb79bwb0a9dbw7ba</td>
-                            </tr>
-
-
-
-                        </table>
-                    </div>
+                    {blockInfo ?
+                        <div className="blockinfo-content">
+                            <div className="blockinfo-header"><h2>Details for block {id.substring(0, 8)}...{id.substring(56, 64)}</h2></div>
+                            <table className="blockinfo-table">
+                                <tr className="trow">
+                                    <td className="tleft">Hash</td>
+                                    <td className="tright">{id}</td>
+                                </tr>
+                                <tr>
+                                    <td>Blue Score</td>
+                                    <td>{blockInfo.header.blueScore}</td>
+                                </tr>
+                                <tr>
+                                    <td>Bits</td>
+                                    <td>{blockInfo.header.bits}</td>
+                                </tr>
+                                <tr>
+                                    <td>Timestamp</td>
+                                    <td>{blockInfo.header.timestamp}</td>
+                                </tr>
+                                <tr>
+                                    <td>Version</td>
+                                    <td>{blockInfo.header.version}</td>
+                                </tr>
+                                <tr>
+                                    <td>Parents</td>
+                                    <td>
+                                        <ul>
+                                            {[...new Set(blockInfo.header.parents.map(x => x.parentHashes).flat())]
+                                                .sort()
+                                                .map(x => <li>{x}</li>)}
+                                        </ul>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Merkle Root</td>
+                                    <td>{blockInfo.header.hashMerkleRoot}</td>
+                                </tr>
+                                <tr>
+                                    <td>Accepted Merkle Root</td>
+                                    <td>{blockInfo.header.acceptedIdMerkleRoot}</td>
+                                </tr>
+                                <tr>
+                                    <td>UTXO Commitment</td>
+                                    <td>{blockInfo.header.utxoCommitment}</td>
+                                </tr>
+                                <tr>
+                                    <td>Nonce</td>
+                                    <td>{blockInfo.header.nonce}</td>
+                                </tr>
+                                <tr>
+                                    <td>DAA Score</td>
+                                    <td>{blockInfo.header.daaScore}</td>
+                                </tr>
+                                <tr>
+                                    <td>Blue Work</td>
+                                    <td>{blockInfo.header.blueWork}</td>
+                                </tr>
+                                <tr>
+                                    <td>Pruning Point</td>
+                                    <td>{blockInfo.header.pruningPoint}</td>
+                                </tr>
+                                <tr>
+                                    <td>TX-IDs</td>
+                                    <td>
+                                        <ul>
+                                            {blockInfo.transactions.map(x => <li>{x.verboseData.transactionId}</li>)}
+                                        </ul>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div> : <>Loading Blockinfo <Spinner animation="border" role="status" /></>}
                 </Col>
             </Row>
         </Container></div>

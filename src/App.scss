@@ -53,7 +53,6 @@ body {
 
 .big-kaspa-icon {
   position: relative;
-  border: 2px solid tomato;
   top: 0rem;
   left: 0rem;
   // margin: .2rem;
@@ -213,6 +212,23 @@ body {
   color: $color3;
   cursor: pointer;
   text-decoration: none;
+}
+
+.blockinfo-content {
+  display: flex;
+  flex-direction: column;;
+  justify-content: center;
+}
+
+.blockinfo-table td {
+  text-align: left;
+  padding: 0.4rem;
+  padding-right: 0.5rem;
+  vertical-align: top;
+}
+
+.blockinfo-table tr:nth-of-type(even) {
+  background-color: rgba($superdark, 0.4)
 }
 
 .searchBox {

@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
 import { getNewBlocks } from './blocksupdater'
 import { FaDiceD20 } from 'react-icons/fa';
+import { useNavigate } from "react-router-dom";
 
 const BlockOverview = () => {
 
     const [blocks, setBlocks] = useState([])
+    const navigate = useNavigate();
 
     useEffect(() => {
         const intervalId = setInterval((x) => {
@@ -14,6 +16,10 @@ const BlockOverview = () => {
         return () => clearInterval(intervalId);
 
     }, [])
+
+    const onClickRow = (e) => {    
+        navigate(`/blocks/${e.target.parentElement.id}`)
+    }
 
 
     return <div className="block-overview">
@@ -28,7 +34,7 @@ const BlockOverview = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {blocks.map((x) => <tr key={x.hash}>
+                    {blocks.map((x) => <tr id={x.hash} key={x.hash} onClick={onClickRow}>
                         <td>{x.blueScore}</td>
                         <td>{x.txIds.length}</td>
                         <td>{x.hash.substr(0, 10)}...{x.hash.substr(54, 10)}</td>

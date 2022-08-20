@@ -15,6 +15,7 @@ import { Routes, Route, Link } from "react-router-dom";
 import Dashboard from './Dashboard';
 import BlockInfo from './components/BlockInfo';
 import { LinkContainer } from 'react-router-bootstrap';
+import { useLocation } from 'react-router';
 
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -40,6 +41,8 @@ function App() {
   const [balance, setBalance] = useState(0);
   const [address, setAddress] = useState("kaspa:");
 
+  const location = useLocation()
+
   const getBalance = (e) => {
     // kaspa:pzhh76qc82wzduvsrd9xh4zde9qhp0xc8rl7qu2mvl2e42uvdqt75zrcgpm00
     fetch(`https://kaspa.herokuapp.com/addresses/${e.target.searchInput.value}/balance`)
@@ -60,7 +63,7 @@ function App() {
   //<Button variant="primary">Go!</Button>
   return (
     <div className="big-page">
-      <Navbar id="navbar_top" className={window.location.pathname == "/" ? "navbar-ext" : "fixed-top navbar-ext"} variant="dark" sticky="top">
+      <Navbar id="navbar_top" className={location.pathname == "/" ? "navbar-ext" : "fixed-top navbar-ext"} variant="dark" sticky="top">
         <div className="navbar-container">
 
           <Navbar.Brand className="navbar-title">

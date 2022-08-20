@@ -12,6 +12,7 @@ import KaspadInfoBox from './components/KaspadInfoBox';
 import BlockDagVisualization from './components/BlockDagVisualization';
 import BlockOverview from './components/BlockOverview';
 import { Routes, Route, Link } from "react-router-dom";
+import { useNavigate } from 'react-router';
 
 
 
@@ -19,12 +20,29 @@ import { Routes, Route, Link } from "react-router-dom";
 function Dashboard() {
 
   const [show, setShow] = useState(false);
+  const navigate = useNavigate()
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
   const [balance, setBalance] = useState(0);
   const [address, setAddress] = useState("kaspa:");
+
+  const search = (e) => {
+    e.preventDefault();
+    const v = e.target.searchInput.value
+
+    if (v.length == 64) {
+      navigate(`/blocks/${v}`)
+    }
+
+    if (v.startsWith("kaspa:")) {
+      navigate(`/addresses/${v}`)
+    }
+
+    
+
+  }
 
   const getBalance = (e) => {
     // kaspa:pzhh76qc82wzduvsrd9xh4zde9qhp0xc8rl7qu2mvl2e42uvdqt75zrcgpm00
@@ -62,7 +80,7 @@ function Dashboard() {
           </Row>
           <Row>
             <Col xs={12}>
-              <Form onSubmit={getBalance}>
+              <Form onSubmit={search}>
                 <InputGroup className="ms-md-5 mt-5 searchBox">
                   <Form.Control className="shadow-none" variant="dark" name="searchInput" type="text" placeholder="kaspa:address / block / tx " />
                   <Button type="submit" className="shadow-none searchButton" variant="outline-secondary" ><i className='fa fa-search' /></Button>
