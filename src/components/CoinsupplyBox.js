@@ -26,29 +26,29 @@ const CBox = () => {
 
     return <>
         <div className="cardBox">
-                <table>
-                    <tr>
-                        <td colspan='2' className="text-center" style={{ "font-size": "4rem" }}>
-                            <FontAwesomeIcon icon={faCoins} />
-                            <div className="cardLight" />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="2" className="text-center">
-                            <h3>Coin supply</h3>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td className="cardBoxElement">
-                            Circulating</td><td>
-                            {numberWithCommas(circCoins)} KAS
-                        </td>
-                    </tr>
-                    <tr>
-                        <td className="cardBoxElement">Total</td>
-                        <td>28,600,000,000 KAS</td>
-                    </tr>
-                </table>
+            <table>
+                <tr>
+                    <td colspan='2' className="text-center" style={{ "font-size": "4rem" }}>
+                        <FontAwesomeIcon icon={faCoins} />
+                        <div id="light1" className="cardLight" />
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2" className="text-center">
+                        <h3>Coin supply</h3>
+                    </td>
+                </tr>
+                <tr>
+                    <td className="cardBoxElement">
+                        Circulating</td>
+                    <td>{numberWithCommas(circCoins)} KAS
+                    </td>
+                </tr>
+                <tr>
+                    <td className="cardBoxElement">Total</td>
+                    <td>28,600,000,000 KAS</td>
+                </tr>
+            </table>
         </div>
     </>
 }
