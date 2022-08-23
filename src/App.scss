@@ -17,7 +17,7 @@ $theme-colors: (
   "warning": #cb9931,
   "danger": #f44336,
   "dark": $color5,
-  "light": $color2,
+  "light": $color1,
   "secondary": $color3
 );
 
@@ -57,10 +57,10 @@ body {
   font-family: 'Righteous', sans-serif;
   // font: bold 80px/0.9em;
   font-weight: normal;
-  font-size: 7rem;
-  line-height: 6rem;
+  font-size: 4.5rem;
+  line-height: 4rem;
   // letter-spacing: 0.01em;
-  margin-top: 4rem;
+  margin-top: 1rem;
   // margin-left: 8rem;
   text-shadow: -20px -10px 80px $color1;
   display: flex;
@@ -69,18 +69,40 @@ body {
   text-align: left;
 }
 
+@include media-breakpoint-up(md) { 
+  .bigfont {
+    margin-top: 4rem;
+    font-size: 4.4rem;
+    line-height: 4.4rem;
+  }
+}
+@include media-breakpoint-up(lg) { 
+  .bigfont {
+    margin-top: 4rem;
+    font-size: 7rem;
+    line-height: 6rem;
+  }
+}
+
 .big-kaspa-icon {
   position: relative;
   top: 0rem;
   left: 0rem;
   // margin: .2rem;
-  width: 15rem;
-  height: 15rem;
+  width: 0rem;
+  height: 0rem;
   transform: rotateX(90);
   animation-name: rotate-icon;
   animation-duration: 3s;
   animation-iteration-count: infinite;
   animation-direction: alternate;
+}
+
+@include media-breakpoint-up(md) { 
+  .big-kaspa-icon {
+    width: 15rem;
+    height: 15rem;
+  }
 }
 
 /* The animation code */
@@ -162,16 +184,16 @@ body {
 }
 
 .colsize > div {
-  max-width: 1600px;
+  max-width: 1300px;
 }
 
 .webpage {
-  max-width: 1600px;
+  max-width: 1300px;
 }
 
 .row1 {
   color: $color3;
-  background-color: $color4;
+  background-color: rgba($color3, 0.7);
   border-bottom: 2px solid $color1;
   padding: 2rem;
   display: flex;
