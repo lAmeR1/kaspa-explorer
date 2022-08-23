@@ -5,8 +5,8 @@
     align-items: flex-start;
     flex-direction: column;
     background-color: $color2;
-    padding: 5rem;
     color: $color5;
+    padding: 1rem;
 }
 .blockinfo-header {
     border-bottom: 2px solid $color1;
@@ -19,5 +19,25 @@
     border-radius: 1.2rem;
     background-color: $color5;
     
-    padding: 3rem;
+    padding: 1rem;
 }
+.blockinfo-table {
+    text-align: left;
+  }
+  
+.blockinfo-row {
+    padding: 1rem 0rem;
+    // overflow-wrap: break-word;
+    overflow: hidden;
+    word-wrap: nowrap;
+}
+
+.blockinfo-key {
+    font-weight: bold;
+}
+
+@include media-breakpoint-up(lg) { 
+    .blockinfo-page  {
+        padding: 5rem
+    }
+ }

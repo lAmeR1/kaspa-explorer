@@ -23,74 +23,72 @@ const BlockInfo = () => {
                     {blockInfo ?
                         <div className="blockinfo-content">
                             <div className="blockinfo-header"><h2>Details for block {id.substring(0, 8)}...{id.substring(56, 64)}</h2></div>
-                            <table className="blockinfo-table">
-                                <tr className="trow">
-                                    <td className="tleft">Hash</td>
-                                    <td className="tright">{id}</td>
-                                </tr>
-                                <tr>
-                                    <td>Blue Score</td>
-                                    <td>{blockInfo.header.blueScore}</td>
-                                </tr>
-                                <tr>
-                                    <td>Bits</td>
-                                    <td>{blockInfo.header.bits}</td>
-                                </tr>
-                                <tr>
-                                    <td>Timestamp</td>
-                                    <td>{blockInfo.header.timestamp}</td>
-                                </tr>
-                                <tr>
-                                    <td>Version</td>
-                                    <td>{blockInfo.header.version}</td>
-                                </tr>
-                                <tr>
-                                    <td>Parents</td>
-                                    <td>
+                            <Container className="blockinfo-table" fluid>
+                                <Row className="blockinfo-row">
+                                    <Col className="blockinfo-key" lg={2}>Hash</Col>
+                                    <Col className="blockinfo-value" lg={10}>{id}</Col>
+                                </Row>
+                                <Row className="blockinfo-row">
+                                    <Col className="blockinfo-key" lg={2}>Blue Score</Col>
+                                    <Col className="blockinfo-value" lg={10}>{blockInfo.header.blueScore}</Col>
+                                </Row>
+                                <Row className="blockinfo-row">
+                                    <Col className="blockinfo-key" lg={2}>Bits</Col>
+                                    <Col className="blockinfo-value" lg={10}>{blockInfo.header.bits}</Col>
+                                </Row>
+                                <Row className="blockinfo-row">
+                                    <Col className="blockinfo-key" lg={2}>Timestamp</Col>
+                                    <Col className="blockinfo-value" lg={10}>{blockInfo.header.timestamp}</Col>
+                                </Row>
+                                <Row className="blockinfo-row">
+                                    <Col className="blockinfo-key" lg={2}>Version</Col>
+                                    <Col className="blockinfo-value" lg={10}>{blockInfo.header.version}</Col>
+                                </Row>
+                                <Row className="blockinfo-row">
+                                    <Col className="blockinfo-key" lg={2}>Parents</Col>
+                                    <Col className="blockinfo-value" lg={10}>
                                         <ul>
-                                            {[...new Set(blockInfo.header.parents.map(x => x.parentHashes).flat())]
-                                                .sort()
-                                                .map(x => <li>{x}</li>)}
+                                            {blockInfo.header.parents[0].parentHashes.map(x => <li>{x}</li>)}
                                         </ul>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>Merkle Root</td>
-                                    <td>{blockInfo.header.hashMerkleRoot}</td>
-                                </tr>
-                                <tr>
-                                    <td>Accepted Merkle Root</td>
-                                    <td>{blockInfo.header.acceptedIdMerkleRoot}</td>
-                                </tr>
-                                <tr>
-                                    <td>UTXO Commitment</td>
-                                    <td>{blockInfo.header.utxoCommitment}</td>
-                                </tr>
-                                <tr>
-                                    <td>Nonce</td>
-                                    <td>{blockInfo.header.nonce}</td>
-                                </tr>
-                                <tr>
-                                    <td>DAA Score</td>
-                                    <td>{blockInfo.header.daaScore}</td>
-                                </tr>
-                                <tr>
-                                    <td>Blue Work</td>
-                                    <td>{blockInfo.header.blueWork}</td>
-                                </tr>
-                                <tr>
-                                    <td>Pruning Point</td>
-                                    <td>{blockInfo.header.pruningPoint}</td>
-                                </tr>
-                                <tr>
-                                    <td>TX-IDs</td>
-                                    <td>
+                                    </Col>
+                                </Row>
+                                <Row className="blockinfo-row">
+                                    <Col className="blockinfo-key" lg={2}>Merkle Root</Col>
+                                    <Col className="blockinfo-value" lg={10}>{blockInfo.header.hashMerkleRoot}</Col>
+                                </Row>
+                                <Row className="blockinfo-row">
+                                    <Col className="blockinfo-key" lg={2}>Accepted Merkle Root</Col>
+                                    <Col className="blockinfo-value" lg={10}>{blockInfo.header.acceptedIdMerkleRoot}</Col>
+                                </Row>
+                                <Row className="blockinfo-row">
+                                    <Col className="blockinfo-key" lg={2}>UTXO Commitment</Col>
+                                    <Col className="blockinfo-value" lg={10}>{blockInfo.header.utxoCommitment}</Col>
+                                </Row>
+                                <Row className="blockinfo-row">
+                                    <Col className="blockinfo-key" lg={2}>Nonce</Col>
+                                    <Col className="blockinfo-value" lg={10}>{blockInfo.header.nonce}</Col>
+                                </Row>
+                                <Row className="blockinfo-row">
+                                    <Col className="blockinfo-key" lg={2}>DAA Score</Col>
+                                    <Col className="blockinfo-value" lg={10}>{blockInfo.header.daaScore}</Col>
+                                </Row>
+                                <Row className="blockinfo-row">
+                                    <Col className="blockinfo-key" lg={2}>Blue Work</Col>
+                                    <Col className="blockinfo-value" lg={10}>{blockInfo.header.blueWork}</Col>
+                                </Row>
+                                <Row className="blockinfo-row">
+                                    <Col className="blockinfo-key" lg={2}>Pruning Point</Col>
+                                    <Col className="blockinfo-value" lg={10}>{blockInfo.header.pruningPoint}</Col>
+                                </Row>
+                                <Row className="blockinfo-row">
+                                    <Col className="blockinfo-key" lg={2}>TX-IDs/Col</Col>
+                                    <Col className="blockinfo-value" lg={10}>
                                         <ul>
                                             {blockInfo.transactions.map(x => <li>{x.verboseData.transactionId}</li>)}
                                         </ul>
-                                    </td>
-                                </tr>
-                            </table>
+                                    </Col>
+                                </Row>
+                            </Container>
                         </div> : <>Loading Blockinfo <Spinner animation="border" role="status" /></>}
                 </Col>
             </Row>

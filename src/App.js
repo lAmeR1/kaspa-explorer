@@ -5,7 +5,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'font-awesome/css/font-awesome.min.css';
 import './App.scss';
 import BalanceModal from './components/BalanceModal';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import CoinsupplyBox from './components/CoinsupplyBox';
 import BlockDAGBox from './components/BlockDAG';
 import KaspadInfoBox from './components/KaspadInfoBox';
@@ -18,6 +18,7 @@ import { LinkContainer } from 'react-router-bootstrap';
 import { useLocation } from 'react-router';
 import NotFound from './components/NotFound';
 import AddressInfo from './components/AddressInfo';
+import { FaDollarSign } from 'react-icons/fa';
 
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -43,7 +44,20 @@ function App() {
   const [balance, setBalance] = useState(0);
   const [address, setAddress] = useState("kaspa:");
 
+  const [price, setPrice] = useState("....")
+
   const location = useLocation()
+
+
+  useEffect(() => {
+    fetch(`https://api.coingecko.com/api/v3/coins/kaspa`)
+      .then(response => response.json())
+      .then(data => {
+        setPrice(data['market_data']['current_price']['usd'].toFixed(6));
+      })
+      .catch(r => console.log(r))
+  }, [])
+
 
   const getBalance = (e) => {
     // kaspa:pzhh76qc82wzduvsrd9xh4zde9qhp0xc8rl7qu2mvl2e42uvdqt75zrcgpm00
@@ -60,33 +74,86 @@ function App() {
     e.preventDefault()
   }
 
+  const closeMenuIfNeeded = () => {
+    if (document.getElementById("responsive-navbar-nav").classList.contains('show')) {
+      document.getElementsByClassName("navbar-toggler")[0].click()
+    }
+  }
+
   console.log(window.location.pathname)
 
   //<Button variant="primary">Go!</Button>
   return (
     <div className="big-page">
-      <Navbar id="navbar_top" className={location.pathname == "/" ? "navbar-ext" : "fixed-top navbar-ext"} variant="dark" sticky="top">
-        <div className="navbar-container">
+      {/* <Navbar collapseOnSelect  expand="lg" id="navbar_top" className={location.pathname == "/" ? "navbar-ext" : "fixed-top navbar-ext"} variant="dark" sticky="top">
+          <Container>
+            
+            <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+            <Navbar.Collapse id="responsive-navbar-nav">
+              <Nav>
+                
+              </Nav>
+            </Navbar.Collapse>
+            <div className="fs-4 text-light px-4">
+              1 KAS = {price}$
+            </div>
+          </Container>
+      </Navbar> */}
+      {/* <Navbar expand="lg" bg="dark" variant="dark" className={location.pathname == "/" ? "navbar-ext" : "sticky-top navbar-ext"}>
+        <Container>
 
-          <Navbar.Brand className="navbar-title">
+          <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+          <Navbar.Collapse id="responsive-navbar-nav">
+            <Nav className="me-auto">
+            <LinkContainer to="/">
+                  <Nav.Link className="fs-4 ">Dashboard</Nav.Link>
+                </LinkContainer>
+                <LinkContainer to="/blocks">
+                  <Nav.Link className="fs-4">Blocks</Nav.Link>
+                </LinkContainer>
+                <LinkContainer to="/txs">
+                  <Nav.Link className="fs-4">Transactions</Nav.Link>
+                </LinkContainer>
+            </Nav>
+            <Nav>
+              <Nav.Link href="#deets">More deets</Nav.Link>
+              <Nav.Link eventKey={2} href="#memes">
+                Dank memes
+              </Nav.Link>
+            </Nav>
+          </Navbar.Collapse>
+        </Container>
+      </Navbar> */}
+      <Navbar expand="md" bg="dark" variant="dark" sticky="top" id="navbar_top" className={location.pathname == "/" ? "" : "fixed-top"}>
+        <Container id="navbar-container" fluid>
+          <div className="navbar-title">
+          <Navbar.Brand >
             <Link to="/">
-              <img className="shake" src="/k-icon-glow.png" style={{ "margin": ".2rem", width: "4rem", height: "4rem" }} />
+              <div className="navbar-brand">
+                <img className="shake" src="/k-icon-glow.png" style={{ "margin": ".2rem", width: "4rem", height: "4rem" }} />
+                <div className="navbar-brand-text">KASPA<br />EXPLORER</div>
+              </div>
             </Link>
           </Navbar.Brand>
-
-          <Nav>
-            <LinkContainer to="/">
-              <Nav.Link className="fs-4">Dashboard</Nav.Link>
+          </div>
+          <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+          <Navbar.Collapse id="responsive-navbar-nav">
+          <Nav className="me-auto">
+          <LinkContainer to="/">
+            <Nav.Link className="fs-5" onClick={closeMenuIfNeeded}>Dashboard</Nav.Link>
             </LinkContainer>
             <LinkContainer to="/blocks">
-              <Nav.Link className="fs-4">Blocks</Nav.Link>
+            <Nav.Link className="fs-5" onClick={closeMenuIfNeeded}>Blocks</Nav.Link>
             </LinkContainer>
             <LinkContainer to="/txs">
-              <Nav.Link className="fs-4">Transactions</Nav.Link>
+            <Nav.Link className="fs-5" onClick={closeMenuIfNeeded}>Transactions</Nav.Link>
             </LinkContainer>
           </Nav>
-        </div>
+          </Navbar.Collapse>
+          
+        </Container>
       </Navbar>
+
       <Routes>
         <Route path="/" element={<Dashboard />} />
         <Route path="/blocks" element={<BlockOverview />} />
@@ -94,8 +161,8 @@ function App() {
         <Route path="/addresses/:addr" element={<AddressInfo />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
-      <div className="alpha">ALPHA VERSION</div>
-    </div>
+      {/* <div className="alpha">ALPHA VERSION</div> */}
+    </div >
 
   );
 }

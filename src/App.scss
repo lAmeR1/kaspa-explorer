@@ -1,24 +1,27 @@
 @use "sass:color";
 @import url(http://fonts.googleapis.com/css?family=Righteous);
+@import url(http://fonts.googleapis.com/css?family=Anton);
 
 
-$color1: #FAFAFA;
-$color2: #979DA0;
-$color3: #92AAB4;
-$color4: #7C949F;
-$color5: #496B79;
-$superdark: rgb(57, 78, 86);
+$color1: #F6F5F4;
+$color2: #14F1D9;
+$color3: #519AA3;
+$color4: #7F8994;
+$color5: #181D30;
+$superdark: $color5;
 
 $theme-colors: (
-  "primary": #6c645b,
-  "info": #2a4048,
-  "success": #569953,
-  "warning": #d3881b,
+  "primary": #519aa3,
+  "info": #181d30,
+  "success": #4ea969,
+  "warning": #cb9931,
   "danger": #f44336,
   "dark": $color5,
   "light": $color2,
   "secondary": $color3
 );
+
+$nav-link-color: $color1;
 
 // Bootstrap and its default variables
 @import "node_modules/bootstrap/scss/bootstrap";
@@ -33,15 +36,17 @@ body {
   background-color: $superdark;
 }
 
-.alpha {
-  position: fixed;
-  top: -40px;
-  left: 600px;
-  font-size: 7rem;
-  color: tomato;
-  z-index: 9999999;
-  transform: rotateX(20deg);
 
+.navbar-title {
+  opacity: 1;
+  transition: opacity 0.5s ease-out;
+}
+
+@include media-breakpoint-up(md) { 
+  .navbar-title {
+    opacity: 0;
+    transition: opacity 0.5s ease-out;
+  }
 }
 
 .bigfont {
@@ -85,20 +90,72 @@ body {
   text-align: center;
 }
 
-.navbar-ext {
-  display: flex;
-  justify-content: center;
-  border-bottom: 2px solid white;
-  background-color: $superdark;
-  
+
+#navbar_top {
+  border-bottom: 2px solid $color1;
 }
 
-.navbar-container {
-  width: 100%;
+
+.navbar-title {
+  width: fit-content;
+}
+
+.navbar-brand {
   display: flex;
   flex-direction: row;
-  align-items: center;
-  max-width: 1500px;
+  width: fit-content;
+}
+
+.navbar-brand a {
+  text-decoration: none;
+}
+
+.navbar-nav {
+  height: 100%
+}
+
+.nav-link {
+    align-items: center;
+    
+}
+.active  {
+  font-weight: bolder;
+}
+
+@include media-breakpoint-up(md) { 
+  .active  {
+    border-bottom: 4px solid $color2;
+  }
+}
+
+
+.navbar-brand-text {
+  color: $color1;
+  text-decoration: none;
+  font-family: 'Righteous';
+  font-size: 2rem;
+  font-weight: bold;
+  line-height: 2rem;
+}
+
+.navbar-brand-text a:link {
+    text-decoration: none;
+}
+.navbar-brand-text a:visited {
+  text-decoration: none;
+}
+.navbar-brand-text a:hover {
+  text-decoration: none;
+  background-color: red;
+}
+.navbar-brand-text a:active {
+  text-decoration: none;
+}
+
+.navbar-brand-text>a {
+  text-decoration: none;
+  font-style: none;
+  
 }
 
 .colsize > div {
@@ -110,8 +167,8 @@ body {
 }
 
 .row1 {
-
-  background-color: $color5;
+  color: $color3;
+  background-color: $color4;
   border-bottom: 2px solid $color1;
   padding: 2rem;
   display: flex;
@@ -148,7 +205,11 @@ body {
 .cardText {
   font-size: 2em;
   font: bold 20px/1.2em;
-  font-family: monospace
+  font-family: monospace;
+}
+
+.navbar-top div {
+  border-bottom: 2px solid $color1;
 }
 
 .navbar-title {
@@ -156,14 +217,20 @@ body {
 }
 
 .block-overview {
-  color: $color1;
-  background-color: $superdark;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: $color5;
+  background-color: $color1;
   padding: 4rem;
   border-radius: 0.4rem;
 }
 
 .block-overview-content {
   width: 100%;
+
+  max-width:1200px;
   /* border-radius: 1rem; */
   overflow: hidden;
   /* font-size: small;  */
@@ -171,18 +238,19 @@ body {
 
 .block-overview-header {
   padding-bottom: 4rem;
-  color: $color1;
+  color: $color3;
   text-transform: uppercase;
 }
 
 .block-overview thead th {
-  background-color: $superdark;
+  background-color: $color3;
   color: #ffffff;
   text-align: left;
 }
 
 .styled-table {
-  width: 100%
+  width: 100%;
+  background-color: $color5;
 }
 
 @keyframes anim {
@@ -201,18 +269,21 @@ body {
 }
 
 .styled-table thead tr {
-  border-bottom: 2px solid $color1;
+  border-bottom: 2px solid $color3;
 }
 
 .styled-table tbody tr {
   border-bottom: 1px solid $color3;
   animation: anim;
   animation-duration: 1s;
+  text-align: left;
 }
 
 .styled-table tbody tr:nth-of-type(even) {
-  background-color: rgba($color5, 0.5)
+  background-color: rgba($color4, 0.5)
 }
+
+
 
 .styled-table tbody tr:last-of-type {
   border-bottom: 2px solid $color1;
@@ -224,22 +295,25 @@ body {
   text-decoration: none;
 }
 
+.blockinfo-page {
+  border: 2x solid red;
+}
+
 .blockinfo-content {
   display: flex;
   flex-direction: column;;
   justify-content: center;
 }
 
-.blockinfo-table td {
-  text-align: left;
-  padding: 0.4rem;
-  padding-right: 0.5rem;
-  vertical-align: top;
+
+
+.blockinfo-row:nth-of-type(even) {
+    background-color: rgba($superdark, 0.4)
 }
 
-.blockinfo-table tr:nth-of-type(even) {
-  background-color: rgba($superdark, 0.4)
-}
+// .blockinfo-table tr:nth-of-type(even) {
+//   background-color: rgba($superdark, 0.4)
+// }
 
 .searchBox {
 
