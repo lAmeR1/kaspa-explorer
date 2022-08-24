@@ -10,7 +10,7 @@ const BlockOverview = () => {
 
     useEffect(() => {
         const intervalId = setInterval((x) => {
-            var readBlocks = getNewBlocks(setBlocks, 20)
+            // var readBlocks = getNewBlocks(setBlocks, 20)
         }, 3000)
 
         return () => clearInterval(intervalId);
@@ -23,7 +23,7 @@ const BlockOverview = () => {
 
 
     return <div className="block-overview">
-        <h3 className="block-overview-header text-center"><FaDiceD20 size="4rem"/><br />LATEST 20 BLOCKS</h3>
+        <h4 className="block-overview-header text-center"><FaDiceD20 className="rotate" size="1.7rem"/> LATEST BLOCKS</h4>
         <div className="block-overview-content">
             <table className="styled-table">
                 <thead>
