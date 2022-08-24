@@ -1,0 +1,128 @@
+.addressinfo-page {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    flex-direction: column;
+    background-color: $color3;
+    color: $color5;
+    padding: 1rem;
+}
+.addressinfo-title {
+    color: $color2;
+    border-bottom: 1px solid $color1;
+    text-align: left;
+    text-transform: uppercase;
+    font-size: x-large;
+    font-weight: bolder;
+    padding-bottom: 1rem;
+    margin-bottom: 2rem;
+}
+.addressinfo-box {
+    background-color: $color5;
+    border-radius: 0.8rem;
+    padding: 2rem;
+    overflow: hidden;
+}
+.addressinfo-header {
+    // border-bottom: 2px solid $color1;
+    color: $color1;
+    text-transform: uppercase;
+    text-align: left;
+    font-weight: bolder;
+
+}
+
+@include media-breakpoint-up(sm) { 
+    .addressinfo-header-border {
+      border-top: 1px solid $color1;
+    }
+  }
+  
+.addressinfo-value {
+    color: $color1;
+    text-align: left;
+    font-family: 'Courier New', Courier, monospace;
+    word-wrap: break-word;
+}
+
+
+
+
+@include media-breakpoint-up(lg) { 
+    .addressinfo-page  {
+        padding: 5rem
+    }
+ }
+
+
+
+ .utxo-box {
+    background-color: $color5;
+    border-radius: 0.8rem;
+    padding: 2rem;
+    margin-top: 5rem;
+    overflow: hidden;
+ }
+ .utxo-title {
+    color: $color2;
+    border-bottom: 1px solid $color1;
+    text-align: left;
+    // text-transform: uppercase;
+    font-size: x-large;
+    font-weight: bolder;
+    padding-bottom: 1rem;
+    margin-bottom: 2rem;
+}
+
+.utxo-header {
+    // border-bottom: 2px solid $color1;
+    color: $color1;
+    text-transform: uppercase;
+    text-align: left;
+    font-weight: bolder;
+    
+}
+
+@include media-breakpoint-up(sm) { 
+    .utxo-header-border {
+      border-top: 1px solid $color1;
+    }
+  }
+  
+.utxo-value {
+    color: $color1;
+    text-align: left;
+    font-family: 'Courier New', Courier, monospace;
+    word-wrap: break-word;
+}
+
+.utxo-table {
+    color: $color1;
+    text-align: left;
+    overflow-x: scroll;
+}
+
+.utxo-table tbody tr {
+    border: 0 0 0 0;
+}
+
+.scrollable {
+    overflow-x: scroll;
+}
+
+.utxo-border {
+    border-bottom: 1px solid $color2;
+
+}
+
+.utxo-value-detail {
+    background-color: #4ea969;
+    height: 2rem;
+    width: fit-content;
+    padding: 0.5rem;
+    border-radius: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

@@ -1,13 +1,13 @@
-import { Col, Container, Row, Spinner } from "react-bootstrap";
+import { Col, Container, Row, Spinner, Table } from "react-bootstrap";
 import { useParams } from "react-router";
 import { useEffect, useState } from 'react'
 import { getAddressBalance, getAddressUtxos } from '../kaspa-api-client.js'
 
 const AddressInfo = () => {
     const { addr } = useParams();
-    const [addressBalance, setAddressBalance] = useState()
-    const [utxos, setUtxos] = useState()
-    
+    const [addressBalance, setAddressBalance] = useState(0)
+    const [utxos, setUtxos] = useState([])
+
     useEffect(() => {
         getAddressBalance(addr).then(
             (res) => {
@@ -24,32 +24,115 @@ const AddressInfo = () => {
         )
     }, [addressBalance])
 
-    return <div className="blockinfo-page">
-        <Container className="webpage" fluid>
-            <Row>
-                <Col>
-                    {addressBalance ?
-                        <div className="blockinfo-content">
-                            <div className="blockinfo-header"><h3>Details for {addr}</h3></div>
-                            <table className="blockinfo-table">
-                                <tr className="trow">
-                                    <td>Balance</td>
-                                    <td>{addressBalance/100000000} KAS</td>
-                                </tr>
-                                <tr>
-                                    <td>UTXOs</td>
-                                    <td>{utxos ? <ul>
-                                        {utxos
-                                        .sort((a,b) => {return b.utxoEntry.blockDaaScore - a.utxoEntry.blockDaaScore})
-                                        .map(x => <li>{x.utxoEntry.amount/100000000} KAS ({x.outpoint.transactionId})</li>)}
-                                    </ul> : <>Loading UTXOs <Spinner animation="border" role="status" /></>}</td>
-                                </tr>
-                            </table>
-                        </div> : <>Loading Address info <Spinner animation="border" role="status" /></>}
 
+    //     <div className="blockinfo-content">
+    //     <div className="blockinfo-header"><h3>Details for {addr}</h3></div>
+    //     <table className="blockinfo-table">
+    //         <tr className="trow">
+    //             <td>Balance</td>
+    //             <td>{addressBalance/100000000} KAS</td>
+    //         </tr>
+    //         <tr>
+    //             <td>UTXOs</td>
+    //             <td>{utxos ? <ul>
+    //                 {utxos
+    //                 .sort((a,b) => {return b.utxoEntry.blockDaaScore - a.utxoEntry.blockDaaScore})
+    //                 .map(x => <li>{x.utxoEntry.amount/100000000} KAS ({x.outpoint.transactionId})</li>)}
+    //             </ul> : <>Loading UTXOs <Spinner animation="border" role="status" /></>}</td>
+    //         </tr>
+    //     </table>
+    // </div> : <>Loading Address info <Spinner animation="border" role="status" /></>}
+
+    return <div className="addressinfo-page">
+        <Container className="webpage addressinfo-box" fluid>
+            <Row>
+                <Col xs={12}>
+                    <div className="addressinfo-title">Overview</div>
                 </Col>
             </Row>
-        </Container></div>
+                <Row>
+                    <Col sm={6} md={4}> 
+                        <div className="addressinfo-header mt-sm-4">balance</div>
+                        <div className="addressinfo-value">{addressBalance / 100000000} KAS</div>
+                    </Col>
+                    <Col sm={6} md={4}>
+                        <div className="addressinfo-header mt-4 ms-sm-5">UTXOs count</div>
+                        <div className="addressinfo-value ms-sm-5">{utxos.length}</div>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col sm={6} md={4}>
+                        <div className="addressinfo-header addressinfo-header-border mt-4 mt-sm-4 pt-sm-4 me-sm-5">value</div>
+                        <div className="addressinfo-value">{(addressBalance / 100000000 * 0.003500).toFixed(2)} USD</div>
+                    </Col>
+                    <Col sm={6} md={4}>
+                        <div className="addressinfo-header addressinfo-header-border mt-4 mt-sm-4 pt-sm-4 ms-sm-5">Transactions count</div>
+                        <div className="addressinfo-value ms-sm-5">38</div>
+                    </Col>
+                </Row>
+        </Container>
+        
+        <Container className="webpage utxo-box" fluid>
+            <Row>
+                <Col xs={12}>
+                    <div className="utxo-title">UTXOs</div>
+                </Col>
+            </Row>
+            {utxos.sort((a,b) => a.utxoEntry.blockDaaScore - b.utxoEntry.blockDaaScore).map((x) => 
+                    <Row className="utxo-border pb-5 mb-5">
+                        <Col sm={6} md={4}> 
+                            <div className="utxo-header mt-3">Block DAA Score</div>
+                            <div className="utxo-value">{x.utxoEntry.blockDaaScore}</div>
+                        </Col>
+                        <Col sm={6} md={4}>
+                            <div className="utxo-header mt-3">amount</div>
+                            <div className="utxo-value ">{x.utxoEntry.amount/100000000} KAS</div>
+                        </Col>
+                        <Col sm={6} md={4}>
+                            <div className="utxo-header mt-3">value</div>
+                            <div className="utxo-value">{x.utxoEntry.amount/100000000*0.003300} $</div>
+                        </Col>
+                        <Col sm={6} md={4}>
+                            <div className="utxo-header mt-3">index</div>
+                            <div className="utxo-value">{x.outpoint.index}</div>
+                        </Col>
+                        <Col sm={6} md={4}>
+                            <div className="utxo-header mt-3">transaction id</div>
+                            <div className="utxo-value">{x.outpoint.transactionId}</div>
+                        </Col>
+                        <Col sm={6} md={4}>
+                            <div className="utxo-header mt-3">details</div>
+                            <div className="utxo-value-detail">Unspent</div>
+                        </Col>
+                    </Row>
+            )}
+
+                    
+                    {/* <Table className="utxo-table">
+                        <thead>
+                            <tr>
+                                <th>Block DAA Score</th>
+                                <th>amount</th>
+                                <th>value</th>
+                                <th>index</th>
+                                <th>transaction id</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {utxos.sort((a,b) => a.utxoEntry.blockDaaScore - b.utxoEntry.blockDaaScore)
+                            .map((x) => <tr>
+                                <td>{x.utxoEntry.blockDaaScore}</td>
+                                <td>{x.utxoEntry.amount/100000000} KAS</td>
+                                <td></td>
+                                <td>{x.outpoint.index}</td>
+                                <td>{x.outpoint.transactionId}</td>
+                            </tr>)}
+                        </tbody>
+                    </Table> */}
+                    
+        </Container>
+        
+        </div>
 
 }
 
