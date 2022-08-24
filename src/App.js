@@ -19,6 +19,7 @@ import { useLocation } from 'react-router';
 import NotFound from './components/NotFound';
 import AddressInfo from './components/AddressInfo';
 import { FaDollarSign } from 'react-icons/fa';
+import BlocksPage from './components/BlocksPage';
 
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -156,7 +157,7 @@ function App() {
 
       <Routes>
         <Route path="/" element={<Dashboard />} />
-        <Route path="/blocks" element={<BlockOverview />} />
+        <Route path="/blocks" element={<BlocksPage />} />
         <Route path="/blocks/:id" element={<BlockInfo />} />
         <Route path="/addresses/:addr" element={<AddressInfo />} />
         <Route path="*" element={<NotFound />} />
