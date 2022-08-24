@@ -67,7 +67,7 @@ const AddressInfo = () => {
                     </Col>
                     <Col sm={6} md={4}>
                         <div className="addressinfo-header addressinfo-header-border mt-4 mt-sm-4 pt-sm-4 ms-sm-5">Transactions count</div>
-                        <div className="addressinfo-value ms-sm-5">38</div>
+                        <div className="addressinfo-value ms-sm-5">{utxos.length}</div>
                     </Col>
                 </Row>
         </Container>

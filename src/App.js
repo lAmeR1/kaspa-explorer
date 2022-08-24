@@ -52,8 +52,8 @@ function App() {
 
   const search = (e) => {
     e.preventDefault();
-    const v = e.target.searchInput.value
-
+    const v = e.target.searchbox.value
+    
     if (v.length == 64) {
       navigate(`/blocks/${v}`)
     }
@@ -98,42 +98,49 @@ function App() {
     }
   }
 
-  console.log(window.location.pathname)
 
   //<Button variant="primary">Go!</Button>
   return (
     <div className="big-page">
       <Navbar expand="md" bg="dark" variant="dark" sticky="top" id="navbar_top" className={location.pathname == "/" ? "" : "fixed-top"}>
         <Container id="navbar-container" fluid>
-              <div className="navbar-title">
-                <Navbar.Brand >
-                  <Link to="/">
-                    <div className="navbar-brand">
-                      <img className="shake" src="/k-icon-glow.png" style={{ "marginRight": ".5rem", width: "4rem", height: "4rem" }} />
-                      <div className="navbar-brand-text text-start">KASPA<br />EXPLORER</div>
-                    </div>
-                  </Link>
-                </Navbar.Brand>
-              </div>
+          <div className="navbar-title">
+            <Navbar.Brand >
+              <Link to="/">
+                <div className="navbar-brand">
+                  <img className="shake" src="/k-icon-glow.png" style={{ "marginRight": ".5rem", width: "4rem", height: "4rem" }} />
+                  <div className="navbar-brand-text text-start">KASPA<br />EXPLORER</div>
+                </div>
+              </Link>
+            </Navbar.Brand>
+          </div>
 
-              <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-              <Navbar.Collapse id="responsive-navbar-nav">
-                <Nav className="me-auto">
-                  <LinkContainer to="/">
-                    <Nav.Link className="fs-5" onClick={closeMenuIfNeeded}>Dashboard</Nav.Link>
-                  </LinkContainer>
-                  <LinkContainer to="/blocks">
-                    <Nav.Link className="fs-5" onClick={closeMenuIfNeeded}>Blocks</Nav.Link>
-                  </LinkContainer>
-                  <LinkContainer to="/txs">
-                    <Nav.Link className="fs-5" onClick={closeMenuIfNeeded}>Transactions</Nav.Link>
-                  </LinkContainer>
-                </Nav>
-              </Navbar.Collapse>
-              
+          <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+          <Navbar.Collapse id="responsive-navbar-nav">
+            <Nav className="me-auto">
+              <LinkContainer to="/">
+                <Nav.Link className="fs-5" onClick={closeMenuIfNeeded}>Dashboard</Nav.Link>
+              </LinkContainer>
+              <LinkContainer to="/blocks">
+                <Nav.Link className="fs-5" onClick={closeMenuIfNeeded}>Blocks</Nav.Link>
+              </LinkContainer>
+              <LinkContainer to="/txs">
+                <Nav.Link className="fs-5" onClick={closeMenuIfNeeded}>Transactions</Nav.Link>
+              </LinkContainer>
+            </Nav>
+          </Navbar.Collapse>
         </Container>
       </Navbar>
-
+      <Container className="webpage" hidden={location.pathname == "/"}>
+        <Row><Col xs={12} className="">
+          <Form onSubmit={search} className="w-100">
+            <InputGroup className="mt-4 mb-4 d-flex justify-content-center align-items-center">
+              <Form.Control className="bg-light text-dark shadow-none" name="searchbox" id="search-box-high" type="text" placeholder="kaspa:address / block / tx " />
+              <Button type="submit" className="shadow-none searchButton" variant="secondary" ><i className='fa fa-search' /></Button>
+            </InputGroup>
+          </Form>
+        </Col></Row>
+      </Container>
       <Routes>
         <Route path="/" element={<Dashboard />} />
         <Route path="/blocks" element={<BlocksPage />} />

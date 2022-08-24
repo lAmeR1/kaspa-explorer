@@ -11,7 +11,7 @@ $color5: #181D30;
 $superdark: $color5;
 
 $theme-colors: (
-  "primary": #519aa3,
+  "primary": $color2,
   "info": #181d30,
   "success": #4ea969,
   "warning": #cb9931,
@@ -20,6 +20,8 @@ $theme-colors: (
   "light": $color1,
   "secondary": $color3
 );
+
+$border-radius: 0.8rem;
 
 $nav-link-color: $color1;
 
@@ -430,6 +432,10 @@ body {
 .kasBlockHeader {
   font-weight: bold;
   font-size: large;
+}
+
+#search-box-high {
+  max-width: 40rem;
 }
 
 @import "./components/blockinfo.scss";

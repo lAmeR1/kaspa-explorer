@@ -97,13 +97,13 @@ function Dashboard() {
           </Row>
         </Container>
       </div>
-      <div className="row3">
+      {/* <div className="row3">
         <Container className="thirdRow webpage" fluid>
           <Row>
             <Col xs={12}><BlockDagVisualization /></Col>
           </Row>
         </Container>
-      </div>
+      </div> */}
       <div className="row4">
         <Container className="fourthRow webpage" fluid>
           <Row>
