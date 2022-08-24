@@ -10,8 +10,8 @@ const BlockOverview = () => {
 
     useEffect(() => {
         const intervalId = setInterval((x) => {
-            // var readBlocks = getNewBlocks(setBlocks, 20)
-        }, 3000)
+            var readBlocks = getNewBlocks(setBlocks, 20)
+        }, 10000)
 
         return () => clearInterval(intervalId);
 

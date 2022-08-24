@@ -17,10 +17,10 @@ const CBox = () => {
             .then(data => parseFloat(data))
             .catch(err => console.log("Error", err))
         setCircCoins(Math.round(coins))
-        setTimeout(updateCircSupply, 3000)
+        setTimeout(updateCircSupply, 10000)
     }
     useEffect(() => {
-        // updateCircSupply()
+        updateCircSupply()
     }, [])
 
 

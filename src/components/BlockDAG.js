@@ -13,11 +13,11 @@ const BlockDAGBox = () => {
             .then((response) => response.json())
             .then(d => setData(d))
             .catch(err => console.log("Error", err))
-        setTimeout(updateData, 3000)
+        setTimeout(updateData, 10000)
     }
     useEffect(() => {
 
-        // updateData()
+        updateData()
     }, [])
 
 
