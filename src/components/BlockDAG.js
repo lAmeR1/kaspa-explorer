@@ -17,7 +17,7 @@ const BlockDAGBox = () => {
     }
     useEffect(() => {
 
-        updateData()
+        // updateData()
     }, [])
 
 

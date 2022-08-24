@@ -16,7 +16,7 @@ const KaspadInfoBox = () => {
     }
     useEffect(() => {
 
-        updateData()
+        // updateData()
     }, [])
 
 

@@ -15,10 +15,10 @@ import { Routes, Route, Link } from "react-router-dom";
 import Dashboard from './Dashboard';
 import BlockInfo from './components/BlockInfo';
 import { LinkContainer } from 'react-router-bootstrap';
-import { useLocation } from 'react-router';
+import { useLocation, useNavigate } from 'react-router';
 import NotFound from './components/NotFound';
 import AddressInfo from './components/AddressInfo';
-import { FaDollarSign } from 'react-icons/fa';
+import { FaDollarSign, FaSearch } from 'react-icons/fa';
 import BlocksPage from './components/BlocksPage';
 
 
@@ -48,6 +48,23 @@ function App() {
   const [price, setPrice] = useState("....")
 
   const location = useLocation()
+  const navigate = useNavigate()
+
+  const search = (e) => {
+    e.preventDefault();
+    const v = e.target.searchInput.value
+
+    if (v.length == 64) {
+      navigate(`/blocks/${v}`)
+    }
+
+    if (v.startsWith("kaspa:")) {
+      navigate(`/addresses/${v}`)
+    }
+
+
+
+  }
 
 
   useEffect(() => {
@@ -86,72 +103,34 @@ function App() {
   //<Button variant="primary">Go!</Button>
   return (
     <div className="big-page">
-      {/* <Navbar collapseOnSelect  expand="lg" id="navbar_top" className={location.pathname == "/" ? "navbar-ext" : "fixed-top navbar-ext"} variant="dark" sticky="top">
-          <Container>
-            
-            <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-            <Navbar.Collapse id="responsive-navbar-nav">
-              <Nav>
-                
-              </Nav>
-            </Navbar.Collapse>
-            <div className="fs-4 text-light px-4">
-              1 KAS = {price}$
-            </div>
-          </Container>
-      </Navbar> */}
-      {/* <Navbar expand="lg" bg="dark" variant="dark" className={location.pathname == "/" ? "navbar-ext" : "sticky-top navbar-ext"}>
-        <Container>
-
-          <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-          <Navbar.Collapse id="responsive-navbar-nav">
-            <Nav className="me-auto">
-            <LinkContainer to="/">
-                  <Nav.Link className="fs-4 ">Dashboard</Nav.Link>
-                </LinkContainer>
-                <LinkContainer to="/blocks">
-                  <Nav.Link className="fs-4">Blocks</Nav.Link>
-                </LinkContainer>
-                <LinkContainer to="/txs">
-                  <Nav.Link className="fs-4">Transactions</Nav.Link>
-                </LinkContainer>
-            </Nav>
-            <Nav>
-              <Nav.Link href="#deets">More deets</Nav.Link>
-              <Nav.Link eventKey={2} href="#memes">
-                Dank memes
-              </Nav.Link>
-            </Nav>
-          </Navbar.Collapse>
-        </Container>
-      </Navbar> */}
       <Navbar expand="md" bg="dark" variant="dark" sticky="top" id="navbar_top" className={location.pathname == "/" ? "" : "fixed-top"}>
         <Container id="navbar-container" fluid>
-          <div className="navbar-title">
-          <Navbar.Brand >
-            <Link to="/">
-              <div className="navbar-brand">
-                <img className="shake" src="/k-icon-glow.png" style={{ "margin": ".2rem", width: "4rem", height: "4rem" }} />
-                <div className="navbar-brand-text">KASPA<br />EXPLORER</div>
+              <div className="navbar-title">
+                <Navbar.Brand >
+                  <Link to="/">
+                    <div className="navbar-brand">
+                      <img className="shake" src="/k-icon-glow.png" style={{ "marginRight": ".5rem", width: "4rem", height: "4rem" }} />
+                      <div className="navbar-brand-text text-start">KASPA<br />EXPLORER</div>
+                    </div>
+                  </Link>
+                </Navbar.Brand>
               </div>
-            </Link>
-          </Navbar.Brand>
-          </div>
-          <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-          <Navbar.Collapse id="responsive-navbar-nav">
-          <Nav className="me-auto">
-          <LinkContainer to="/">
-            <Nav.Link className="fs-5" onClick={closeMenuIfNeeded}>Dashboard</Nav.Link>
-            </LinkContainer>
-            <LinkContainer to="/blocks">
-            <Nav.Link className="fs-5" onClick={closeMenuIfNeeded}>Blocks</Nav.Link>
-            </LinkContainer>
-            <LinkContainer to="/txs">
-            <Nav.Link className="fs-5" onClick={closeMenuIfNeeded}>Transactions</Nav.Link>
-            </LinkContainer>
-          </Nav>
-          </Navbar.Collapse>
-          
+
+              <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+              <Navbar.Collapse id="responsive-navbar-nav">
+                <Nav className="me-auto">
+                  <LinkContainer to="/">
+                    <Nav.Link className="fs-5" onClick={closeMenuIfNeeded}>Dashboard</Nav.Link>
+                  </LinkContainer>
+                  <LinkContainer to="/blocks">
+                    <Nav.Link className="fs-5" onClick={closeMenuIfNeeded}>Blocks</Nav.Link>
+                  </LinkContainer>
+                  <LinkContainer to="/txs">
+                    <Nav.Link className="fs-5" onClick={closeMenuIfNeeded}>Transactions</Nav.Link>
+                  </LinkContainer>
+                </Nav>
+              </Navbar.Collapse>
+              
         </Container>
       </Navbar>
 

@@ -20,7 +20,7 @@ const CBox = () => {
         setTimeout(updateCircSupply, 3000)
     }
     useEffect(() => {
-        updateCircSupply()
+        // updateCircSupply()
     }, [])
 
 

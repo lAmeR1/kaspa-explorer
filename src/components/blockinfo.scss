@@ -30,6 +30,7 @@
     // overflow-wrap: break-word;
     overflow: hidden;
     word-wrap: nowrap;
+    border-bottom: 1px solid rgba($color3, 0.3);
 }
 
 .blockinfo-key {
@@ -40,4 +41,13 @@
     .blockinfo-page  {
         padding: 5rem
     }
+ }
+
+ #searchbox {
+    width: 10rem;
+ }
+
+ #searchbox:focus {
+    width: 20rem;
+    transition: width 0.3s;
  }
