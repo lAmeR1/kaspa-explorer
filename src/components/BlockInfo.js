@@ -2,25 +2,37 @@ import { Col, Container, Row, Spinner } from "react-bootstrap";
 import { useParams } from "react-router";
 import { useEffect, useState } from 'react'
 import { getBlock } from '../kaspa-api-client.js'
+import { Link } from "react-router-dom";
 
 const BlockInfo = () => {
     const { id } = useParams();
     const [blockInfo, setBlockInfo] = useState()
+    const [error, setError] = useState(false)
 
     useEffect(() => {
+        setError(false);
         getBlock(id).then(
             (res) => {
                 setBlockInfo(res)
                 console.log(res)
             }
         )
-    }, [])
+            .catch(() => {
+                console.log("hier");
+                setError(true);
+                setBlockInfo(null);
+            }
+            )
+    }, [id])
 
     return <div className="blockinfo-page">
         <Container className="webpage" fluid>
             <Row>
                 <Col>
-                    {blockInfo ?
+
+                    {error ? <h1 variant="danger">Error loading block</h1> : <></>}
+
+                    {!!blockInfo ?
                         <div className="blockinfo-content">
                             <div className="blockinfo-header"><h2>Details for block {id.substring(0, 8)}...{id.substring(56, 64)}</h2></div>
                             <Container className="blockinfo-table" fluid>
@@ -48,7 +60,7 @@ const BlockInfo = () => {
                                     <Col className="blockinfo-key" lg={2}>Parents</Col>
                                     <Col className="blockinfo-value" lg={10}>
                                         <ul>
-                                            {blockInfo.header.parents[0].parentHashes.map(x => <li>{x}</li>)}
+                                            {blockInfo.header.parents[0].parentHashes.map(x => <li><Link className="blockinfo-link" to={`/blocks/${x}`}>{x}</Link></li>)}
                                         </ul>
                                     </Col>
                                 </Row>
@@ -78,18 +90,18 @@ const BlockInfo = () => {
                                 </Row>
                                 <Row className="blockinfo-row">
                                     <Col className="blockinfo-key" lg={2}>Pruning Point</Col>
-                                    <Col className="blockinfo-value" lg={10}>{blockInfo.header.pruningPoint}</Col>
+                                    <Col className="blockinfo-value" lg={10}><Link className="blockinfo-link" to={`/blocks/${blockInfo.header.pruningPoint}`}>{blockInfo.header.pruningPoint}</Link></Col>
                                 </Row>
                                 <Row className="blockinfo-row">
                                     <Col className="blockinfo-key" lg={2}>TX-IDs/Col</Col>
                                     <Col className="blockinfo-value" lg={10}>
                                         <ul>
-                                            {blockInfo.transactions.map(x => <li>{x.verboseData.transactionId}</li>)}
+                                            {(blockInfo.transactions || []).map(x => <li>{x.verboseData.transactionId}</li>)}
                                         </ul>
                                     </Col>
                                 </Row>
                             </Container>
-                        </div> : <>Loading Blockinfo <Spinner animation="border" role="status" /></>}
+                        </div> : <>{!error ? <>Loading Blockinfo <Spinner animation="border" role="status" /></> : <></>}</>}
                 </Col>
             </Row>
         </Container></div>
