@@ -2,6 +2,11 @@ import { Card, Container, Row, Col } from "react-bootstrap"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCoins } from '@fortawesome/free-solid-svg-icons'
 import { useEffect, useState } from "react";
+import io from 'socket.io-client';
+
+const socket = io("ws://127.0.0.1:8000", {
+    path: '/ws/socket.io'
+});
 
 
 function numberWithCommas(x) {
@@ -10,17 +15,30 @@ function numberWithCommas(x) {
 
 const CBox = () => {
     const [circCoins, setCircCoins] = useState("-");
+    const [isConnected, setIsConnected] = useState(false);
 
-    async function updateCircSupply() {
-        const coins = await fetch('https://kaspa.herokuapp.com/info/coinsupply/circulating')
-            .then((response) => response.text())
-            .then(data => parseFloat(data))
-            .catch(err => console.log("Error", err))
-        setCircCoins(Math.round(coins))
-        setTimeout(updateCircSupply, 10000)
-    }
     useEffect(() => {
-        updateCircSupply()
+        socket.on('connect', () => {
+            setIsConnected(true);
+        });
+
+        socket.on('disconnect', () => {
+            setIsConnected(false);
+        });
+
+        socket.on('coinsupply', (e) => {
+            setCircCoins(Math.round(parseFloat(e.circulatingSupply)/100000000))
+        })
+
+        // join room to get updates
+        socket.emit("join-room", "coinsupply")
+
+
+        return () => {
+            socket.off('connect');
+            socket.off('disconnect');
+            socket.off('coinsupply');
+        };
     }, [])
 
 
