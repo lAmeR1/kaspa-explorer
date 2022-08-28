@@ -70,7 +70,7 @@ const BlockOverview = () => {
                     {[...blocks].sort((a,b) => b.verboseData.blueScore - a.verboseData.blueScore).slice(0,20).map((x) => <tr id={x.verboseData.hash} key={x.verboseData.hash} onClick={onClickRow}>
                         <td>{x.verboseData.blueScore}</td>
                         <td>{x.transactions.length}</td>
-                        <td>{x.verboseData.hash.substr(0, 10)}...{x.verboseData.hash.substr(54, 10)}</td>
+                        <td>{x.verboseData.hash}</td>
                     </tr>)}
                 </tbody>
             </table>

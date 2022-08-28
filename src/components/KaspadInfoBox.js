@@ -21,7 +21,7 @@ const KaspadInfoBox = () => {
 
 
     return <>
-        <div className="cardBox">
+        <div className="cardBox mx-0 mx-sm-5">
             <table>
                 <tr>
                     <td colspan='2' className="text-center" style={{ "font-size": "4rem" }}>
