@@ -4,7 +4,7 @@ import { FaDiceD20 } from 'react-icons/fa';
 import { useNavigate } from "react-router-dom";
 import io from 'socket.io-client';
 
-const socket = io("ws://kaspa.herokuapp.com", {
+const socket = io("wss://kaspa.herokuapp.com", {
     path: '/ws/socket.io'
 });
 

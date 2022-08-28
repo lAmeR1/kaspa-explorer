@@ -4,7 +4,7 @@ import { faCoins } from '@fortawesome/free-solid-svg-icons'
 import { useEffect, useState } from "react";
 import socketIOClient from 'socket.io-client';
 
-const socket = socketIOClient("ws://kaspa.herokuapp.com/", {
+const socket = socketIOClient("wss://kaspa.herokuapp.com/", {
     path: '/ws/socket.io'
 });
 
