@@ -1,19 +1,52 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { getNewBlocks } from './blocksupdater'
 import { FaDiceD20 } from 'react-icons/fa';
 import { useNavigate } from "react-router-dom";
+import io from 'socket.io-client';
+
+// io.set('transports', ['websocket']);
+const socket = io("ws://127.0.0.1:8000", {
+    path: '/ws/socket.io'
+});
+
 
 const BlockOverview = () => {
 
-    const [blocks, setBlocks] = useState([])
+    const [blocks, setBlocks] = useState([]);
+    const blocksRef = useRef(blocks);
+    blocksRef.current = blocks;
+    const [isConnected, setIsConnected] = useState(false);
     const navigate = useNavigate();
 
     useEffect(() => {
-        const intervalId = setInterval((x) => {
-            var readBlocks = getNewBlocks(setBlocks, 20)
-        }, 10000)
+        socket.on('connect', () => {
+            setIsConnected(true);
+            
+          });
+      
+          socket.on('disconnect', () => {
+            
+            setIsConnected(false);
+          });
 
-        return () => clearInterval(intervalId);
+          socket.on('last-blocks', (e) => {
+            setBlocks(e)
+            socket.emit("join-room", "blocks")
+          })
+
+          socket.emit('last-blocks', "")
+      
+          socket.on('new-block', (d) => {
+            setBlocks([...blocksRef.current, d].slice(-20))
+          });
+      
+          return () => {
+            socket.off('connect');
+            socket.off('disconnect');
+            socket.off('new-block');
+          };
+
+          
 
     }, [])
 
@@ -23,7 +56,7 @@ const BlockOverview = () => {
 
 
     return <div className="block-overview">
-        <h4 className="block-overview-header text-center"><FaDiceD20 className="rotate" size="1.7rem"/> LATEST BLOCKS</h4>
+        <h4 className="block-overview-header text-center"><FaDiceD20 className={isConnected ? "rotate" : ""} size="1.7rem"/> LATEST BLOCKS</h4>
         <div className="block-overview-content">
             <table className="styled-table">
                 <thead>
@@ -34,10 +67,10 @@ const BlockOverview = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {blocks.map((x) => <tr id={x.hash} key={x.hash} onClick={onClickRow}>
-                        <td>{x.blueScore}</td>
-                        <td>{x.txIds.length}</td>
-                        <td>{x.hash.substr(0, 10)}...{x.hash.substr(54, 10)}</td>
+                    {[...blocks].sort((a,b) => b.verboseData.blueScore - a.verboseData.blueScore).slice(0,20).map((x) => <tr id={x.verboseData.hash} key={x.verboseData.hash} onClick={onClickRow}>
+                        <td>{x.verboseData.blueScore}</td>
+                        <td>{x.transactions.length}</td>
+                        <td>{x.verboseData.hash.substr(0, 10)}...{x.verboseData.hash.substr(54, 10)}</td>
                     </tr>)}
                 </tbody>
             </table>
