@@ -2,23 +2,83 @@ import { Card, Container, Row, Col } from "react-bootstrap"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCoins, faDiagramProject } from '@fortawesome/free-solid-svg-icons'
 import { useEffect, useState } from "react";
+import { io } from "socket.io-client";
 
+const socket = io("ws://127.0.0.1:8000", {
+    path: '/ws/socket.io'
+});
 
 
 const BlockDAGBox = () => {
     const [data, setData] = useState({});
+    const [isConnected, setIsConnected] = useState(false);
 
-    async function updateData() {
-        await fetch('https://kaspa.herokuapp.com/info/blockdag')
-            .then((response) => response.json())
-            .then(d => setData(d))
-            .catch(err => console.log("Error", err))
-        setTimeout(updateData, 10000)
-    }
+    const [blockCount, setBlockCount] = useState("");
+    const [headerCount, setHeaderCount] = useState("");
+    const [virtualDaaScore, setVirtualDaaScore] = useState("");
+
     useEffect(() => {
+        socket.on('connect', () => {
+            setIsConnected(true);
+        });
 
-        updateData()
+        socket.on('disconnect', () => {
+            setIsConnected(false);
+        });
+
+        socket.on('blockdag', (data) => {
+            setData(data)
+            setBlockCount(data.blockCount)
+            setHeaderCount(data.headerCount)
+            setVirtualDaaScore(data.virtualDaaScore)
+        })
+
+        // join room to get updates
+        socket.emit("join-room", "blockdag")
+
+
+        return () => {
+            socket.off('connect');
+            socket.off('disconnect');
+            socket.off('coinsupply');
+        };
     }, [])
+
+    useEffect((e) => {
+        document.getElementById('blockCount').animate([
+            // keyframes
+            { opacity: '1' },
+            { opacity: '0.6' },
+            { opacity: '1' },
+          ], {
+            // timing options
+            duration: 300
+          });
+    }, [blockCount])
+
+    useEffect((e) => {
+        document.getElementById('headerCount').animate([
+            // keyframes
+            { opacity: '1' },
+            { opacity: '0.6' },
+            { opacity: '1' },
+          ], {
+            // timing options
+            duration: 300
+          });
+    }, [headerCount])
+
+    useEffect((e) => {
+        document.getElementById('virtualDaaScore').animate([
+            // keyframes
+            { opacity: '1' },
+            { opacity: '0.6' },
+            { opacity: '1' },
+          ], {
+            // timing options
+            duration: 300
+          });
+    }, [virtualDaaScore])
 
 
     return <>
@@ -47,24 +107,24 @@ const BlockDAGBox = () => {
                     <td className="cardBoxElement">
                         Block count
                     </td>
-                    <td>
-                        {data.blockCount}
+                    <td id="blockCount">
+                        {blockCount}
                     </td>
                 </tr>
                 <tr>
                     <td className="cardBoxElement">
                         Header count
                     </td>
-                    <td>
-                        {data.headerCount}
+                    <td id="headerCount">
+                        {headerCount}
                     </td>
                 </tr>
                 <tr>
                     <td className="cardBoxElement">
                         Virtual DAA Score
                     </td>
-                    <td>
-                        {data.virtualDaaScore}
+                    <td id="virtualDaaScore">
+                        {virtualDaaScore}
                     </td>
                 </tr>
             </table>
@@ -73,4 +133,4 @@ const BlockDAGBox = () => {
 }
 
 
-export default BlockDAGBox
+export default BlockDAGBox;

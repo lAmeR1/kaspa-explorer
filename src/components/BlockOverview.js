@@ -5,18 +5,20 @@ import { useNavigate } from "react-router-dom";
 import io from 'socket.io-client';
 
 // io.set('transports', ['websocket']);
+
 const socket = io("ws://127.0.0.1:8000", {
     path: '/ws/socket.io'
 });
-
 
 const BlockOverview = () => {
 
     const [blocks, setBlocks] = useState([]);
     const blocksRef = useRef(blocks);
     blocksRef.current = blocks;
-    const [isConnected, setIsConnected] = useState(false);
+    const [isConnected, setIsConnected] = useState(socket.connected);
     const navigate = useNavigate();
+
+
 
     useEffect(() => {
         socket.on('connect', () => {

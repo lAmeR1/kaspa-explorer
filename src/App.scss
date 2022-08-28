@@ -250,7 +250,7 @@ body {
   justify-content: center;
   align-items: center;
   color: $color1;
-  background-color: rgba($color3, 0.7);
+  background-color: rgba($color3, 0.6);
   padding: 1rem;
   border-radius: 0.4rem;
 }
@@ -301,11 +301,11 @@ body {
 
 @keyframes anim {
   0% {
-    transform: scaleY(0);
+    background-color: rgba($color3, 0.6);
   }
 
   100% {
-    transform: scaleY(1);
+    background-color: rgba($color3, 0);
   }
 }
 
@@ -400,6 +400,14 @@ body {
   text-transform: none;
   font-size: medium;
 }
+
+.cardBoxElementValue {
+  animation: anim;
+  animation-duration: 1s;
+}
+
+
+
 
 .blockDagVis {
   display: flex;

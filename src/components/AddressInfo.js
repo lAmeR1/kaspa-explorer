@@ -106,29 +106,6 @@ const AddressInfo = () => {
                         </Col>
                     </Row>
             )}
-
-                    
-                    {/* <Table className="utxo-table">
-                        <thead>
-                            <tr>
-                                <th>Block DAA Score</th>
-                                <th>amount</th>
-                                <th>value</th>
-                                <th>index</th>
-                                <th>transaction id</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {utxos.sort((a,b) => a.utxoEntry.blockDaaScore - b.utxoEntry.blockDaaScore)
-                            .map((x) => <tr>
-                                <td>{x.utxoEntry.blockDaaScore}</td>
-                                <td>{x.utxoEntry.amount/100000000} KAS</td>
-                                <td></td>
-                                <td>{x.outpoint.index}</td>
-                                <td>{x.outpoint.transactionId}</td>
-                            </tr>)}
-                        </tbody>
-                    </Table> */}
                     
         </Container>
         

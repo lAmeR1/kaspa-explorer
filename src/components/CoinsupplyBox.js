@@ -42,6 +42,19 @@ const CBox = () => {
     }, [])
 
 
+    useEffect(() => {
+        document.getElementById('coins').animate([
+            // keyframes
+            { opacity: '1' },
+            { opacity: '0.6' },
+            { opacity: '1' },
+          ], {
+            // timing options
+            duration: 300
+          });
+    }, [circCoins])
+
+
     return <>
         <div className="cardBox">
             <table>
@@ -59,7 +72,9 @@ const CBox = () => {
                 <tr>
                     <td className="cardBoxElement">
                         Circulating</td>
-                    <td>{numberWithCommas(circCoins)} KAS
+                    <td className="cardBoxElementValue">
+                        <div id="coins" className="cardBoxElementValue">{numberWithCommas(circCoins)} KAS
+                        </div>
                     </td>
                 </tr>
                 <tr>

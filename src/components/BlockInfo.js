@@ -15,11 +15,9 @@ const BlockInfo = () => {
         getBlock(id).then(
             (res) => {
                 setBlockInfo(res)
-                console.log(res)
             }
         )
             .catch(() => {
-                console.log("hier");
                 setError(true);
                 setBlockInfo(null);
             }
@@ -93,14 +91,52 @@ const BlockInfo = () => {
                                     <Col className="blockinfo-key" lg={2}>Pruning Point</Col>
                                     <Col className="blockinfo-value" lg={10}><Link className="blockinfo-link" to={`/blocks/${blockInfo.header.pruningPoint}`}>{blockInfo.header.pruningPoint}</Link></Col>
                                 </Row>
-                                <Row className="blockinfo-row">
-                                    <Col className="blockinfo-key" lg={2}>TX-IDs/Col</Col>
-                                    <Col className="blockinfo-value" lg={10}>
-                                        <ul>
-                                            {(blockInfo.transactions || []).map(x => <li>{x.verboseData.transactionId}</li>)}
-                                        </ul>
+                            </Container>
+                            <Container className="webpage utxo-box" fluid>
+                                <Row>
+                                    <Col xs={12}>
+                                        <div className="utxo-title">Transactions</div>
                                     </Col>
                                 </Row>
+                                {
+                                    (blockInfo.transactions || []).map(x => <>
+                                        {x.outputs.map((output, index) =>
+                                            <Row className="utxo-border pb-5 mb-5">
+                                                <Col sm={12} md={2}>
+                                                    <div className="utxo-header mt-3">index</div>
+                                                    <div className="utxo-value">{index}</div>
+                                                </Col>
+                                                <Col sm={12} md={10}>
+                                                    <div className="utxo-header mt-3">transaction id</div>
+                                                    <div className="utxo-value">{x.verboseData.transactionId}</div>
+                                                </Col>
+                                                <Col sm={12} md={12}>
+                                                    <div className="utxo-header mt-3">To</div>
+                                                    <div className="utxo-value">
+                                                        <Link to={`/addresses/${output.verboseData.scriptPublicKeyAddress}`} className="blockinfo-link">
+                                                        {output.verboseData.scriptPublicKeyAddress}
+                                                        </Link>
+                                                        </div>
+                                                </Col>
+                                                <Col sm={5} md={2}>
+                                                    <div className="utxo-header mt-3">amount</div>
+                                                    <div className="utxo-value ">{output.amount / 100000000} KAS</div>
+                                                </Col>
+                                                <Col sm={4} md={2}>
+                                                    <div className="utxo-header mt-3">value</div>
+                                                    <div className="utxo-value">{(output.amount / 100000000 * 0.0025).toFixed(2)} $</div>
+                                                </Col>
+
+                                                <Col sm={3} md={2}>
+                                                    <div className="utxo-header mt-3">details</div>
+                                                    <div className="utxo-value-detail">Sent</div>
+                                                </Col>
+                                            </Row>
+
+                                        )}
+                                    </>)
+                                }
+
                             </Container>
                         </div> : <>{!error ? <>Loading Blockinfo <Spinner animation="border" role="status" /></> : <></>}</>}
                 </Col>
