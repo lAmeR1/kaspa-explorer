@@ -8,8 +8,11 @@ const port = process.env.PORT || '8080';
 app.set('port', port);
 const server = http.createServer(app);
 
-app.get('/*', (req, res, next) => {
-    // Return React App index.html
-  });
-
+app.get("/*", (req, res) => {
+    res.sendFile(path.join(__dirname, "build", "index.html"), err => {
+        if (err) {
+            console.log(err);
+        }
+    });
+});
 server.listen(port, () => console.log(`Running on localhost:${port}`));
