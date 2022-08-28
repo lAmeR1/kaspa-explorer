@@ -6,51 +6,51 @@ import io from 'socket.io-client';
 
 // io.set('transports', ['websocket']);
 
-const socket = io("ws://127.0.0.1:8000", {
-    path: '/ws/socket.io'
-});
+// const socket = io("ws://kaspa.herokuapp.com", {
+//     path: '/ws/socket.io'
+// });
 
 const BlockOverview = () => {
 
     const [blocks, setBlocks] = useState([]);
     const blocksRef = useRef(blocks);
     blocksRef.current = blocks;
-    const [isConnected, setIsConnected] = useState(socket.connected);
+    const [isConnected, setIsConnected] = useState();
     const navigate = useNavigate();
 
 
 
-    useEffect(() => {
-        socket.on('connect', () => {
-            setIsConnected(true);
+    // useEffect(() => {
+    //     socket.on('connect', () => {
+    //         setIsConnected(true);
             
-          });
+    //       });
       
-          socket.on('disconnect', () => {
+    //       socket.on('disconnect', () => {
             
-            setIsConnected(false);
-          });
+    //         setIsConnected(false);
+    //       });
 
-          socket.on('last-blocks', (e) => {
-            setBlocks(e)
-            socket.emit("join-room", "blocks")
-          })
+    //       socket.on('last-blocks', (e) => {
+    //         setBlocks(e)
+    //         socket.emit("join-room", "blocks")
+    //       })
 
-          socket.emit('last-blocks', "")
+    //     //   socket.emit('last-blocks', "")
       
-          socket.on('new-block', (d) => {
-            setBlocks([...blocksRef.current, d].slice(-20))
-          });
+    //       socket.on('new-block', (d) => {
+    //         setBlocks([...blocksRef.current, d].slice(-20))
+    //       });
       
-          return () => {
-            socket.off('connect');
-            socket.off('disconnect');
-            socket.off('new-block');
-          };
+    //       return () => {
+    //         socket.off('connect');
+    //         socket.off('disconnect');
+    //         socket.off('new-block');
+    //       };
 
           
 
-    }, [])
+    // }, [])
 
     const onClickRow = (e) => {    
         navigate(`/blocks/${e.target.parentElement.id}`)

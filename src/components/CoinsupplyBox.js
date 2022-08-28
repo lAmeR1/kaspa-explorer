@@ -2,9 +2,9 @@ import { Card, Container, Row, Col } from "react-bootstrap"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCoins } from '@fortawesome/free-solid-svg-icons'
 import { useEffect, useState } from "react";
-import io from 'socket.io-client';
+import socketIOClient from 'socket.io-client';
 
-const socket = io("ws://127.0.0.1:8000", {
+const socket = socketIOClient("ws://api.kaspa.org", {
     path: '/ws/socket.io'
 });
 

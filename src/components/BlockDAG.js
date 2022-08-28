@@ -4,9 +4,9 @@ import { faCoins, faDiagramProject } from '@fortawesome/free-solid-svg-icons'
 import { useEffect, useState } from "react";
 import { io } from "socket.io-client";
 
-const socket = io("ws://127.0.0.1:8000", {
-    path: '/ws/socket.io'
-});
+// const socket = io("ws://kaspa.herokuapp.com", {
+//     path: '/ws/socket.io'
+// });
 
 
 const BlockDAGBox = () => {
@@ -17,32 +17,32 @@ const BlockDAGBox = () => {
     const [headerCount, setHeaderCount] = useState("");
     const [virtualDaaScore, setVirtualDaaScore] = useState("");
 
-    useEffect(() => {
-        socket.on('connect', () => {
-            setIsConnected(true);
-        });
+    // useEffect(() => {
+    //     socket.on('connect', () => {
+    //         setIsConnected(true);
+    //     });
 
-        socket.on('disconnect', () => {
-            setIsConnected(false);
-        });
+    //     socket.on('disconnect', () => {
+    //         setIsConnected(false);
+    //     });
 
-        socket.on('blockdag', (data) => {
-            setData(data)
-            setBlockCount(data.blockCount)
-            setHeaderCount(data.headerCount)
-            setVirtualDaaScore(data.virtualDaaScore)
-        })
+    //     socket.on('blockdag', (data) => {
+    //         setData(data)
+    //         setBlockCount(data.blockCount)
+    //         setHeaderCount(data.headerCount)
+    //         setVirtualDaaScore(data.virtualDaaScore)
+    //     })
 
-        // join room to get updates
-        socket.emit("join-room", "blockdag")
+    //     // join room to get updates
+    //     // socket.emit("join-room", "blockdag")
 
 
-        return () => {
-            socket.off('connect');
-            socket.off('disconnect');
-            socket.off('coinsupply');
-        };
-    }, [])
+    //     return () => {
+    //         socket.off('connect');
+    //         socket.off('disconnect');
+    //         socket.off('coinsupply');
+    //     };
+    // }, [])
 
     useEffect((e) => {
         document.getElementById('blockCount').animate([
