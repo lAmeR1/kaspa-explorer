@@ -4,7 +4,7 @@ import { faCoins } from '@fortawesome/free-solid-svg-icons'
 import { useEffect, useState } from "react";
 import socketIOClient from 'socket.io-client';
 
-const socket = socketIOClient("wss://kaspa.herokuapp.com:80", {
+const socket = socketIOClient("ws://kaspa.herokuapp.com/", {
     path: '/ws/socket.io'
 });
 
@@ -72,8 +72,8 @@ const CBox = () => {
                 <tr>
                     <td className="cardBoxElement">
                         Circulating</td>
-                    <td className="cardBoxElementValue">
-                        <div id="coins" className="cardBoxElementValue">{numberWithCommas(circCoins)} KAS
+                    <td>
+                        <div id="coins">{numberWithCommas(circCoins)} KAS
                         </div>
                     </td>
                 </tr>
