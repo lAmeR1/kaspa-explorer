@@ -3,6 +3,7 @@ import { useParams } from "react-router";
 import { useEffect, useState } from 'react'
 import { getBlock } from '../kaspa-api-client.js'
 import { Link } from "react-router-dom";
+import moment from "moment";
 
 const BlockInfo = () => {
     const { id } = useParams();
@@ -38,7 +39,7 @@ const BlockInfo = () => {
                             <Container className="blockinfo-table" fluid>
                                 <Row className="blockinfo-row">
                                     <Col className="blockinfo-key" lg={2}>Hash</Col>
-                                    <Col className="blockinfo-value" lg={10}>{id}</Col>
+                                    <Col className="blockinfo-value" lg={10}>{blockInfo.verboseData.hash}</Col>
                                 </Row>
                                 <Row className="blockinfo-row">
                                     <Col className="blockinfo-key" lg={2}>Blue Score</Col>
@@ -50,7 +51,7 @@ const BlockInfo = () => {
                                 </Row>
                                 <Row className="blockinfo-row">
                                     <Col className="blockinfo-key" lg={2}>Timestamp</Col>
-                                    <Col className="blockinfo-value" lg={10}>{blockInfo.header.timestamp}</Col>
+                                    <Col className="blockinfo-value" lg={10}>{moment(parseInt(blockInfo.header.timestamp)).format("YYYY-MM-DD hh:mm:ss")}</Col>
                                 </Row>
                                 <Row className="blockinfo-row">
                                     <Col className="blockinfo-key" lg={2}>Version</Col>
