@@ -9,6 +9,15 @@ export async function getBlock(hash) {
     return res
 }
 
+export async function getBlockdagInfo() {
+    const res = await fetch(`${API_BASE}info/blockdag`, {headers: {'Access-Control-Allow-Origin': '*'}})
+        .then((response) => response.json())
+        .then(data => {
+            return data
+        })
+    return res
+}
+
 export async function getAddressBalance(addr) {
     const res = await fetch(`${API_BASE}addresses/${addr}/balance`, {headers: {'Access-Control-Allow-Origin': '*'}})
         .then((response) => response.json())

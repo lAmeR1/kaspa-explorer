@@ -18,6 +18,27 @@
     padding-bottom: 1rem;
     margin-bottom: 2rem;
 }
+
+.addressinfo-title-addr {
+    font-family: 'Courier New', Courier, monospace;
+    color: $color1;
+    font-size: 1rem;
+    text-transform: none;
+    // display: flex;
+    // flex-direction: row;
+    // justify-content: start;
+    word-wrap: break-word;
+}
+
+.copy-symbol:hover {
+    color: $color2;
+    cursor: pointer;
+}
+.copy-symbol:active {
+    scale: 1.2;
+}
+
+
 .addressinfo-box {
     background-color: $color5;
     border-radius: 0.8rem;
