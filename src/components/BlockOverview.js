@@ -45,9 +45,6 @@ const BlockOverview = () => {
             socket.off('disconnect');
             socket.off('new-block');
           };
-
-          
-
     }, [])
 
     const onClickRow = (e) => {    
