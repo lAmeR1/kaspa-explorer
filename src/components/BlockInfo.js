@@ -124,7 +124,7 @@ const BlockInfo = () => {
                                                 </Col>
                                                 <Col sm={4} md={2}>
                                                     <div className="utxo-header mt-3">value</div>
-                                                    <div className="utxo-value">{(output.amount / 100000000 * 0.0025).toFixed(2)} $</div>
+                                                    <div className="utxo-value">... $</div>
                                                 </Col>
 
                                                 <Col sm={3} md={2}>
