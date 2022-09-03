@@ -16,6 +16,7 @@ const BlockDAGBox = () => {
     const [blockCount, setBlockCount] = useState("");
     const [headerCount, setHeaderCount] = useState("");
     const [virtualDaaScore, setVirtualDaaScore] = useState("");
+    const [hashrate, setHashrate] = useState("");
 
     useEffect(() => {
         socket.on('connect', () => {
@@ -31,6 +32,7 @@ const BlockDAGBox = () => {
             setBlockCount(data.blockCount)
             setHeaderCount(data.headerCount)
             setVirtualDaaScore(data.virtualDaaScore)
+            setHashrate((data.difficulty*2 / 1000000000000).toFixed(2))
         })
 
         // join room to get updates
@@ -125,6 +127,14 @@ const BlockDAGBox = () => {
                     </td>
                     <td id="virtualDaaScore">
                         {virtualDaaScore}
+                    </td>
+                </tr>
+                <tr>
+                    <td className="cardBoxElement">
+                        Hashrate
+                    </td>
+                    <td id="hashrate">
+                        {hashrate} TH/s
                     </td>
                 </tr>
             </table>
