@@ -116,7 +116,7 @@
     background-color: $color5;
     border-radius: 0.8rem;
     padding: 0rem;
-    margin-top: 2rem;
+    margin-top: 0rem;
     overflow: hidden;
 }
 
@@ -128,13 +128,13 @@
 
 .utxo-title {
     color: $color2;
-    border-bottom: 1px solid $color1;
+    // border-bottom: 1px solid $color1;
     text-align: left;
     // text-transform: uppercase;
     font-size: x-large;
     font-weight: bolder;
     padding-bottom: 1rem;
-    margin-bottom: 2rem;
+    // margin-bottom: 1rem;
 }
 
 .utxo-header {
@@ -187,4 +187,22 @@
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.pagination {
+    // border: 1px solid $color1;
+    // border-radius: .4rem;
+}
+
+.page-link {
+    background-color: $color5 !important;
+    // border: none;
+    color: $color1;
+}
+.page-link:any-link {
+    color: $color1;
+}
+
+.page-item.active .page-link {
+    border-color: $color2;
 }

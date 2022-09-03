@@ -1,21 +1,28 @@
-import { Col, Container, Row, Spinner, Table } from "react-bootstrap";
+import { Button, ButtonGroup, Col, Container, Pagination, Row, Spinner, Table } from "react-bootstrap";
 import { useParams } from "react-router";
 import { useContext, useEffect, useState } from 'react'
 import { getAddressBalance, getAddressUtxos, getBlock, getBlockdagInfo } from '../kaspa-api-client.js'
 import moment from "moment";
 import PriceContext from "./PriceContext.js";
 import CopyButton from "./CopyButton.js";
+import UtxoPagination from "./UtxoPagination.js";
+
+const AddressInfoPage = () => {
+    const { addr } = useParams();
+    return <AddressInfo key={addr} />
+}
 
 const AddressInfo = () => {
     const { addr } = useParams();
     const [addressBalance, setAddressBalance] = useState(0)
     const [utxos, setUtxos] = useState([])
     const [loadingUtxos, setLoadingUtxos] = useState(true)
+    const [active, setActive] = useState(1)
 
     const [currentEpochTime, setCurrentEpochTime] = useState(0);
     const [currentDaaScore, setCurrentDaaScore] = useState(0);
 
-    const {price} = useContext(PriceContext);
+    const { price } = useContext(PriceContext);
 
     useEffect(() => {
         getAddressBalance(addr).then(
@@ -80,7 +87,7 @@ const AddressInfo = () => {
 
                     <div>Address</div>
                     <div className="addressinfo-title-addr">{addr}
-                    <CopyButton size="2rem" text={addr} /></div>
+                        <CopyButton size="2rem" text={addr} /></div>
 
 
                 </Col>
@@ -108,13 +115,16 @@ const AddressInfo = () => {
             </Row>
         </Container>
 
-        <Container className="webpage utxo-box" fluid>
-            <Row>
-                <Col xs={12}>
-                    <div className="utxo-title">UTXOs</div>
+        <Container className="webpage addressinfo-box mt-4" fluid>
+            <Row className="border-bottom border-bottom-1">
+                <Col xs={1}>
+                    <div className="utxo-title d-flex flex-row">UTXOs</div>
                 </Col>
+                {utxos.length > 10 ? <Col xs={12} sm={11} className="d-flex flex-row justify-items-end">
+                    <UtxoPagination active={active} total={Math.ceil(utxos.length / 10)} setActive={setActive} />
+                </Col> : <></>}
             </Row>
-            {!loadingUtxos ? utxos.sort((a, b) => b.utxoEntry.blockDaaScore - a.utxoEntry.blockDaaScore).map((x) =>
+            {!loadingUtxos ? utxos.sort((a, b) => b.utxoEntry.blockDaaScore - a.utxoEntry.blockDaaScore).slice((active - 1) * 10, (active - 1) * 10 + 10).map((x) =>
                 <Row className="utxo-border pb-5 mb-5">
                     <Col sm={6} md={4}>
                         <div className="utxo-header mt-3">Block DAA Score</div>
@@ -122,7 +132,7 @@ const AddressInfo = () => {
                     </Col>
                     <Col sm={6} md={4}>
                         <div className="utxo-header mt-3">amount</div>
-                        <div className="utxo-value ">{x.utxoEntry.amount / 100000000} KAS</div>
+                        <div className="utxo-value d-flex flex-row"><div className="utxo-amount">{x.utxoEntry.amount / 100000000} KAS</div></div>
                     </Col>
                     <Col sm={6} md={4}>
                         <div className="utxo-header mt-3">value</div>
@@ -141,10 +151,10 @@ const AddressInfo = () => {
                     </Col>
                     <Col sm={6} md={4}>
                         <div className="utxo-header mt-3">details</div>
-                        <div className="utxo-value-detail">Unspent</div>
+                        <div className="utxo-value">Unspent</div>
                     </Col>
                 </Row>
-            ) :  <Spinner animation="border" variant="primary" />}
+            ) : <Spinner animation="border" variant="primary" />}
 
         </Container>
 
@@ -152,7 +162,7 @@ const AddressInfo = () => {
 
 }
 
-export default AddressInfo;
+export default AddressInfoPage;
 
 
 // Hash	f08eeaff68bc2ba4f2001cda61263549d64fca9a2293b8fabd9ebec2b9882433

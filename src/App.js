@@ -21,6 +21,7 @@ import AddressInfo from './components/AddressInfo';
 import { FaDollarSign, FaSearch } from 'react-icons/fa';
 import BlocksPage from './components/BlocksPage';
 import PriceContext from './components/PriceContext';
+import AddressInfoPage from './components/AddressInfo';
 
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -148,7 +149,7 @@ function App() {
           <Route path="/blocks" element={<BlocksPage />} />
           <Route path="/blocks/:id" element={<BlockInfo />} />
           <Route path="/blocks/:id/:txview" element={<BlockInfo />} />
-          <Route path="/addresses/:addr" element={<AddressInfo />} />
+          <Route path="/addresses/:addr" element={<AddressInfoPage />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
         {/* <div className="alpha">ALPHA VERSION</div> */}

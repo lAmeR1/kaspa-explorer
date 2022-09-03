@@ -9,6 +9,7 @@ import { FaCopy } from "react-icons/fa";
 import CopyButton from "./CopyButton.js";
 import { NavLink } from "react-router-dom";
 import { LinkContainer } from "react-router-bootstrap";
+import { BiNetworkChart } from "react-icons/bi";
 
 
 
@@ -42,12 +43,15 @@ const BlockInfo = () => {
 
                     {!!blockInfo ?
                         <div className="blockinfo-content">
-                            <div className="blockinfo-header"><h4 clasN>Details for block <font className="blockinfo-header-id">{id.substring(0, 20)}...</font></h4></div>
+                            <div className="blockinfo-header"><h4>block details</h4></div>
+                            {/* <font className="blockinfo-header-id">{id.substring(0, 20)}...</font> */}
                             <Container className="blockinfo-table" fluid>
                                 <Row className="blockinfo-row">
                                     <Col className="blockinfo-key" lg={2}>Hash</Col>
                                     <Col className="blockinfo-value" lg={10}>{blockInfo.verboseData.hash}
-                                        <CopyButton text={blockInfo.verboseData.hash} /></Col>
+                                        <CopyButton text={blockInfo.verboseData.hash} />
+                                        <BiNetworkChart className="ms-2 copy-symbol" size="20" onClick={() => {window.open(`https://kgi.kaspad.net/?hash=${id}`, '_blank');}} />
+                                        </Col>
                                 </Row>
                                 <Row className="blockinfo-row">
                                     <Col className="blockinfo-key" lg={2}>Blue Score</Col>
@@ -117,9 +121,9 @@ const BlockInfo = () => {
                                 {
                                     (blockInfo.transactions || []).map((x, tx_index) => <>
                                         {x.outputs.map((output, index) =>
-                                            <Row className="utxo-border pb-3 mb-3">
+                                            <Row className="utxo-border py-3">
                                                 <Col sm={12} md={12} lg={10}>
-                                                    <div className="utxo-header mt-3">transaction id</div>
+                                                    <div className="utxo-header">transaction id</div>
                                                     <div className="utxo-value">
                                                         {x.verboseData.transactionId}
                                                         <CopyButton text={x.verboseData.transactionId} />
@@ -141,7 +145,7 @@ const BlockInfo = () => {
                                                 </Col>
                                                 <Col sm={5} md={4}>
                                                     <div className="utxo-header mt-3">amount</div>
-                                                    <div className="utxo-value ">{output.amount / 100000000} KAS</div>
+                                                    <div className="utxo-value d-flex flex-row"><div className="utxo-amount">{output.amount / 100000000} KAS</div></div>
                                                 </Col>
                                                 <Col sm={4} md={2}>
                                                     <div className="utxo-header mt-3">value</div>
@@ -150,7 +154,7 @@ const BlockInfo = () => {
 
                                                 <Col sm={3} md={4}>
                                                     <div className="utxo-header mt-3">details</div>
-                                                    <div className="utxo-value flex-nowrap">{tx_index == 0 ? "COINBASE (New coins)" : <div className="utxo-value-detail">Sent</div>}</div>
+                                                    <div className="utxo-value flex-nowrap">{tx_index == 0 ? "COINBASE (New coins)" : <div>Sent</div>}</div>
                                                 </Col>
                                             </Row>
 
