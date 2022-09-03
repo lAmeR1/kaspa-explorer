@@ -11,6 +11,20 @@
 .blockinfo-header {
     border-bottom: 2px solid $color1;
     margin-bottom: 1.5rem;
+    text-align: start;
+    font-size: 2rem;
+}
+
+.blockinfo-value {
+    word-wrap: break-word;
+}
+.blockinfo-header-id {
+    color: $color2;
+    overflow: auto;
+    text-overflow: ellipsis;
+    // font-weight: 100;
+    // font-size: 1rem;
+    // word-wrap: break-word;
 }
 .blockinfo-content {
     color: $color1;
@@ -23,10 +37,19 @@
 }
 .blockinfo-table {
     text-align: left;
+    padding: 0;
   }
+
+@include media-breakpoint-up(sm) { 
+  .blockinfo-table {
+    padding: 0 1rem;
+  }
+}
   
+
+
 .blockinfo-row {
-    padding: 1rem 0rem;
+    padding: 0.5rem 0rem;
     // overflow-wrap: break-word;
     overflow: hidden;
     word-wrap: nowrap;
@@ -41,7 +64,12 @@
     .blockinfo-page  {
         padding: 5rem
     }
+
+    .blockinfo-row {
+        padding: 1rem 0rem;
+    }
  }
+
 
  #searchbox {
     width: 10rem;

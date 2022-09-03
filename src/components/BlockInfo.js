@@ -5,12 +5,13 @@ import { getBlock } from '../kaspa-api-client.js'
 import { Link } from "react-router-dom";
 import moment from "moment";
 import PriceContext from "./PriceContext.js";
+import { FaCopy } from "react-icons/fa";
 
 const BlockInfo = () => {
     const { id } = useParams();
     const [blockInfo, setBlockInfo] = useState()
     const [error, setError] = useState(false)
-    const {price} = useContext(PriceContext);
+    const { price } = useContext(PriceContext);
 
     useEffect(() => {
         setError(false);
@@ -35,11 +36,14 @@ const BlockInfo = () => {
 
                     {!!blockInfo ?
                         <div className="blockinfo-content">
-                            <div className="blockinfo-header"><h2>Details for block {id.substring(0, 8)}...{id.substring(56, 64)}</h2></div>
+                            <div className="blockinfo-header"><h4 clasN>Details for block <font className="blockinfo-header-id">{id.substring(0, 20)}...</font></h4></div>
                             <Container className="blockinfo-table" fluid>
                                 <Row className="blockinfo-row">
                                     <Col className="blockinfo-key" lg={2}>Hash</Col>
-                                    <Col className="blockinfo-value" lg={10}>{blockInfo.verboseData.hash}</Col>
+                                    <Col className="blockinfo-value" lg={10}>{blockInfo.verboseData.hash}
+                                        <FaCopy
+                                            className="ms-1 copy-symbol"
+                                            onClick={() => { navigator.clipboard.writeText(blockInfo.verboseData.hash) }} /></Col>
                                 </Row>
                                 <Row className="blockinfo-row">
                                     <Col className="blockinfo-key" lg={2}>Blue Score</Col>
@@ -97,30 +101,36 @@ const BlockInfo = () => {
                             <Container className="webpage utxo-box" fluid>
                                 <Row>
                                     <Col xs={12}>
-                                        <div className="utxo-title">Transactions</div>
+                                        <div className="utxo-title">Transactions (Outputs)</div>
                                     </Col>
                                 </Row>
                                 {
-                                    (blockInfo.transactions || []).map(x => <>
+                                    (blockInfo.transactions || []).map((x, tx_index) => <>
                                         {x.outputs.map((output, index) =>
-                                            <Row className="utxo-border pb-5 mb-5">
+                                            <Row className="utxo-border pb-3 mb-3">
+                                                <Col sm={12} md={12} lg={10}>
+                                                    <div className="utxo-header mt-3">transaction id</div>
+                                                    <div className="utxo-value">
+                                                        {x.verboseData.transactionId}
+                                                        <FaCopy
+                                                            className="ms-1 copy-symbol"
+                                                            onClick={() => { navigator.clipboard.writeText(x.verboseData.transactionId) }} />
+                                                    </div>
+                                                </Col>
                                                 <Col sm={12} md={2}>
                                                     <div className="utxo-header mt-3">index</div>
                                                     <div className="utxo-value">{index}</div>
                                                 </Col>
-                                                <Col sm={12} md={10}>
-                                                    <div className="utxo-header mt-3">transaction id</div>
-                                                    <div className="utxo-value">{x.verboseData.transactionId}</div>
-                                                </Col>
+
                                                 <Col sm={12} md={12}>
                                                     <div className="utxo-header mt-3">To</div>
                                                     <div className="utxo-value">
                                                         <Link to={`/addresses/${output.verboseData.scriptPublicKeyAddress}`} className="blockinfo-link">
-                                                        {output.verboseData.scriptPublicKeyAddress}
+                                                            {output.verboseData.scriptPublicKeyAddress}
                                                         </Link>
-                                                        </div>
+                                                    </div>
                                                 </Col>
-                                                <Col sm={5} md={2}>
+                                                <Col sm={5} md={4}>
                                                     <div className="utxo-header mt-3">amount</div>
                                                     <div className="utxo-value ">{output.amount / 100000000} KAS</div>
                                                 </Col>
@@ -129,9 +139,9 @@ const BlockInfo = () => {
                                                     <div className="utxo-value">{(output.amount / 100000000 * price).toFixed(2)} $</div>
                                                 </Col>
 
-                                                <Col sm={3} md={2}>
+                                                <Col sm={3} md={4}>
                                                     <div className="utxo-header mt-3">details</div>
-                                                    <div className="utxo-value-detail">Sent</div>
+                                                    <div className="utxo-value flex-nowrap">{tx_index == 0 ? "COINBASE (New coins)" : <div className="utxo-value-detail">Sent</div>}</div>
                                                 </Col>
                                             </Row>
 
