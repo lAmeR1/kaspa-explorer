@@ -1,4 +1,4 @@
-import { Col, Container, Row, Spinner } from "react-bootstrap";
+import { Col, Container, Nav, Row, Spinner, Tab, Tabs } from "react-bootstrap";
 import { useParams } from "react-router";
 import { useContext, useEffect, useState } from 'react'
 import { getBlock } from '../kaspa-api-client.js'
@@ -7,6 +7,8 @@ import moment from "moment";
 import PriceContext from "./PriceContext.js";
 import { FaCopy } from "react-icons/fa";
 import CopyButton from "./CopyButton.js";
+import { NavLink } from "react-router-dom";
+import { LinkContainer } from "react-router-bootstrap";
 
 
 
@@ -57,7 +59,7 @@ const BlockInfo = () => {
                                 </Row>
                                 <Row className="blockinfo-row">
                                     <Col className="blockinfo-key" lg={2}>Timestamp</Col>
-                                    <Col className="blockinfo-value" lg={10}>{moment(parseInt(blockInfo.header.timestamp)).format("YYYY-MM-DD hh:mm:ss")} ({blockInfo.header.timestamp})</Col>
+                                    <Col className="blockinfo-value" lg={10}>{moment(parseInt(blockInfo.header.timestamp)).format("YYYY-MM-DD HH:mm:ss")} ({blockInfo.header.timestamp})</Col>
                                 </Row>
                                 <Row className="blockinfo-row">
                                     <Col className="blockinfo-key" lg={2}>Version</Col>
@@ -95,17 +97,23 @@ const BlockInfo = () => {
                                     <Col className="blockinfo-key" lg={2}>Blue Work</Col>
                                     <Col className="blockinfo-value" lg={10}>{blockInfo.header.blueWork}</Col>
                                 </Row>
-                                <Row className="blockinfo-row">
+                                <Row className="blockinfo-row border-bottom-0">
                                     <Col className="blockinfo-key" lg={2}>Pruning Point</Col>
                                     <Col className="blockinfo-value" lg={10}><Link className="blockinfo-link" to={`/blocks/${blockInfo.header.pruningPoint}`}>{blockInfo.header.pruningPoint}</Link></Col>
                                 </Row>
                             </Container>
+                        </div> : <></>}
+                </Col>
+            </Row>
+
+
+
+            <Row>
+                <Col>
+                    {(!!blockInfo) ?
+                        <div className="blockinfo-content mt-4 mb-5">
+                            <div className="blockinfo-header"><h4>Transactions</h4></div>
                             <Container className="webpage utxo-box" fluid>
-                                <Row>
-                                    <Col xs={12}>
-                                        <div className="utxo-title">Transactions (Outputs)</div>
-                                    </Col>
-                                </Row>
                                 {
                                     (blockInfo.transactions || []).map((x, tx_index) => <>
                                         {x.outputs.map((output, index) =>
@@ -114,9 +122,7 @@ const BlockInfo = () => {
                                                     <div className="utxo-header mt-3">transaction id</div>
                                                     <div className="utxo-value">
                                                         {x.verboseData.transactionId}
-                                                        <FaCopy
-                                                            className="ms-1 copy-symbol"
-                                                            onClick={() => { navigator.clipboard.writeText(x.verboseData.transactionId) }} />
+                                                        <CopyButton text={x.verboseData.transactionId} />
                                                     </div>
                                                 </Col>
                                                 <Col sm={12} md={2}>
@@ -130,6 +136,7 @@ const BlockInfo = () => {
                                                         <Link to={`/addresses/${output.verboseData.scriptPublicKeyAddress}`} className="blockinfo-link">
                                                             {output.verboseData.scriptPublicKeyAddress}
                                                         </Link>
+                                                        <CopyButton text={output.verboseData.scriptPublicKeyAddress} />
                                                     </div>
                                                 </Col>
                                                 <Col sm={5} md={4}>
@@ -152,10 +159,23 @@ const BlockInfo = () => {
                                 }
 
                             </Container>
-                        </div> : <>{!error ? <>Loading Blockinfo <Spinner animation="border" role="status" /></> : <></>}</>}
+                        </div> : <></>}
                 </Col>
             </Row>
-        </Container></div>
+
+        </Container>
+    </div>
+
+    //     <Container className="webpage" fluid>
+    //         <Row>
+    //             <Col>
+
+    //             </div> : <>{!error ? <>Loading Blockinfo <Spinner animation="border" role="status" /></> : <></>}</>}
+    //         </Col>
+    //     </Row>
+    // </Container>
+
+
 
 }
 

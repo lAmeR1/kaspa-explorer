@@ -33,8 +33,14 @@
 }
 
 @keyframes spinIcon {
-    from {transform: rotate(0);}
+    from {
+        transform: rotate(0);}
     to {transform: rotate(360deg);}
+  }
+
+  .copy-symbol-div {
+    // font-size: 1rem;
+    transform: translateY(-.1rem);
   }
 
 .copy-symbol:hover {
@@ -50,6 +56,7 @@
 }
 
 .copy-symbol-success {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     color: rgb(31, 221, 31);
     cursor: default;
     // transform: rotate(0.8turn);
@@ -82,7 +89,12 @@
     }
 }
 
+.fa {
+    transform: translateY(-10%);
+}
+
 .addressinfo-value {
+    display: block;
     color: $color1;
     text-align: left;
     font-family: 'Courier New', Courier, monospace;

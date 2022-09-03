@@ -2,9 +2,9 @@ import { Col, Container, Row, Spinner, Table } from "react-bootstrap";
 import { useParams } from "react-router";
 import { useContext, useEffect, useState } from 'react'
 import { getAddressBalance, getAddressUtxos, getBlock, getBlockdagInfo } from '../kaspa-api-client.js'
-import { FaCopy } from "react-icons/fa";
 import moment from "moment";
 import PriceContext from "./PriceContext.js";
+import CopyButton from "./CopyButton.js";
 
 const AddressInfo = () => {
     const { addr } = useParams();
@@ -80,9 +80,7 @@ const AddressInfo = () => {
 
                     <div>Address</div>
                     <div className="addressinfo-title-addr">{addr}
-                        <FaCopy
-                            className="ms-1 copy-symbol"
-                            onClick={() => { navigator.clipboard.writeText(addr) }} show/></div>
+                    <CopyButton size="2rem" text={addr} /></div>
 
 
                 </Col>
@@ -136,7 +134,10 @@ const AddressInfo = () => {
                     </Col>
                     <Col sm={6} md={4}>
                         <div className="utxo-header mt-3">transaction id</div>
-                        <div className="utxo-value">{x.outpoint.transactionId}</div>
+                        <div className="utxo-value">
+                            {x.outpoint.transactionId}
+                            <CopyButton text={x.outpoint.transactionId} />
+                        </div>
                     </Col>
                     <Col sm={6} md={4}>
                         <div className="utxo-header mt-3">details</div>

@@ -16,7 +16,10 @@
 }
 
 .blockinfo-value {
+    display: inline;
     word-wrap: break-word;
+    // background-color: red !important;
+    
 }
 .blockinfo-header-id {
     color: $color2;
@@ -82,10 +85,22 @@
 
  .blockinfo-link {
     color: $color1;
-    text-decoration: none
+    text-decoration: none;
  }
-
  .blockinfo-link:hover {
     color: $color2;
-    text-decoration: none
+    text-decoration: none;
+ }
+
+
+ .transactions-link {
+    color: $color1;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 1.4rem;
+    border: 1px solid red;
+ }
+
+ .transactions-link:hover {
+    color: $color2;
  }

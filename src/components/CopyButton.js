@@ -1,6 +1,7 @@
 import { faRotate } from "@fortawesome/free-solid-svg-icons"
 import { useState } from "react"
-import { FaClipboard, FaClipboardCheck } from "react-icons/fa"
+import { FaCheck, FaCopy, FaClipboard, FaClipboardCheck } from "react-icons/fa"
+import { BiCopy, BiCheckCircle } from "react-icons/bi"
 
 export default (props) => {
 
@@ -24,5 +25,5 @@ export default (props) => {
         }, 1000)
     }
 
-    return <>{justCopied ? <FaClipboardCheck key={props.text} className="ms-1 copy-symbol-success" /> : <FaClipboard className="ms-1 copy-symbol" onClick={handleOnClick} />}</>
+    return <>{justCopied ? <><FaCheck className="mx-1 copy-symbol-success" /><font className="copy-symbol-success">copied</font></> : <BiCopy className="fa ms-1 copy-symbol" onClick={handleOnClick} />}</>
 }
