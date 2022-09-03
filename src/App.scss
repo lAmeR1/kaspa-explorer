@@ -41,7 +41,12 @@ body {
 #navbar-container {
   max-width: 1300px;
 }
-
+.navbar-price {
+  color: $color1;
+  font-weight: bold;
+  font-size: 1.2rem;
+  padding: 0rem 2rem;
+}
 .navbar-title {
   opacity: 1;
   transition: opacity 0.5s ease-out;

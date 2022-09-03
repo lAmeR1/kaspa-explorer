@@ -1,9 +1,10 @@
 import { Col, Container, Row, Spinner, Table } from "react-bootstrap";
 import { useParams } from "react-router";
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { getAddressBalance, getAddressUtxos, getBlock, getBlockdagInfo } from '../kaspa-api-client.js'
 import { FaCopy } from "react-icons/fa";
 import moment from "moment";
+import PriceContext from "./PriceContext.js";
 
 const AddressInfo = () => {
     const { addr } = useParams();
@@ -13,6 +14,8 @@ const AddressInfo = () => {
 
     const [currentEpochTime, setCurrentEpochTime] = useState(0);
     const [currentDaaScore, setCurrentDaaScore] = useState(0);
+
+    const {price} = useContext(PriceContext);
 
     useEffect(() => {
         getAddressBalance(addr).then(
@@ -98,7 +101,7 @@ const AddressInfo = () => {
             <Row>
                 <Col sm={6} md={4}>
                     <div className="addressinfo-header addressinfo-header-border mt-4 mt-sm-4 pt-sm-4 me-sm-5">value</div>
-                    <div className="addressinfo-value">{(addressBalance / 100000000 * 0.003500).toFixed(2)} USD</div>
+                    <div className="addressinfo-value">{(addressBalance / 100000000 * price).toFixed(2)} USD</div>
                 </Col>
                 <Col sm={6} md={4}>
                     <div className="addressinfo-header addressinfo-header-border mt-4 mt-sm-4 pt-sm-4 ms-sm-5">Transactions count</div>
@@ -125,7 +128,7 @@ const AddressInfo = () => {
                     </Col>
                     <Col sm={6} md={4}>
                         <div className="utxo-header mt-3">value</div>
-                        <div className="utxo-value">... $</div>
+                        <div className="utxo-value">{(x.utxoEntry.amount / 100000000 * price).toFixed(2)} $</div>
                     </Col>
                     <Col sm={6} md={4}>
                         <div className="utxo-header mt-3">index</div>
