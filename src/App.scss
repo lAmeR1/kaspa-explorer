@@ -1,6 +1,7 @@
 @use "sass:color";
 @import url(https://fonts.googleapis.com/css?family=Righteous);
 @import url(https://fonts.googleapis.com/css?family=Anton);
+@import url(https://fonts.googleapis.com/css?family=Ubuntu);
 
 
 $color1: #F6F5F4;
@@ -42,8 +43,8 @@ body {
   max-width: 1300px;
 }
 .navbar-price {
+  font-family: Ubuntu, sans-serif;
   color: $color1;
-  font-weight: bold;
   font-size: 1.2rem;
   padding: 0rem 2rem;
 }
@@ -283,7 +284,7 @@ body {
 }
 
 .block-overview-header {
-  padding-bottom: 4rem;
+  padding-bottom: 1rem;
   color: $color1;
   text-transform: uppercase;
 }
