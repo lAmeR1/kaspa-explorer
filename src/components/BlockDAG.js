@@ -82,6 +82,18 @@ const BlockDAGBox = () => {
           });
     }, [virtualDaaScore])
 
+    useEffect((e) => {
+        document.getElementById('hashrate').animate([
+            // keyframes
+            { opacity: '1' },
+            { opacity: '0.6' },
+            { opacity: '1' },
+          ], {
+            // timing options
+            duration: 300
+          });
+    }, [hashrate])
+
 
     return <>
         <div className="cardBox mx-0 mx-sm-5">
