@@ -1,14 +1,16 @@
 import { Col, Container, Row, Spinner } from "react-bootstrap";
 import { useParams } from "react-router";
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { getBlock } from '../kaspa-api-client.js'
 import { Link } from "react-router-dom";
 import moment from "moment";
+import PriceContext from "./PriceContext.js";
 
 const BlockInfo = () => {
     const { id } = useParams();
     const [blockInfo, setBlockInfo] = useState()
     const [error, setError] = useState(false)
+    const {price} = useContext(PriceContext);
 
     useEffect(() => {
         setError(false);
@@ -124,7 +126,7 @@ const BlockInfo = () => {
                                                 </Col>
                                                 <Col sm={4} md={2}>
                                                     <div className="utxo-header mt-3">value</div>
-                                                    <div className="utxo-value">... $</div>
+                                                    <div className="utxo-value">{(output.amount / 100000000 * price).toFixed(2)} $</div>
                                                 </Col>
 
                                                 <Col sm={3} md={2}>

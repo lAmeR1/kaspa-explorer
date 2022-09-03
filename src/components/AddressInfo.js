@@ -1,17 +1,21 @@
 import { Col, Container, Row, Spinner, Table } from "react-bootstrap";
 import { useParams } from "react-router";
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { getAddressBalance, getAddressUtxos, getBlock, getBlockdagInfo } from '../kaspa-api-client.js'
 import { FaCopy } from "react-icons/fa";
 import moment from "moment";
+import PriceContext from "./PriceContext.js";
 
 const AddressInfo = () => {
     const { addr } = useParams();
     const [addressBalance, setAddressBalance] = useState(0)
     const [utxos, setUtxos] = useState([])
+    const [loadingUtxos, setLoadingUtxos] = useState(true)
 
     const [currentEpochTime, setCurrentEpochTime] = useState(0);
     const [currentDaaScore, setCurrentDaaScore] = useState(0);
+
+    const {price} = useContext(PriceContext);
 
     useEffect(() => {
         getAddressBalance(addr).then(
@@ -34,9 +38,11 @@ const AddressInfo = () => {
     }, [])
 
     useEffect(() => {
+        setLoadingUtxos(true);
         getAddressUtxos(addr).then(
             (res) => {
-                setUtxos(res)
+                setLoadingUtxos(false);
+                setUtxos(res);
             }
         )
     }, [addressBalance])
@@ -64,7 +70,7 @@ const AddressInfo = () => {
         <Container className="webpage addressinfo-box" fluid>
             <Row>
                 <Col xs={12}>
-                    <div className="addressinfo-title d-flex flex-row align-items-end">Overview
+                    <div className="addressinfo-title d-flex flex-row align-items-end">address Overview
                     </div>
 
                 </Col>
@@ -89,17 +95,17 @@ const AddressInfo = () => {
                 </Col>
                 <Col sm={6} md={4}>
                     <div className="addressinfo-header mt-4 ms-sm-5">UTXOs count</div>
-                    <div className="addressinfo-value ms-sm-5">{utxos.length}</div>
+                    <div className="addressinfo-value ms-sm-5">{!loadingUtxos ? utxos.length : <Spinner animation="border" variant="primary" />}</div>
                 </Col>
             </Row>
             <Row>
                 <Col sm={6} md={4}>
                     <div className="addressinfo-header addressinfo-header-border mt-4 mt-sm-4 pt-sm-4 me-sm-5">value</div>
-                    <div className="addressinfo-value">... USD</div>
+                    <div className="addressinfo-value">{(addressBalance / 100000000 * price).toFixed(2)} USD</div>
                 </Col>
                 <Col sm={6} md={4}>
                     <div className="addressinfo-header addressinfo-header-border mt-4 mt-sm-4 pt-sm-4 ms-sm-5">Transactions count</div>
-                    <div className="addressinfo-value ms-sm-5">{utxos.length}</div>
+                    <div className="addressinfo-value ms-sm-5">{!loadingUtxos ? utxos.length : <Spinner animation="border" variant="primary" />}</div>
                 </Col>
             </Row>
         </Container>
@@ -110,7 +116,7 @@ const AddressInfo = () => {
                     <div className="utxo-title">UTXOs</div>
                 </Col>
             </Row>
-            {utxos.sort((a, b) => b.utxoEntry.blockDaaScore - a.utxoEntry.blockDaaScore).map((x) =>
+            {!loadingUtxos ? utxos.sort((a, b) => b.utxoEntry.blockDaaScore - a.utxoEntry.blockDaaScore).map((x) =>
                 <Row className="utxo-border pb-5 mb-5">
                     <Col sm={6} md={4}>
                         <div className="utxo-header mt-3">Block DAA Score</div>
@@ -122,7 +128,7 @@ const AddressInfo = () => {
                     </Col>
                     <Col sm={6} md={4}>
                         <div className="utxo-header mt-3">value</div>
-                        <div className="utxo-value">... $</div>
+                        <div className="utxo-value">{(x.utxoEntry.amount / 100000000 * price).toFixed(2)} $</div>
                     </Col>
                     <Col sm={6} md={4}>
                         <div className="utxo-header mt-3">index</div>
@@ -137,7 +143,7 @@ const AddressInfo = () => {
                         <div className="utxo-value-detail">Unspent</div>
                     </Col>
                 </Row>
-            )}
+            ) :  <Spinner animation="border" variant="primary" />}
 
         </Container>
 
