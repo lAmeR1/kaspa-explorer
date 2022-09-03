@@ -95,7 +95,7 @@ const AddressInfo = () => {
             <Row>
                 <Col sm={6} md={4}>
                     <div className="addressinfo-header addressinfo-header-border mt-4 mt-sm-4 pt-sm-4 me-sm-5">value</div>
-                    <div className="addressinfo-value">{(addressBalance / 100000000 * 0.003500).toFixed(2)} USD</div>
+                    <div className="addressinfo-value">... USD</div>
                 </Col>
                 <Col sm={6} md={4}>
                     <div className="addressinfo-header addressinfo-header-border mt-4 mt-sm-4 pt-sm-4 ms-sm-5">Transactions count</div>
