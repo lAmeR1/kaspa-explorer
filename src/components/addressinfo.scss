@@ -32,13 +32,31 @@
     font-weight: normal;
 }
 
+@keyframes spinIcon {
+    from {transform: rotate(0);}
+    to {transform: rotate(360deg);}
+  }
+
 .copy-symbol:hover {
     color: $color2;
     cursor: pointer;
 }
+.copy-symbol:hover {
+    animation: fadeIn 1s linear 0 5;
+}
 
 .copy-symbol:active {
     scale: 1.2;
+}
+
+.copy-symbol-success {
+    color: rgb(31, 221, 31);
+    cursor: default;
+    // transform: rotate(0.8turn);
+    // transition: transform 2s linear .2s; 
+    animation-name: spinIcon;
+    animation-duration: 0.3s;
+    // animation-iteration-count: infinite;
 }
 
 

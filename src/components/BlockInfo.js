@@ -6,6 +6,10 @@ import { Link } from "react-router-dom";
 import moment from "moment";
 import PriceContext from "./PriceContext.js";
 import { FaCopy } from "react-icons/fa";
+import CopyButton from "./CopyButton.js";
+
+
+
 
 const BlockInfo = () => {
     const { id } = useParams();
@@ -41,9 +45,7 @@ const BlockInfo = () => {
                                 <Row className="blockinfo-row">
                                     <Col className="blockinfo-key" lg={2}>Hash</Col>
                                     <Col className="blockinfo-value" lg={10}>{blockInfo.verboseData.hash}
-                                        <FaCopy
-                                            className="ms-1 copy-symbol"
-                                            onClick={() => { navigator.clipboard.writeText(blockInfo.verboseData.hash) }} /></Col>
+                                        <CopyButton text={blockInfo.verboseData.hash} /></Col>
                                 </Row>
                                 <Row className="blockinfo-row">
                                     <Col className="blockinfo-key" lg={2}>Blue Score</Col>

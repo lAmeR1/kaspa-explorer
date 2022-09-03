@@ -82,7 +82,7 @@ const AddressInfo = () => {
                     <div className="addressinfo-title-addr">{addr}
                         <FaCopy
                             className="ms-1 copy-symbol"
-                            onClick={() => { navigator.clipboard.writeText(addr) }} /></div>
+                            onClick={() => { navigator.clipboard.writeText(addr) }} show/></div>
 
 
                 </Col>
