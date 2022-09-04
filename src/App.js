@@ -24,6 +24,7 @@ import PriceContext from './components/PriceContext';
 import AddressInfoPage from './components/AddressInfo';
 import io from 'socket.io-client';
 import LastBlocksContext from './components/LastBlocksContext';
+import TxPage from './components/TxPage';
 
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -127,7 +128,7 @@ function App() {
     socket.emit('last-blocks', "")
 
     socket.on('new-block', (d) => {
-      setBlocks([...blocksRef.current, d].slice(-20))
+      setBlocks([...blocksRef.current, d].slice(-50))
     });
 
     return () => {
@@ -197,6 +198,7 @@ function App() {
             <Route path="/blocks/:id" element={<BlockInfo />} />
             <Route path="/blocks/:id/:txview" element={<BlockInfo />} />
             <Route path="/addresses/:addr" element={<AddressInfoPage />} />
+            <Route path="/txs" element={<TxPage />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
           {/* <div className="alpha">ALPHA VERSION</div> */}

@@ -316,8 +316,10 @@ body {
 }
 
 .styled-table {
+  table-layout: fixed;
   width: 100%;
   color: $color5;
+  
 }
 
 @keyframes anim {
@@ -453,10 +455,16 @@ body {
 }
 
 .blocks-page-overview {
-  width: 40rem;
   margin-top: 4rem;
 }
 
+.hashh {
+  white-space: nowrap; 
+  text-overflow:ellipsis; 
+  overflow: hidden; 
+  // max-width:1px;
+  max-width:1px;
+}
 
 .kasBlockHeader {
   font-weight: bold;

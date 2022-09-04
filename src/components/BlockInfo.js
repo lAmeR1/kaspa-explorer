@@ -138,7 +138,7 @@ const BlockInfo = () => {
                                                     <div className="utxo-header mt-3">FROM</div>
                                                     <Container className="utxo-value">
                                                         {(tx.inputs || []).map((txInput) => <Row>
-                                                            <Col xs={12} sm={8} md={9} lg={7}  xl={5} className="text-truncate">
+                                                            <Col xs={12} sm={8} md={9} lg={9}  xl={8} xxl={7} className="text-truncate">
                                                                 TX {txInput.previousOutpoint.transactionId}
                                                             </Col><Col className="me-auto" xs={12} sm={4} md={2}></Col>
                                                         </Row>)}

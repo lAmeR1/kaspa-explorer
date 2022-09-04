@@ -12,7 +12,7 @@ const socket = io("wss://api.kaspa.org", {
     path: '/ws/socket.io'
 });
 
-const TxOverview = () => {
+const TxOverview = (props) => {
 
     const [tempBlocks, setTempBlocks] = useState([]);
     const [keepUpdating, setKeepUpdating] = useState(true);
@@ -43,15 +43,15 @@ const TxOverview = () => {
             <table className="styled-table">
                 <thead>
                     <tr>
-                        <th>Id</th>
-                        <th>Amount</th>
-                        <th>Recipient</th>
+                        <th width="130rem">Id</th>
+                        <th width="150rem">Amount</th>
+                        <th width="100%">Recipient</th>
                     </tr>
                 </thead>
                 <tbody>
                     {[...tempBlocks]
                         .sort((a, b) => b.verboseData.blueScore - a.verboseData.blueScore)
-                        .slice(0, 20)
+                        .slice(0, props.lines)
                         .flatMap((block) => block.transactions
                             .flatMap(tx => tx.outputs.flatMap((output, outputIndex) => {
                                 return {
@@ -62,7 +62,7 @@ const TxOverview = () => {
                                 }
                             })))
                         .filter((v, i, a) => a.findIndex(v2 => (JSON.stringify(v) === JSON.stringify(v2))) === i)
-                        .slice(0, 20).map(x => {
+                        .slice(0, props.lines).map(x => {
                             return <tr
                                 id={x.address}
                                 key={x.address + x.txId + x.outputIndex}
@@ -70,7 +70,7 @@ const TxOverview = () => {
                             >
                                 <td>{x.txId.slice(0, 10)}...</td>
                                 <td>{x.amount / 100000000}&nbsp;KAS</td>
-                                <td>{x.address}</td>
+                                <td className="hashh">{x.address}</td>
                             </tr>
                         })}
 

@@ -7,7 +7,7 @@ import LastBlocksContext from "./LastBlocksContext";
 
 
 
-const BlockOverview = () => {   
+const BlockOverview = (props) => {   
     const navigate = useNavigate();
 
     const { blocks, isConnected } = useContext(LastBlocksContext);
@@ -30,23 +30,23 @@ const BlockOverview = () => {
     return <div className="block-overview">
                 <div className="d-flex flex-row w-100">
         {!keepUpdating ? <FaPlay id="play-button" className="play-button" onClick={() => setKeepUpdating(true)} /> : <FaPause id="pause-button" className="play-button" onClick={() => setKeepUpdating(false)} />}
-        <h4 className="block-overview-header text-center w-100 me-4"><FaDiceD20 className={isConnected ? "rotate" : ""} size="1.7rem"/> LATEST BLOCKS</h4>
+        <h4 className="block-overview-header text-center w-100 me-4"><FaDiceD20 className={isConnected && keepUpdating ? "rotate" : ""} size="1.7rem"/> LATEST BLOCKS</h4>
         </div>
         
         <div className="block-overview-content">
-            <table className="styled-table">
+            <table className="styled-table w-100">
                 <thead>
                     <tr>
-                        <th>BlueScore</th>
-                        <th>TXs</th>
-                        <th>Hash</th>
+                        <th width="100rem">BlueScore</th>
+                        <th width="50rem">TXs</th>
+                        <th width="100%">Hash</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {[...tempBlocks].sort((a,b) => b.verboseData.blueScore - a.verboseData.blueScore).slice(0,20).map((x) => <tr id={x.verboseData.hash} key={x.verboseData.hash} onClick={onClickRow}>
+                    {[...tempBlocks].sort((a,b) => b.verboseData.blueScore - a.verboseData.blueScore).slice(0,props.lines).map((x) => <tr id={x.verboseData.hash} key={x.verboseData.hash} onClick={onClickRow}>
                         <td>{x.verboseData.blueScore}</td>
                         <td>{x.transactions.length}</td>
-                        <td>{x.verboseData.hash}</td>
+                        <td className="hashh">{x.verboseData.hash}</td>
                     </tr>)}
                 </tbody>
             </table>
