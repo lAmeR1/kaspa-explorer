@@ -10,6 +10,7 @@ import CopyButton from "./CopyButton.js";
 import { NavLink } from "react-router-dom";
 import { LinkContainer } from "react-router-bootstrap";
 import { BiNetworkChart } from "react-icons/bi";
+import { numberWithCommas } from "../helper.js";
 
 
 
@@ -50,7 +51,7 @@ const BlockInfo = () => {
                                     <Col className="blockinfo-key" lg={2}>Hash</Col>
                                     <Col className="blockinfo-value" lg={10}>{blockInfo.verboseData.hash}
                                         <CopyButton text={blockInfo.verboseData.hash} />
-                                        <OverlayTrigger overlay={<Tooltip id="tooltip-kgi">Open in KGI</Tooltip>}>
+                                        <OverlayTrigger overlay={<Tooltip id="tooltip-kgi">Open in Kaspa Graph Inspector</Tooltip>}>
                                             <span>
                                                 <BiNetworkChart className="ms-2 copy-symbol" size="20" onClick={() => { window.open(`https://kgi.kaspad.net/?hash=${id}`, '_blank'); }} />
                                             </span>
@@ -163,7 +164,7 @@ const BlockInfo = () => {
                                             </Col>
                                             <Col sm={5} md={4}>
                                                 <div className="utxo-header mt-3">amount</div>
-                                                <div className="utxo-value d-flex flex-row"><div className="utxo-amount">{(tx.outputs.reduce((a, b) => (a || 0) + parseInt(b.amount), 0) / 100000000)} KAS</div></div>
+                                                <div className="utxo-value d-flex flex-row"><div className="utxo-amount">{(numberWithCommas(tx.outputs.reduce((a, b) => (a || 0) + parseInt(b.amount), 0) / 100000000))} KAS</div></div>
                                             </Col>
                                             <Col sm={4} md={2}>
                                                 <div className="utxo-header mt-3">value</div>
