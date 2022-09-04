@@ -1,4 +1,4 @@
-import { Col, Container, Nav, Row, Spinner, Tab, Tabs } from "react-bootstrap";
+import { Col, Container, Nav, OverlayTrigger, Row, Spinner, Tab, Tabs, Tooltip } from "react-bootstrap";
 import { useParams } from "react-router";
 import { useContext, useEffect, useState } from 'react'
 import { getBlock } from '../kaspa-api-client.js'
@@ -50,8 +50,12 @@ const BlockInfo = () => {
                                     <Col className="blockinfo-key" lg={2}>Hash</Col>
                                     <Col className="blockinfo-value" lg={10}>{blockInfo.verboseData.hash}
                                         <CopyButton text={blockInfo.verboseData.hash} />
-                                        <BiNetworkChart className="ms-2 copy-symbol" size="20" onClick={() => {window.open(`https://kgi.kaspad.net/?hash=${id}`, '_blank');}} />
-                                        </Col>
+                                        <OverlayTrigger overlay={<Tooltip id="tooltip-kgi">Open in KGI</Tooltip>}>
+                                            <span>
+                                                <BiNetworkChart className="ms-2 copy-symbol" size="20" onClick={() => { window.open(`https://kgi.kaspad.net/?hash=${id}`, '_blank'); }} />
+                                            </span>
+                                        </OverlayTrigger>
+                                    </Col>
                                 </Row>
                                 <Row className="blockinfo-row">
                                     <Col className="blockinfo-key" lg={2}>Blue Score</Col>

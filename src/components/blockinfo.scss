@@ -71,7 +71,23 @@
 
 .blockinfo-key {
     font-weight: bold;
-    text-align: right;
+    text-align: left;
+}
+
+ .tooltip-inner {
+    opacity: 1 !important;
+    background-color: $color3;
+    filter: alpha(opacity=100);
+}
+
+.tooltip.in {
+    opacity: 1 !important;
+    filter: alpha(opacity=100);
+  }
+
+ .tooltip-arrow::before {
+    opacity: 1;
+    border-top-color: $color3 !important;
 }
 
 @include media-breakpoint-up(lg) { 
