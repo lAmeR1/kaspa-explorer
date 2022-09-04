@@ -13,6 +13,7 @@ import BlockDagVisualization from './components/BlockDagVisualization';
 import BlockOverview from './components/BlockOverview';
 import { Routes, Route, Link } from "react-router-dom";
 import { useNavigate } from 'react-router';
+import TxOverview from './components/TxOverview';
 
 
 
@@ -93,6 +94,7 @@ function Dashboard() {
         <Container className="fourthRow webpage" fluid>
           <Row>
             <Col xs={12} lg={6}><BlockOverview /></Col>
+            <Col xs={12} lg={6}><TxOverview /></Col>
           </Row>
         </Container>
       </div>

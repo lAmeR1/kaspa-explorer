@@ -96,7 +96,7 @@ const AddressInfo = () => {
             <Row>
                 <Col sm={6} md={4}>
                     <div className="addressinfo-header mt-4">balance</div>
-                    <div className="addressinfo-value">{addressBalance / 100000000} KAS</div>
+                    <div className="addressinfo-value d-flex"><div className="utxo-amount">{addressBalance / 100000000} KAS</div></div>
                 </Col>
                 <Col sm={6} md={4}>
                     <div className="addressinfo-header mt-4 ms-sm-5">UTXOs count</div>
