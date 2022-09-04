@@ -44,21 +44,6 @@ function Dashboard() {
 
   }
 
-  const getBalance = (e) => {
-    // kaspa:pzhh76qc82wzduvsrd9xh4zde9qhp0xc8rl7qu2mvl2e42uvdqt75zrcgpm00
-    fetch(`https://kaspa.herokuapp.com/addresses/${e.target.searchInput.value}/balance`)
-      .then(response => response.json())
-      .then(data => {
-        setAddress(data["address"]);
-        setBalance(data["balance"] / 100000000);
-        setShow(true);
-      })
-      .catch(r => console.log(r))
-
-
-    e.preventDefault()
-  }
-
 
   //<Button variant="primary">Go!</Button>
   return (

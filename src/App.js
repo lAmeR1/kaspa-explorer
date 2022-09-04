@@ -21,6 +21,7 @@ import AddressInfo from './components/AddressInfo';
 import { FaDollarSign, FaSearch } from 'react-icons/fa';
 import BlocksPage from './components/BlocksPage';
 import PriceContext from './components/PriceContext';
+import AddressInfoPage from './components/AddressInfo';
 
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -92,19 +93,6 @@ function App() {
   }, [])
 
 
-  const getBalance = (e) => {
-    // kaspa:pzhh76qc82wzduvsrd9xh4zde9qhp0xc8rl7qu2mvl2e42uvdqt75zrcgpm00
-    fetch(`https://kaspa.herokuapp.com/addresses/${e.target.searchInput.value}/balance`)
-      .then(response => response.json())
-      .then(data => {
-        setAddress(data["address"]);
-        setBalance(data["balance"] / 100000000);
-        setShow(true);
-      })
-      .catch(r => console.log(r))
-    e.preventDefault()
-  }
-
   const closeMenuIfNeeded = () => {
     if (document.getElementById("responsive-navbar-nav").classList.contains('show')) {
       document.getElementsByClassName("navbar-toggler")[0].click()
@@ -160,7 +148,8 @@ function App() {
           <Route path="/" element={<Dashboard />} />
           <Route path="/blocks" element={<BlocksPage />} />
           <Route path="/blocks/:id" element={<BlockInfo />} />
-          <Route path="/addresses/:addr" element={<AddressInfo />} />
+          <Route path="/blocks/:id/:txview" element={<BlockInfo />} />
+          <Route path="/addresses/:addr" element={<AddressInfoPage />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
         {/* <div className="alpha">ALPHA VERSION</div> */}

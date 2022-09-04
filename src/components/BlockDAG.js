@@ -4,7 +4,7 @@ import { faCoins, faDiagramProject } from '@fortawesome/free-solid-svg-icons'
 import { useEffect, useState } from "react";
 import { io } from "socket.io-client";
 
-const socket = io("wss://kaspa.herokuapp.com", {
+const socket = io("wss://api.kaspa.org", {
     path: '/ws/socket.io'
 });
 
@@ -16,6 +16,7 @@ const BlockDAGBox = () => {
     const [blockCount, setBlockCount] = useState("");
     const [headerCount, setHeaderCount] = useState("");
     const [virtualDaaScore, setVirtualDaaScore] = useState("");
+    const [hashrate, setHashrate] = useState("");
 
     useEffect(() => {
         socket.on('connect', () => {
@@ -31,6 +32,7 @@ const BlockDAGBox = () => {
             setBlockCount(data.blockCount)
             setHeaderCount(data.headerCount)
             setVirtualDaaScore(data.virtualDaaScore)
+            setHashrate((data.difficulty*2 / 1000000000000).toFixed(2))
         })
 
         // join room to get updates
@@ -80,6 +82,18 @@ const BlockDAGBox = () => {
           });
     }, [virtualDaaScore])
 
+    useEffect((e) => {
+        document.getElementById('hashrate').animate([
+            // keyframes
+            { opacity: '1' },
+            { opacity: '0.6' },
+            { opacity: '1' },
+          ], {
+            // timing options
+            duration: 300
+          });
+    }, [hashrate])
+
 
     return <>
         <div className="cardBox mx-0 mx-sm-5">
@@ -125,6 +139,14 @@ const BlockDAGBox = () => {
                     </td>
                     <td id="virtualDaaScore">
                         {virtualDaaScore}
+                    </td>
+                </tr>
+                <tr>
+                    <td className="cardBoxElement">
+                        Hashrate
+                    </td>
+                    <td id="hashrate">
+                        {hashrate} TH/s
                     </td>
                 </tr>
             </table>

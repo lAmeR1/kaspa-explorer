@@ -8,6 +8,7 @@
     color: $color5;
     padding: 1rem;
 }
+
 .addressinfo-title {
     color: $color2;
     border-bottom: 1px solid $color1;
@@ -31,12 +32,38 @@
     font-weight: normal;
 }
 
+@keyframes spinIcon {
+    from {
+        transform: rotate(0);}
+    to {transform: rotate(360deg);}
+  }
+
+  .copy-symbol-div {
+    // font-size: 1rem;
+    transform: translateY(-.1rem);
+  }
+
 .copy-symbol:hover {
     color: $color2;
     cursor: pointer;
 }
+.copy-symbol:hover {
+    animation: fadeIn 1s linear 0 5;
+}
+
 .copy-symbol:active {
     scale: 1.2;
+}
+
+.copy-symbol-success {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: rgb(31, 221, 31);
+    cursor: default;
+    // transform: rotate(0.8turn);
+    // transition: transform 2s linear .2s; 
+    animation-name: spinIcon;
+    animation-duration: 0.3s;
+    // animation-iteration-count: infinite;
 }
 
 
@@ -46,6 +73,7 @@
     padding: 2rem;
     overflow: hidden;
 }
+
 .addressinfo-header {
     // border-bottom: 2px solid $color1;
     color: $color1;
@@ -55,13 +83,18 @@
 
 }
 
-@include media-breakpoint-up(sm) { 
+@include media-breakpoint-up(sm) {
     .addressinfo-header-border {
-      border-top: 1px solid $color1;
+        border-top: 1px solid $color1;
     }
-  }
-  
+}
+
+.fa {
+    transform: translateY(-10%);
+}
+
 .addressinfo-value {
+    display: block;
     color: $color1;
     text-align: left;
     font-family: 'Courier New', Courier, monospace;
@@ -71,30 +104,37 @@
 
 
 
-@include media-breakpoint-up(lg) { 
-    .addressinfo-page  {
+@include media-breakpoint-up(lg) {
+    .addressinfo-page {
         padding: 5rem
     }
- }
+}
 
 
 
- .utxo-box {
+.utxo-box {
     background-color: $color5;
     border-radius: 0.8rem;
-    padding: 2rem;
-    margin-top: 5rem;
+    padding: 0rem;
+    margin-top: 0rem;
     overflow: hidden;
- }
- .utxo-title {
+}
+
+@include media-breakpoint-up(sm) {
+    .utxo-box {
+        padding: 0rem 1rem;
+    }
+}
+
+.utxo-title {
     color: $color2;
-    border-bottom: 1px solid $color1;
+    // border-bottom: 1px solid $color1;
     text-align: left;
     // text-transform: uppercase;
     font-size: x-large;
     font-weight: bolder;
     padding-bottom: 1rem;
-    margin-bottom: 2rem;
+    // margin-bottom: 1rem;
 }
 
 .utxo-header {
@@ -103,20 +143,21 @@
     text-transform: uppercase;
     text-align: left;
     font-weight: bolder;
-    
+
 }
 
-@include media-breakpoint-up(sm) { 
+@include media-breakpoint-up(sm) {
     .utxo-header-border {
-      border-top: 1px solid $color1;
+        border-top: 1px solid $color1;
     }
-  }
-  
+}
+
 .utxo-value {
     color: $color1;
     text-align: left;
     font-family: 'Courier New', Courier, monospace;
     word-wrap: break-word;
+    width: 100%;
 }
 
 .utxo-table {
@@ -147,4 +188,22 @@
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.pagination {
+    // border: 1px solid $color1;
+    // border-radius: .4rem;
+}
+
+.page-link {
+    background-color: $color5 !important;
+    // border: none;
+    color: $color1;
+}
+.page-link:any-link {
+    color: $color1;
+}
+
+.page-item.active .page-link {
+    border-color: $color2;
 }
