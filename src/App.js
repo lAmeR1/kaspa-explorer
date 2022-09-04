@@ -65,8 +65,7 @@ function App() {
       navigate(`/addresses/${v}`)
     }
 
-
-
+    e.target.searchbox.value = ""
   }
 
   const updatePrice = () => {

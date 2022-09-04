@@ -8,8 +8,8 @@ const UtxoPagination = (props) => {
     if (props.active < 3) {
         createIndex = 3
     } else {
-        if (props.active > props.total - 3) {
-            createIndex = props.total - 3
+        if (props.active > props.total - 2) {
+            createIndex = props.total - 2
         }
         else {
             createIndex = props.active;
@@ -17,7 +17,6 @@ const UtxoPagination = (props) => {
     }
 
     for (let i = Math.max(createIndex - 2, 1); i <= Math.min(createIndex + 2, props.total); i++) {
-        console.log(i);
         items.push(<Pagination.Item active={i === props.active} onClick={() => { props.setActive(i) }}>{i}</Pagination.Item>)
     }
 

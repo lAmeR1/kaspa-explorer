@@ -176,7 +176,10 @@
 
 .utxo-border {
     border-bottom: 1px solid $color2;
+}
 
+.utxo-border:last-child {
+    border-bottom: none;
 }
 
 .utxo-value-detail {
