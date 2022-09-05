@@ -34,11 +34,11 @@ const BlockOverview = (props) => {
         </div>
         
         <div className="block-overview-content">
-            <table className="styled-table w-100">
+            <table className={`styled-table w-100`}>
                 <thead>
                     <tr>
-                        <th width="100rem">BlueScore</th>
-                        <th width="50rem">TXs</th>
+                        <th>BlueScore</th>
+                        <th>TXs</th>
                         <th width="100%">Hash</th>
                     </tr>
                 </thead>

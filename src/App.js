@@ -25,6 +25,7 @@ import AddressInfoPage from './components/AddressInfo';
 import io from 'socket.io-client';
 import LastBlocksContext from './components/LastBlocksContext';
 import TxPage from './components/TxPage';
+import { NavLink } from 'react-router-dom';
 
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -159,31 +160,25 @@ function App() {
               <Navbar.Toggle aria-controls="responsive-navbar-nav" />
               <Navbar.Collapse id="responsive-navbar-nav">
                 <Nav className="me-auto">
-                  <LinkContainer to="/">
-                    <Nav.Link className="fs-5" onClick={closeMenuIfNeeded}>Dashboard</Nav.Link>
-                  </LinkContainer>
-                  <LinkContainer to="/blocks">
-                    <Nav.Link className="fs-5" onClick={closeMenuIfNeeded}>Blocks</Nav.Link>
-                  </LinkContainer>
-                  <LinkContainer to="/txs">
-                    <Nav.Link className="fs-5" onClick={closeMenuIfNeeded}>Transactions</Nav.Link>
-                  </LinkContainer>
+                  <Nav.Item><NavLink className="nav-link fs-5" onClick={closeMenuIfNeeded} to={"/"}>Dashboard</NavLink></Nav.Item>
+                  <Nav.Item><NavLink className="nav-link fs-5" onClick={closeMenuIfNeeded} to={"/blocks"}>Blocks</NavLink></Nav.Item>
+                  <Nav.Item><NavLink className="nav-link fs-5" onClick={closeMenuIfNeeded}  to={"/txs"}>Transactions</NavLink></Nav.Item>
                 </Nav>
                 <div className='ms-auto navbar-price'>${price} <span className="text-light">/ KAS</span></div>
               </Navbar.Collapse>
             </Container>
           </Navbar>
           <div className="search-row">
-          <Container  className="webpage" hidden={location.pathname == "/"}>
-            <Row><Col xs={12} className="">
-              <Form onSubmit={search} className="w-100">
-                <InputGroup className="mt-4 mb-4 d-flex justify-content-center align-items-center">
-                  <Form.Control className="bg-light text-dark shadow-none" name="searchbox" id="search-box-high" type="text" placeholder="kaspa:address / block / tx " />
-                  <Button type="submit" className="shadow-none searchButton" variant="dark"><i className='fa fa-search' /></Button>
-                </InputGroup>
-              </Form>
-            </Col></Row>
-          </Container>
+            <Container className="webpage" hidden={location.pathname == "/"}>
+              <Row><Col xs={12}>
+                  <Form onSubmit={search} className="">
+                    <InputGroup className="mt-4 mb-4 search-box-group">
+                      <Form.Control className="d-inline-block bg-light text-dark shadow-none" name="searchbox" id="search-box-high" type="text" placeholder="kaspa:address / block / tx " />
+                      <Button type="submit" className="shadow-none searchButton" variant="dark"><i className='fa fa-search' /></Button>
+                    </InputGroup>
+                  </Form>
+              </Col></Row>
+            </Container>
           </div>
           <Routes>
             <Route path="/" element={<Dashboard />} />

@@ -7,6 +7,7 @@ import PriceContext from "./PriceContext.js";
 import CopyButton from "./CopyButton.js";
 import UtxoPagination from "./UtxoPagination.js";
 import { numberWithCommas } from "../helper"
+import { BiGhost } from "react-icons/bi";
 
 const AddressInfoPage = () => {
     const { addr } = useParams();
@@ -18,6 +19,7 @@ const AddressInfo = () => {
     const [addressBalance, setAddressBalance] = useState(0)
     const [utxos, setUtxos] = useState([])
     const [loadingUtxos, setLoadingUtxos] = useState(true)
+    const [errorLoadingUtxos, setErrorLoadingUtxos] = useState(false)
     const [active, setActive] = useState(1)
 
     const [currentEpochTime, setCurrentEpochTime] = useState(0);
@@ -46,6 +48,7 @@ const AddressInfo = () => {
     }, [])
 
     useEffect(() => {
+        setErrorLoadingUtxos(false);
         setLoadingUtxos(true);
         getAddressUtxos(addr).then(
             (res) => {
@@ -53,6 +56,10 @@ const AddressInfo = () => {
                 setUtxos(res);
             }
         )
+        .catch(ex => {
+            setLoadingUtxos(false);
+            setErrorLoadingUtxos(true);
+        })
     }, [addressBalance])
 
 
@@ -84,10 +91,10 @@ const AddressInfo = () => {
                 </Col>
             </Row>
             <Row>
-                <Col md={12} className="addressinfo-header mt-sm-4">
+                <Col md={12} className="mt-sm-4">
 
-                    <div>Address</div>
-                    <div className="addressinfo-title-addr">{addr}
+                    <div className="addressinfo-header">Address</div>
+                    <div className="utxo-value">{addr}
                         <CopyButton size="2rem" text={addr} /></div>
 
 
@@ -97,21 +104,21 @@ const AddressInfo = () => {
             <Row>
                 <Col sm={6} md={4}>
                     <div className="addressinfo-header mt-4">balance</div>
-                    <div className="addressinfo-value d-flex"><div className="utxo-amount">{numberWithCommas(addressBalance / 100000000)} KAS</div></div>
+                    <div className="utxo-value d-flex"><div className="utxo-amount">{numberWithCommas(addressBalance / 100000000)} KAS</div></div>
                 </Col>
                 <Col sm={6} md={4}>
                     <div className="addressinfo-header mt-4 ms-sm-5">UTXOs count</div>
-                    <div className="addressinfo-value ms-sm-5">{!loadingUtxos ? utxos.length : <Spinner animation="border" variant="primary" />}</div>
+                    <div className="utxo-value ms-sm-5">{!loadingUtxos ? utxos.length : <Spinner animation="border" variant="primary" />}{errorLoadingUtxos && <BiGhost className="error-icon" />}</div>
                 </Col>
             </Row>
             <Row>
                 <Col sm={6} md={4}>
                     <div className="addressinfo-header addressinfo-header-border mt-4 mt-sm-4 pt-sm-4 me-sm-5">value</div>
-                    <div className="addressinfo-value">{(addressBalance / 100000000 * price).toFixed(2)} USD</div>
+                    <div className="utxo-value">{(addressBalance / 100000000 * price).toFixed(2)} USD</div>
                 </Col>
                 <Col sm={6} md={4}>
                     <div className="addressinfo-header addressinfo-header-border mt-4 mt-sm-4 pt-sm-4 ms-sm-5">Transactions count</div>
-                    <div className="addressinfo-value ms-sm-5">{!loadingUtxos ? utxos.length : <Spinner animation="border" variant="primary" />}</div>
+                    <div className="utxo-value ms-sm-5">{!loadingUtxos ? utxos.length : <Spinner animation="border" variant="primary" />}{errorLoadingUtxos && <BiGhost className="error-icon" />}</div>
                 </Col>
             </Row>
         </Container>
@@ -125,6 +132,7 @@ const AddressInfo = () => {
                     <UtxoPagination active={active} total={Math.ceil(utxos.length / 10)} setActive={setActive} />
                 </Col> : <></>}
             </Row>
+            {errorLoadingUtxos && <BiGhost className="error-icon" />}
             {!loadingUtxos ? utxos.sort((a, b) => b.utxoEntry.blockDaaScore - a.utxoEntry.blockDaaScore).slice((active - 1) * 10, (active - 1) * 10 + 10).map((x) =>
                 <Row className="utxo-border pb-5 mb-5">
                     <Col sm={6} md={4}>
