@@ -1,9 +1,10 @@
 import { Card, Container, Row, Col } from "react-bootstrap"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCoins } from '@fortawesome/free-solid-svg-icons'
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import socketIOClient from 'socket.io-client';
 import { numberWithCommas } from "../helper";
+import PriceContext from "./PriceContext";
 
 const socket = socketIOClient("wss://api.kaspa.org/", {
     path: '/ws/socket.io'
@@ -13,6 +14,7 @@ const socket = socketIOClient("wss://api.kaspa.org/", {
 const CBox = () => {
     const [circCoins, setCircCoins] = useState("-");
     const [isConnected, setIsConnected] = useState(false);
+    const { price } = useContext(PriceContext);
 
     useEffect(() => {
         socket.on('connect', () => {
@@ -81,6 +83,10 @@ const CBox = () => {
                 <tr>
                     <td className="cardBoxElement">Mined</td>
                     <td>{(circCoins/28600000000*100).toFixed(2)} %</td>
+                </tr>
+                <tr>
+                    <td className="cardBoxElement">MCAP</td>
+                    <td>${(circCoins*price / 1000000).toFixed(2)} M</td>
                 </tr>
             </table>
         </div>

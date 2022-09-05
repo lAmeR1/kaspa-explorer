@@ -84,10 +84,10 @@ const AddressInfo = () => {
                 </Col>
             </Row>
             <Row>
-                <Col md={12} className="addressinfo-header mt-sm-4">
+                <Col md={12} className="mt-sm-4">
 
-                    <div>Address</div>
-                    <div className="addressinfo-title-addr">{addr}
+                    <div className="addressinfo-header">Address</div>
+                    <div className="utxo-value">{addr}
                         <CopyButton size="2rem" text={addr} /></div>
 
 
@@ -97,21 +97,21 @@ const AddressInfo = () => {
             <Row>
                 <Col sm={6} md={4}>
                     <div className="addressinfo-header mt-4">balance</div>
-                    <div className="addressinfo-value d-flex"><div className="utxo-amount">{numberWithCommas(addressBalance / 100000000)} KAS</div></div>
+                    <div className="utxo-value d-flex"><div className="utxo-amount">{numberWithCommas(addressBalance / 100000000)} KAS</div></div>
                 </Col>
                 <Col sm={6} md={4}>
                     <div className="addressinfo-header mt-4 ms-sm-5">UTXOs count</div>
-                    <div className="addressinfo-value ms-sm-5">{!loadingUtxos ? utxos.length : <Spinner animation="border" variant="primary" />}</div>
+                    <div className="utxo-value ms-sm-5">{!loadingUtxos ? utxos.length : <Spinner animation="border" variant="primary" />}</div>
                 </Col>
             </Row>
             <Row>
                 <Col sm={6} md={4}>
                     <div className="addressinfo-header addressinfo-header-border mt-4 mt-sm-4 pt-sm-4 me-sm-5">value</div>
-                    <div className="addressinfo-value">{(addressBalance / 100000000 * price).toFixed(2)} USD</div>
+                    <div className="utxo-value">{(addressBalance / 100000000 * price).toFixed(2)} USD</div>
                 </Col>
                 <Col sm={6} md={4}>
                     <div className="addressinfo-header addressinfo-header-border mt-4 mt-sm-4 pt-sm-4 ms-sm-5">Transactions count</div>
-                    <div className="addressinfo-value ms-sm-5">{!loadingUtxos ? utxos.length : <Spinner animation="border" variant="primary" />}</div>
+                    <div className="utxo-value ms-sm-5">{!loadingUtxos ? utxos.length : <Spinner animation="border" variant="primary" />}</div>
                 </Col>
             </Row>
         </Container>

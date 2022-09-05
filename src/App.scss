@@ -65,6 +65,14 @@ body {
 
 .search-row {
   background-color: rgba($color3, 0.6);
+
+}
+
+.search-box-group {
+  width: 100%;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: center;
 }
 
 #search-box-high {
@@ -110,13 +118,13 @@ body {
   }
 }
 
-@include media-breakpoint-up(lg) {
-  .bigfont {
-    margin-top: 4rem;
-    font-size: 7rem;
-    line-height: 6rem;
-  }
-}
+// @include media-breakpoint-up(lg) {
+//   .bigfont {
+//     margin-top: 4rem;
+//     font-size: 7rem;
+//     line-height: 6rem;
+//   }
+// }
 
 .big-kaspa-icon {
   position: relative;
@@ -135,8 +143,8 @@ body {
 
 @include media-breakpoint-up(md) {
   .big-kaspa-icon {
-    width: 15rem;
-    height: 15rem;
+    width: 10rem;
+    height: 10rem;
   }
 }
 
@@ -248,8 +256,10 @@ body {
   background-color: $color5;
 }
 
-.secondRow {
-  padding: 3rem
+@include media-breakpoint-up(sm) {
+  .secondRow {
+    padding: 3rem
+  }
 }
 
 .row3 {
@@ -266,10 +276,13 @@ body {
   background-color: $color5;
 }
 
-.fourthRow {
-
-  padding: 3rem
+@include media-breakpoint-up(sm) {
+  .fourthRow {
+    padding: 3rem
+  }
 }
+
+
 
 .cardText {
   font-size: 2em;
@@ -286,14 +299,28 @@ body {
 }
 
 .block-overview {
+  font-size: x-small;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   color: $color1;
   background-color: rgba($color3, 0.6);
-  padding: 1rem;
+  padding: 1rem 0.1rem;
   border-radius: 0.4rem;
+}
+
+@include media-breakpoint-up(sm) {
+  .block-overview {
+    font-size: small;
+  }
+}
+
+@include media-breakpoint-up(md) {
+  .block-overview {
+    font-size: large;
+    padding: 1rem;
+  }
 }
 
 .block-overview-content {
@@ -339,8 +366,8 @@ body {
 }
 
 .styled-table {
-  table-layout: fixed;
-  width: 100%;
+  // table-layout: auto !important;
+  // width: 100%;
   color: $color5;
 
 }
@@ -357,7 +384,7 @@ body {
 
 .styled-table th,
 .styled-table td {
-  padding: 12px 15px;
+  padding: 0.7rem 1rem;
 }
 
 .styled-table thead tr {
@@ -370,10 +397,7 @@ body {
   animation-duration: 1s;
   text-align: left;
   font-weight: normal;
-}
-
-.styled-table tbody tr:nth-of-type(even) {
-  // background-color: rgba($color3, 0.7);
+  width: auto !important;
 }
 
 .styled-table tbody tr:last-of-type {
@@ -489,6 +513,7 @@ body {
   max-width: 40rem;
 }
 
+
 @keyframes spinIcon {
   from {
     transform: rotate(0);
@@ -502,6 +527,7 @@ body {
 .play-button {
   animation-name: spinIcon;
   animation-duration: 0.3s;
+  margin: 1rem;
 }
 
 .play-button:hover {

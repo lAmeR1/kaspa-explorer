@@ -34,17 +34,17 @@ const TxOverview = (props) => {
     }, [blocks])
 
 
-    return <div className="block-overview">
+    return <div className="block-overview mb-4">
         <div className="d-flex flex-row w-100">
         {!keepUpdating ? <FaPlay id="play-button" className="play-button" onClick={() => setKeepUpdating(true)} /> : <FaPause id="pause-button" className="play-button" onClick={() => setKeepUpdating(false)} />}
         <h4 className="block-overview-header text-center w-100 me-4"><RiMoneyDollarCircleFill className={isConnected && keepUpdating ? "rotate" : ""} size="1.7rem" /> LATEST TRANSACTIONS</h4>
         </div>
         <div className="block-overview-content">
-            <table className="styled-table">
+            <table className={`styled-table w-100`}>
                 <thead>
                     <tr>
-                        <th width="130rem">Id</th>
-                        <th width="150rem">Amount</th>
+                        <th>Id</th>
+                        <th>Amount</th>
                         <th width="100%">Recipient</th>
                     </tr>
                 </thead>

@@ -148,7 +148,7 @@ const BlockInfo = () => {
                                                 </Col>
 
                                                 <Col sm={12} md={12}>
-                                                    <div className="utxo-header mt-3">TO</div>
+                                                    <div className="utxo-header mt-1">TO</div>
                                                     <Container className="utxo-value" fluid>
                                                         {(tx.outputs || []).map((txOutput) => <Row>
                                                             <Col xs={12} sm={8} md={9} lg={9}  xl={8} xxl={7} className="text-truncate">
@@ -163,11 +163,11 @@ const BlockInfo = () => {
                                                 </Col>
                                             </Col>
                                             <Col sm={5} md={4}>
-                                                <div className="utxo-header mt-3">amount</div>
+                                                <div className="utxo-header mt-3">tx amount</div>
                                                 <div className="utxo-value d-flex flex-row"><div className="utxo-amount">{(numberWithCommas(tx.outputs.reduce((a, b) => (a || 0) + parseInt(b.amount), 0) / 100000000))} KAS</div></div>
                                             </Col>
                                             <Col sm={4} md={2}>
-                                                <div className="utxo-header mt-3">value</div>
+                                                <div className="utxo-header mt-3">tx value</div>
                                                 <div className="utxo-value">{(tx.outputs.reduce((a, b) => (a || 0) + parseInt(b.amount), 0) / 100000000 * price).toFixed(2)} $</div>
                                             </Col>
 
