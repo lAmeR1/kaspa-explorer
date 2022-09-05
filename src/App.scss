@@ -323,6 +323,14 @@ body {
   }
 }
 
+.hide-button {
+  scale: 1.2;
+}
+
+.hide-button-active {
+  color: $color2
+}
+
 .block-overview-content {
   width: 100%;
 
