@@ -7,6 +7,7 @@ import io from 'socket.io-client';
 import LastBlocksContext from "./LastBlocksContext";
 import { FaPause, FaPlay } from "react-icons/fa";
 import { BiHide, BiRotateLeft } from "react-icons/bi";
+import { OverlayTrigger, Tooltip } from "react-bootstrap";
 
 const socket = io("wss://api.kaspa.org", {
     path: '/ws/socket.io'
@@ -41,10 +42,13 @@ const TxOverview = (props) => {
 
     return <div className="block-overview mb-4">
         <div className="d-flex flex-row w-100">
-        {!keepUpdating ? <FaPlay id="play-button" className="play-button" onClick={() => setKeepUpdating(true)} /> : <FaPause id="pause-button" className="play-button" onClick={() => setKeepUpdating(false)} />}
-        <BiHide className={`mx-0 mt-3 hide-button ${ignoreCoinbaseTx && "hide-button-active"}`} onClick={toggleCoinbaseTransactions} />
-        <h4 className="block-overview-header text-center w-100 me-4">
-            <RiMoneyDollarCircleFill className={isConnected && keepUpdating ? "rotate" : ""} size="1.7rem" /> LATEST TRANSACTIONS</h4>
+            {!keepUpdating ? <FaPlay id="play-button" className="play-button" onClick={() => setKeepUpdating(true)} /> : <FaPause id="pause-button" className="play-button" onClick={() => setKeepUpdating(false)} />}
+
+            <OverlayTrigger overlay={<Tooltip id="tooltip-kgi">{ignoreCoinbaseTx ? "Show" : "Hide"} coinbase transactions</Tooltip>}>
+                <span><BiHide className={`mx-0 mt-3 hide-button ${ignoreCoinbaseTx && "hide-button-active"}`} onClick={toggleCoinbaseTransactions} /></span>
+            </OverlayTrigger>
+            <h4 className="block-overview-header text-center w-100 me-4">
+                <RiMoneyDollarCircleFill className={isConnected && keepUpdating ? "rotate" : ""} size="1.7rem" /> LATEST TRANSACTIONS</h4>
         </div>
         <div className="block-overview-content">
             <table className={`styled-table w-100`}>
@@ -58,14 +62,13 @@ const TxOverview = (props) => {
                 <tbody>
                     {[...tempBlocks]
                         .sort((a, b) => b.verboseData.blueScore - a.verboseData.blueScore)
-                        .slice(0, props.lines)
+                        // .slice(0, props.lines)
                         .flatMap((block) => block.transactions.slice(ignoreCoinbaseTx ? 1 : 0)
-                            .flatMap((tx, txIndex) => tx.outputs.flatMap((output, outputIndex) => {
+                            .flatMap((tx) => tx.outputs.flatMap((output, outputIndex) => {
                                 return {
                                     "amount": output.amount,
                                     "address": output.verboseData.scriptPublicKeyAddress,
                                     "txId": tx.verboseData.transactionId,
-                                    txIndex,
                                     outputIndex
                                 }
                             })))

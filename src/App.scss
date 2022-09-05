@@ -324,6 +324,7 @@ body {
 }
 
 .hide-button {
+  cursor: pointer;
   scale: 1.2;
 }
 
@@ -533,6 +534,7 @@ body {
 }
 
 .play-button {
+  cursor: pointer;
   animation-name: spinIcon;
   animation-duration: 0.3s;
   margin: 1rem;
