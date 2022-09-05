@@ -323,6 +323,15 @@ body {
   }
 }
 
+.hide-button {
+  cursor: pointer;
+  scale: 1.2;
+}
+
+.hide-button-active {
+  color: $color2
+}
+
 .block-overview-content {
   width: 100%;
 
@@ -525,6 +534,7 @@ body {
 }
 
 .play-button {
+  cursor: pointer;
   animation-name: spinIcon;
   animation-duration: 0.3s;
   margin: 1rem;

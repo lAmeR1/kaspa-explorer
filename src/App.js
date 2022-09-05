@@ -120,7 +120,7 @@ function App() {
     socket.emit('last-blocks', "")
 
     socket.on('new-block', (d) => {
-      setBlocks([...blocksRef.current, d].slice(-50))
+      setBlocks([...blocksRef.current, d].slice(-100))
     });
 
     return () => {
