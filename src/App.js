@@ -178,7 +178,7 @@ function App() {
                     <Nav.Link className="fs-5" onClick={closeMenuIfNeeded}>Transactions</Nav.Link>
                   </LinkContainer>
                 </Nav>
-                <div className='ms-auto navbar-price'>1&nbsp;KAS = {price}&nbsp;$</div>
+                <div className='ms-auto navbar-price'>${price} <span className="text-light">/ KAS</span></div>
               </Navbar.Collapse>
             </Container>
           </Navbar>
