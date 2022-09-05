@@ -8,6 +8,7 @@ import LastBlocksContext from "./LastBlocksContext";
 import { FaPause, FaPlay } from "react-icons/fa";
 import { BiHide, BiRotateLeft } from "react-icons/bi";
 import { OverlayTrigger, Tooltip } from "react-bootstrap";
+import { numberWithCommas } from "../helper";
 
 const socket = io("wss://api.kaspa.org", {
     path: '/ws/socket.io'
@@ -80,7 +81,7 @@ const TxOverview = (props) => {
                                 onClick={onClickRow}
                             >
                                 <td>{x.txId.slice(0, 10)}...</td>
-                                <td>{x.amount / 100000000}&nbsp;KAS</td>
+                                <td>{numberWithCommas(x.amount / 100000000)}&nbsp;KAS</td>
                                 <td className="hashh">{x.address}</td>
                             </tr>
                         })}
