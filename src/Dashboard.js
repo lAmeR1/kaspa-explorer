@@ -13,6 +13,7 @@ import BlockDagVisualization from './components/BlockDagVisualization';
 import BlockOverview from './components/BlockOverview';
 import { Routes, Route, Link } from "react-router-dom";
 import { useNavigate } from 'react-router';
+import TxOverview from './components/TxOverview';
 
 
 
@@ -59,9 +60,9 @@ function Dashboard() {
             </Col>
           </Row>
           <Row>
-            <Col xs={12}>
+            <Col xs={11}>
               <Form onSubmit={search}>
-                <InputGroup className="ms-md-5 mt-5 searchBox">
+                <InputGroup className="ms-md-5 mt-5 me-5 dashboard-search-box">
                   <Form.Control className="bg-light text-dark shadow-none" name="searchInput" type="text" placeholder="kaspa:address / block / tx " />
                   <Button type="submit" className="shadow-none searchButton" variant="dark" ><i className='fa fa-search' /></Button>
                 </InputGroup>
@@ -92,7 +93,8 @@ function Dashboard() {
       <div className="row4">
         <Container className="fourthRow webpage" fluid>
           <Row>
-            <Col xs={12} lg={6}><BlockOverview /></Col>
+            <Col className="" xs={12} lg={6}><BlockOverview lines={20} /></Col>
+            <Col className="mt-5 mt-lg-0"  xs={12} lg={6}><TxOverview lines={20}  /></Col>
           </Row>
         </Container>
       </div>

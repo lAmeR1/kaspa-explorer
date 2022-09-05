@@ -10,6 +10,7 @@ import CopyButton from "./CopyButton.js";
 import { NavLink } from "react-router-dom";
 import { LinkContainer } from "react-router-bootstrap";
 import { BiNetworkChart } from "react-icons/bi";
+import { numberWithCommas } from "../helper.js";
 
 
 
@@ -50,7 +51,7 @@ const BlockInfo = () => {
                                     <Col className="blockinfo-key" lg={2}>Hash</Col>
                                     <Col className="blockinfo-value" lg={10}>{blockInfo.verboseData.hash}
                                         <CopyButton text={blockInfo.verboseData.hash} />
-                                        <OverlayTrigger overlay={<Tooltip id="tooltip-kgi">Open in KGI</Tooltip>}>
+                                        <OverlayTrigger overlay={<Tooltip id="tooltip-kgi">Open in Kaspa Graph Inspector</Tooltip>}>
                                             <span>
                                                 <BiNetworkChart className="ms-2 copy-symbol" size="20" onClick={() => { window.open(`https://kgi.kaspad.net/?hash=${id}`, '_blank'); }} />
                                             </span>
@@ -123,46 +124,55 @@ const BlockInfo = () => {
                             <div className="blockinfo-header"><h4>Transactions</h4></div>
                             <Container className="webpage utxo-box" fluid>
                                 {
-                                    (blockInfo.transactions || []).map((x, tx_index) => <>
-                                        {x.outputs.map((output, index) =>
-                                            <Row className="utxo-border py-3">
-                                                <Col sm={12} md={12} lg={10}>
-                                                    <div className="utxo-header">transaction id</div>
-                                                    <div className="utxo-value">
-                                                        {x.verboseData.transactionId}
-                                                        <CopyButton text={x.verboseData.transactionId} />
-                                                    </div>
-                                                </Col>
-                                                <Col sm={12} md={2}>
-                                                    <div className="utxo-header mt-3">index</div>
-                                                    <div className="utxo-value">{index}</div>
+                                    (blockInfo.transactions || []).map((tx, tx_index) => <>
+                                        <Row className="utxo-border py-3">
+                                            <Col sm={12} md={12} lg={12}>
+                                                <div className="utxo-header">transaction id</div>
+                                                <div className="utxo-value">
+                                                    {tx.verboseData.transactionId}
+                                                    <CopyButton text={tx.verboseData.transactionId} />
+                                                </div>
+
+
+                                                <Col sm={12} md={12}>
+                                                    <div className="utxo-header mt-3">FROM</div>
+                                                    <Container className="utxo-value">
+                                                        {(tx.inputs || []).map((txInput) => <Row>
+                                                            <Col xs={12} sm={8} md={9} lg={9}  xl={8} xxl={7} className="text-truncate">
+                                                                TX {txInput.previousOutpoint.transactionId}
+                                                            </Col><Col className="me-auto" xs={12} sm={4} md={2}></Col>
+                                                        </Row>)}
+                                                        {!tx.inputs ? <Row><Col xs={12} sm={8} md="auto" className="text-truncate">COINBASE (New coins)</Col></Row> : <></>}
+
+                                                    </Container>
                                                 </Col>
 
                                                 <Col sm={12} md={12}>
-                                                    <div className="utxo-header mt-3">To</div>
-                                                    <div className="utxo-value">
-                                                        <Link to={`/addresses/${output.verboseData.scriptPublicKeyAddress}`} className="blockinfo-link">
-                                                            {output.verboseData.scriptPublicKeyAddress}
-                                                        </Link>
-                                                        <CopyButton text={output.verboseData.scriptPublicKeyAddress} />
-                                                    </div>
-                                                </Col>
-                                                <Col sm={5} md={4}>
-                                                    <div className="utxo-header mt-3">amount</div>
-                                                    <div className="utxo-value d-flex flex-row"><div className="utxo-amount">{output.amount / 100000000} KAS</div></div>
-                                                </Col>
-                                                <Col sm={4} md={2}>
-                                                    <div className="utxo-header mt-3">value</div>
-                                                    <div className="utxo-value">{(output.amount / 100000000 * price).toFixed(2)} $</div>
-                                                </Col>
+                                                    <div className="utxo-header mt-3">TO</div>
+                                                    <Container className="utxo-value" fluid>
+                                                        {(tx.outputs || []).map((txOutput) => <Row>
+                                                            <Col xs={12} sm={8} md={9} lg={9}  xl={8} xxl={7} className="text-truncate">
+                                                            <Link to={`/addresses/${txOutput.verboseData.scriptPublicKeyAddress}`} className="blockinfo-link">
+                                                                {txOutput.verboseData.scriptPublicKeyAddress}
+                                                                </Link>
 
-                                                <Col sm={3} md={4}>
-                                                    <div className="utxo-header mt-3">details</div>
-                                                    <div className="utxo-value flex-nowrap">{tx_index == 0 ? "COINBASE (New coins)" : <div>Sent</div>}</div>
+                                                                <CopyButton text={txOutput.verboseData.scriptPublicKeyAddress} />
+                                                            </Col><Col className="block-utxo-amount" xs={12} sm={4} md={3}>{txOutput.amount / 100000000}&nbsp;KAS</Col>
+                                                        </Row>)}
+                                                    </Container>
                                                 </Col>
-                                            </Row>
+                                            </Col>
+                                            <Col sm={5} md={4}>
+                                                <div className="utxo-header mt-3">amount</div>
+                                                <div className="utxo-value d-flex flex-row"><div className="utxo-amount">{(numberWithCommas(tx.outputs.reduce((a, b) => (a || 0) + parseInt(b.amount), 0) / 100000000))} KAS</div></div>
+                                            </Col>
+                                            <Col sm={4} md={2}>
+                                                <div className="utxo-header mt-3">value</div>
+                                                <div className="utxo-value">{(tx.outputs.reduce((a, b) => (a || 0) + parseInt(b.amount), 0) / 100000000 * price).toFixed(2)} $</div>
+                                            </Col>
 
-                                        )}
+                                        </Row>
+
                                     </>)
                                 }
 
@@ -172,7 +182,7 @@ const BlockInfo = () => {
             </Row>
 
         </Container>
-    </div>
+    </div >
 
     //     <Container className="webpage" fluid>
     //         <Row>

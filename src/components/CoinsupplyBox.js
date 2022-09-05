@@ -3,15 +3,12 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCoins } from '@fortawesome/free-solid-svg-icons'
 import { useEffect, useState } from "react";
 import socketIOClient from 'socket.io-client';
+import { numberWithCommas } from "../helper";
 
 const socket = socketIOClient("wss://api.kaspa.org/", {
     path: '/ws/socket.io'
 });
 
-
-function numberWithCommas(x) {
-    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-}
 
 const CBox = () => {
     const [circCoins, setCircCoins] = useState("-");

@@ -2,6 +2,7 @@
 @import url(https://fonts.googleapis.com/css?family=Righteous);
 @import url(https://fonts.googleapis.com/css?family=Anton);
 @import url(https://fonts.googleapis.com/css?family=Ubuntu);
+@import url(https://fonts.googleapis.com/css?family=Rubik);
 
 
 $color1: #F6F5F4;
@@ -31,7 +32,7 @@ $nav-link-color: $color1;
 
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+  font-family: Rubik, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -42,26 +43,50 @@ body {
 #navbar-container {
   max-width: 1300px;
 }
+
 .navbar-price {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
-  color: $color1;
+  font-family: Rubik;
+  color: $color2;
   font-size: 1rem;
   padding: 0rem 2rem;
 }
+
 .navbar-title {
   opacity: 1;
   transition: opacity 0.5s ease-out;
 }
 
-@include media-breakpoint-up(md) { 
+@include media-breakpoint-up(md) {
   .navbar-title {
     opacity: 0;
     transition: opacity 0.5s ease-out;
   }
 }
 
+.search-row {
+  background-color: rgba($color3, 0.6);
+}
+
+#search-box-high {
+  // max-width: 40rem;
+  // color: $color1 !important;
+  // background-color: $color5 !important;
+  width: 100%
+}
+
+.searchButton {
+  height: 100%;
+  background-color: $color5;
+  color: $color1;
+}
+
+.dashboard-search-box {
+  margin-right: 20px;
+}
+
+
 .bigfont {
-  color: $color1 !important;
+  color: $color1  !important;
   font-family: 'Righteous', sans-serif;
   // font: bold 80px/0.9em;
   font-weight: normal;
@@ -77,14 +102,15 @@ body {
   text-align: left;
 }
 
-@include media-breakpoint-up(md) { 
+@include media-breakpoint-up(md) {
   .bigfont {
     margin-top: 4rem;
     font-size: 4.4rem;
     line-height: 4.4rem;
   }
 }
-@include media-breakpoint-up(lg) { 
+
+@include media-breakpoint-up(lg) {
   .bigfont {
     margin-top: 4rem;
     font-size: 7rem;
@@ -107,7 +133,7 @@ body {
   animation-direction: alternate;
 }
 
-@include media-breakpoint-up(md) { 
+@include media-breakpoint-up(md) {
   .big-kaspa-icon {
     width: 15rem;
     height: 15rem;
@@ -116,8 +142,13 @@ body {
 
 /* The animation code */
 @keyframes rotate-icon {
-  from {transform: rotate(10deg)}
-  to {transform: rotate(-10deg)}
+  from {
+    transform: rotate(10deg)
+  }
+
+  to {
+    transform: rotate(-10deg)
+  }
 }
 
 .big-page {
@@ -149,15 +180,16 @@ body {
 }
 
 .nav-link {
-    align-items: center;
-    
+  align-items: center;
+
 }
-.active  {
+
+.active {
   font-weight: bolder;
 }
 
-@include media-breakpoint-up(md) { 
-  .active  {
+@include media-breakpoint-up(md) {
+  .active {
     border-bottom: 4px solid $color2;
   }
 }
@@ -173,15 +205,18 @@ body {
 }
 
 .navbar-brand-text a:link {
-    text-decoration: none;
+  text-decoration: none;
 }
+
 .navbar-brand-text a:visited {
   text-decoration: none;
 }
+
 .navbar-brand-text a:hover {
   text-decoration: none;
   background-color: red;
 }
+
 .navbar-brand-text a:active {
   text-decoration: none;
 }
@@ -189,10 +224,10 @@ body {
 .navbar-brand-text>a {
   text-decoration: none;
   font-style: none;
-  
+
 }
 
-.colsize > div {
+.colsize>div {
   max-width: 1300px;
 }
 
@@ -222,7 +257,7 @@ body {
 }
 
 .thirdRow {
-  
+
   padding: 10rem;
 }
 
@@ -232,7 +267,7 @@ body {
 }
 
 .fourthRow {
-  
+
   padding: 3rem
 }
 
@@ -264,7 +299,7 @@ body {
 .block-overview-content {
   width: 100%;
 
-  max-width:1200px;
+  max-width: 1200px;
   /* border-radius: 1rem; */
   overflow: hidden;
   /* font-size: small;  */
@@ -275,11 +310,13 @@ body {
   animation-timing-function: linear;
 }
 
-@keyframes spin { 
-  from { 
-      transform: rotate(0deg); 
-  } to { 
-      transform: rotate(360deg); 
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
   }
 }
 
@@ -294,6 +331,7 @@ body {
   font-weight: bolder;
   text-align: left;
 }
+
 .block-overview tr {
   color: $color1;
   font-weight: bolder;
@@ -301,8 +339,10 @@ body {
 }
 
 .styled-table {
+  table-layout: fixed;
   width: 100%;
   color: $color5;
+
 }
 
 @keyframes anim {
@@ -348,14 +388,15 @@ body {
 
 .blockinfo-content {
   display: flex;
-  flex-direction: column;;
+  flex-direction: column;
+  ;
   justify-content: center;
 }
 
 
 
 .blockinfo-row:nth-of-type(even) {
-    background-color: rgba($superdark, 0.4)
+  background-color: rgba($superdark, 0.4)
 }
 
 // .blockinfo-table tr:nth-of-type(even) {
@@ -366,16 +407,7 @@ body {
   // width: 10px;
 }
 
-.searchBox {
 
-  max-width: 40rem;
-  width: 100%
-}
-
-
-.searchButton {
-  height: 100%;
-}
 
 .cardBox {
   color: #f3eef1;
@@ -398,9 +430,10 @@ body {
   box-shadow: 0px 0px 130px 33px $color2;
   z-index: 2;
 }
+
 .cardBox:hover .cardLight {
   box-shadow: 0px 0px 130px 50px $color2;
-  
+
 }
 
 
@@ -436,10 +469,16 @@ body {
 }
 
 .blocks-page-overview {
-  width: 40rem;
   margin-top: 4rem;
 }
 
+.hashh {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  // max-width:1px;
+  max-width: 1px;
+}
 
 .kasBlockHeader {
   font-weight: bold;
@@ -449,6 +488,26 @@ body {
 #search-box-high {
   max-width: 40rem;
 }
+
+@keyframes spinIcon {
+  from {
+    transform: rotate(0);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.play-button {
+  animation-name: spinIcon;
+  animation-duration: 0.3s;
+}
+
+.play-button:hover {
+  color: $color2;
+}
+
 
 @import "./components/blockinfo.scss";
 @import "./components/addressinfo.scss";
