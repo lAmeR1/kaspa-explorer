@@ -78,6 +78,10 @@ const CBox = () => {
                     <td className="cardBoxElement">Total</td>
                     <td>28,600,000,000 KAS</td>
                 </tr>
+                <tr>
+                    <td className="cardBoxElement">Mined</td>
+                    <td>{(circCoins/28600000000*100).toFixed(2)} %</td>
+                </tr>
             </table>
         </div>
     </>
