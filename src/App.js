@@ -94,15 +94,6 @@ function App() {
   }
 
   useEffect(() => {
-
-
-    return () => {
-
-    };
-  }, [])
-
-
-  useEffect(() => {
     updatePrice()
 
     const intervalPrice = setInterval(() => {
@@ -182,16 +173,18 @@ function App() {
               </Navbar.Collapse>
             </Container>
           </Navbar>
-          <Container className="webpage" hidden={location.pathname == "/"}>
+          <div className="search-row">
+          <Container  className="webpage" hidden={location.pathname == "/"}>
             <Row><Col xs={12} className="">
               <Form onSubmit={search} className="w-100">
                 <InputGroup className="mt-4 mb-4 d-flex justify-content-center align-items-center">
                   <Form.Control className="bg-light text-dark shadow-none" name="searchbox" id="search-box-high" type="text" placeholder="kaspa:address / block / tx " />
-                  <Button type="submit" className="shadow-none searchButton" variant="secondary" ><i className='fa fa-search' /></Button>
+                  <Button type="submit" className="shadow-none searchButton" variant="dark"><i className='fa fa-search' /></Button>
                 </InputGroup>
               </Form>
             </Col></Row>
           </Container>
+          </div>
           <Routes>
             <Route path="/" element={<Dashboard />} />
             <Route path="/blocks" element={<BlocksPage />} />

@@ -63,6 +63,24 @@ body {
   }
 }
 
+.search-row {
+  background-color: rgba($color3, 0.6);
+}
+
+#search-box-high {
+  // max-width: 40rem;
+  // color: $color1 !important;
+  // background-color: $color5 !important;
+  width: 100%
+}
+
+.searchButton {
+  height: 100%;
+  background-color: $color5;
+  color: $color1;
+}
+
+
 .bigfont {
   color: $color1  !important;
   font-family: 'Righteous', sans-serif;
@@ -320,7 +338,7 @@ body {
   table-layout: fixed;
   width: 100%;
   color: $color5;
-  
+
 }
 
 @keyframes anim {
@@ -385,16 +403,7 @@ body {
   // width: 10px;
 }
 
-.searchBox {
 
-  max-width: 40rem;
-  width: 100%
-}
-
-
-.searchButton {
-  height: 100%;
-}
 
 .cardBox {
   color: #f3eef1;
@@ -460,11 +469,11 @@ body {
 }
 
 .hashh {
-  white-space: nowrap; 
-  text-overflow:ellipsis; 
-  overflow: hidden; 
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
   // max-width:1px;
-  max-width:1px;
+  max-width: 1px;
 }
 
 .kasBlockHeader {
