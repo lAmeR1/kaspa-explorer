@@ -25,6 +25,7 @@ import AddressInfoPage from './components/AddressInfo';
 import io from 'socket.io-client';
 import LastBlocksContext from './components/LastBlocksContext';
 import TxPage from './components/TxPage';
+import { NavLink } from 'react-router-dom';
 
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -159,15 +160,9 @@ function App() {
               <Navbar.Toggle aria-controls="responsive-navbar-nav" />
               <Navbar.Collapse id="responsive-navbar-nav">
                 <Nav className="me-auto">
-                  <LinkContainer to="/">
-                    <Nav.Link className="fs-5" onClick={closeMenuIfNeeded}>Dashboard</Nav.Link>
-                  </LinkContainer>
-                  <LinkContainer to="/blocks">
-                    <Nav.Link className="fs-5" onClick={closeMenuIfNeeded}>Blocks</Nav.Link>
-                  </LinkContainer>
-                  <LinkContainer to="/txs">
-                    <Nav.Link className="fs-5" onClick={closeMenuIfNeeded}>Transactions</Nav.Link>
-                  </LinkContainer>
+                  <Nav.Item><NavLink className="nav-link fs-5" onClick={closeMenuIfNeeded} to={"/"}>Dashboard</NavLink></Nav.Item>
+                  <Nav.Item><NavLink className="nav-link fs-5" onClick={closeMenuIfNeeded} to={"/blocks"}>Blocks</NavLink></Nav.Item>
+                  <Nav.Item><NavLink className="nav-link fs-5" onClick={closeMenuIfNeeded}  to={"/txs"}>Transactions</NavLink></Nav.Item>
                 </Nav>
                 <div className='ms-auto navbar-price'>${price} <span className="text-light">/ KAS</span></div>
               </Navbar.Collapse>
