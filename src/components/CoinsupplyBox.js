@@ -1,6 +1,5 @@
-import { Card, Container, Row, Col } from "react-bootstrap"
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCoins } from '@fortawesome/free-solid-svg-icons'
+import { faCoins } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useContext, useEffect, useState } from "react";
 import socketIOClient from 'socket.io-client';
 import { numberWithCommas } from "../helper";

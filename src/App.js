@@ -1,31 +1,20 @@
-import logo from './logo.svg';
 
-import { Navbar, Nav, Form, Button, Container, Row, Col, InputGroup, Card } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'font-awesome/css/font-awesome.min.css';
-import './App.scss';
-import BalanceModal from './components/BalanceModal';
 import { useEffect, useRef, useState } from 'react';
-import CoinsupplyBox from './components/CoinsupplyBox';
-import BlockDAGBox from './components/BlockDAG';
-import KaspadInfoBox from './components/KaspadInfoBox';
-import BlockDagVisualization from './components/BlockDagVisualization';
-import BlockOverview from './components/BlockOverview';
-import { Routes, Route, Link } from "react-router-dom";
-import Dashboard from './Dashboard';
-import BlockInfo from './components/BlockInfo';
-import { LinkContainer } from 'react-router-bootstrap';
+import { Button, Col, Container, Form, InputGroup, Nav, Navbar, Row } from 'react-bootstrap';
 import { useLocation, useNavigate } from 'react-router';
-import NotFound from './components/NotFound';
-import AddressInfo from './components/AddressInfo';
-import { FaDollarSign, FaSearch } from 'react-icons/fa';
-import BlocksPage from './components/BlocksPage';
-import PriceContext from './components/PriceContext';
-import AddressInfoPage from './components/AddressInfo';
+import { Link, NavLink, Route, Routes } from "react-router-dom";
 import io from 'socket.io-client';
+import './App.scss';
+import AddressInfoPage from './components/AddressInfo';
+import BlockInfo from './components/BlockInfo';
+import BlocksPage from './components/BlocksPage';
 import LastBlocksContext from './components/LastBlocksContext';
+import NotFound from './components/NotFound';
+import PriceContext from './components/PriceContext';
 import TxPage from './components/TxPage';
-import { NavLink } from 'react-router-dom';
+import Dashboard from './Dashboard';
 
 
 document.addEventListener("DOMContentLoaded", function () {

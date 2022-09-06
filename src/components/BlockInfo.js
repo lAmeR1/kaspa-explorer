@@ -1,16 +1,13 @@
-import { Col, Container, Nav, OverlayTrigger, Row, Spinner, Tab, Tabs, Tooltip } from "react-bootstrap";
-import { useParams } from "react-router";
-import { useContext, useEffect, useState } from 'react'
-import { getBlock } from '../kaspa-api-client.js'
-import { Link } from "react-router-dom";
 import moment from "moment";
-import PriceContext from "./PriceContext.js";
-import { FaCopy } from "react-icons/fa";
-import CopyButton from "./CopyButton.js";
-import { NavLink } from "react-router-dom";
-import { LinkContainer } from "react-router-bootstrap";
+import { useContext, useEffect, useState } from 'react';
+import { Col, Container, OverlayTrigger, Row, Tooltip } from "react-bootstrap";
 import { BiNetworkChart } from "react-icons/bi";
+import { useParams } from "react-router";
+import { Link } from "react-router-dom";
 import { numberWithCommas } from "../helper.js";
+import { getBlock } from '../kaspa-api-client.js';
+import CopyButton from "./CopyButton.js";
+import PriceContext from "./PriceContext.js";
 
 
 
@@ -138,8 +135,10 @@ const BlockInfo = () => {
                                                     <div className="utxo-header mt-3">FROM</div>
                                                     <Container className="utxo-value">
                                                         {(tx.inputs || []).map((txInput) => <Row>
-                                                            <Col xs={12} sm={8} md={9} lg={9}  xl={8} xxl={7} className="text-truncate">
-                                                                <a className="blockinfo-link" href={`https://katnip.kaspad.net/tx/${txInput.previousOutpoint.transactionId}`} target="_blank">TX {txInput.previousOutpoint.transactionId}</a>
+                                                            <Col xs={12} sm={8} md={9} lg={9} xl={8} xxl={7} className="text-truncate">
+                                                                <a className="blockinfo-link" href={`https://katnip.kaspad.net/tx/${txInput.previousOutpoint.transactionId}`} target="_blank">
+                                                                    TX #{txInput.previousOutpoint.index || 0} {txInput.previousOutpoint.transactionId}
+                                                                </a>
                                                             </Col><Col className="me-auto" xs={12} sm={4} md={2}></Col>
                                                         </Row>)}
                                                         {!tx.inputs ? <Row><Col xs={12} sm={8} md="auto" className="text-truncate">COINBASE (New coins)</Col></Row> : <></>}
@@ -151,13 +150,13 @@ const BlockInfo = () => {
                                                     <div className="utxo-header mt-1">TO</div>
                                                     <Container className="utxo-value" fluid>
                                                         {(tx.outputs || []).map((txOutput) => <Row>
-                                                            <Col xs={12} sm={8} md={9} lg={9}  xl={8} xxl={7} className="text-truncate">
-                                                            <Link to={`/addresses/${txOutput.verboseData.scriptPublicKeyAddress}`} className="blockinfo-link">
-                                                                {txOutput.verboseData.scriptPublicKeyAddress}
+                                                            <Col xs={12} sm={8} md={9} lg={9} xl={8} xxl={7} className="text-truncate">
+                                                                <Link to={`/addresses/${txOutput.verboseData.scriptPublicKeyAddress}`} className="blockinfo-link">
+                                                                    {txOutput.verboseData.scriptPublicKeyAddress}
                                                                 </Link>
 
                                                                 <CopyButton text={txOutput.verboseData.scriptPublicKeyAddress} />
-                                                            </Col><Col className="block-utxo-amount" xs={12} sm={4} md={3}>{txOutput.amount / 100000000}&nbsp;KAS</Col>
+                                                            </Col><Col className="block-utxo-amount" xs={12} sm={4} md={3}>+{numberWithCommas(txOutput.amount / 100000000)}&nbsp;KAS</Col>
                                                         </Row>)}
                                                     </Container>
                                                 </Col>

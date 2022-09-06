@@ -1,5 +1,4 @@
 import { Button, Modal } from "react-bootstrap";
-import { useState } from "react";
 
 
 const BalanceModal = (props) => {

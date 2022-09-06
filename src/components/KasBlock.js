@@ -1,4 +1,4 @@
-import { faSackXmark, faHashtag, faCube } from '@fortawesome/free-solid-svg-icons'
+import { faCube, faHashtag, faSackXmark } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const KasBlock = (props) => {
