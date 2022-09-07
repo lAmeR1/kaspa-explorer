@@ -53,6 +53,7 @@ function Dashboard() {
               <div className="bigfont">
                 KASPA<br />EXPLORER
               </div>
+              <div className="beta fs-1">BETA</div>
             </Col>
           </Row>
           <Row>

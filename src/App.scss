@@ -47,7 +47,7 @@ body {
 .navbar-price {
   font-family: Rubik;
   color: $color2;
-  font-size: 1rem;
+  font-size: 1.15rem;
   padding: 0rem 2rem;
 }
 
@@ -83,9 +83,25 @@ body {
 }
 
 .beta {
-  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  font-family: Righteous, Rubik, 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+  font-stretch: 1.2;
   color: $color2;
+  opacity: 0;
+  animation: appear 1s linear;
+  animation-fill-mode: forwards;
 }
+
+@keyframes appear {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+
 
 .searchButton {
   height: 100%;
