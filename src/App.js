@@ -132,6 +132,7 @@ function App() {
                     <div className="navbar-brand">
                       <img className="shake" src="/k-icon-glow.png" style={{ "marginRight": ".5rem", width: "4rem", height: "4rem" }} />
                       <div className="navbar-brand-text text-start">KASPA<br />EXPLORER</div>
+                      <div className="beta">Beta</div>
                     </div>
                   </Link>
                 </Navbar.Brand>
@@ -153,7 +154,7 @@ function App() {
               <Row><Col xs={12}>
                 <Form onSubmit={search} className="">
                   <InputGroup className="mt-4 mb-4 search-box-group">
-                    <Form.Control className="d-inline-block bg-light text-dark shadow-none" name="searchbox" id="search-box-high" type="text" placeholder="kaspa:address / block / tx " />
+                    <Form.Control className="d-inline-block bg-light text-dark shadow-none" name="searchbox" id="search-box-high" type="text" placeholder="Kaspa:address or block" />
                     <Button type="submit" className="shadow-none searchButton" variant="dark"><i className='fa fa-search' /></Button>
                   </InputGroup>
                 </Form>
