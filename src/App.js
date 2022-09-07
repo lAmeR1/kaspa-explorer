@@ -35,15 +35,6 @@ const socket = io("wss://api.kaspa.org", {
 });
 
 function App() {
-
-  const [show, setShow] = useState(false);
-
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
-
-  const [balance, setBalance] = useState(0);
-  const [address, setAddress] = useState("kaspa:");
-
   const [price, setPrice] = useState("")
 
   const [blocks, setBlocks] = useState([]);
@@ -151,7 +142,7 @@ function App() {
                 <Nav className="me-auto">
                   <Nav.Item><NavLink className="nav-link fs-5" onClick={closeMenuIfNeeded} to={"/"}>Dashboard</NavLink></Nav.Item>
                   <Nav.Item><NavLink className="nav-link fs-5" onClick={closeMenuIfNeeded} to={"/blocks"}>Blocks</NavLink></Nav.Item>
-                  <Nav.Item><NavLink className="nav-link fs-5" onClick={closeMenuIfNeeded}  to={"/txs"}>Transactions</NavLink></Nav.Item>
+                  <Nav.Item><NavLink className="nav-link fs-5" onClick={closeMenuIfNeeded} to={"/txs"}>Transactions</NavLink></Nav.Item>
                 </Nav>
                 <div className='ms-auto navbar-price'>${price} <span className="text-light">/ KAS</span></div>
               </Navbar.Collapse>
@@ -160,12 +151,12 @@ function App() {
           <div className="search-row">
             <Container className="webpage" hidden={location.pathname == "/"}>
               <Row><Col xs={12}>
-                  <Form onSubmit={search} className="">
-                    <InputGroup className="mt-4 mb-4 search-box-group">
-                      <Form.Control className="d-inline-block bg-light text-dark shadow-none" name="searchbox" id="search-box-high" type="text" placeholder="kaspa:address / block / tx " />
-                      <Button type="submit" className="shadow-none searchButton" variant="dark"><i className='fa fa-search' /></Button>
-                    </InputGroup>
-                  </Form>
+                <Form onSubmit={search} className="">
+                  <InputGroup className="mt-4 mb-4 search-box-group">
+                    <Form.Control className="d-inline-block bg-light text-dark shadow-none" name="searchbox" id="search-box-high" type="text" placeholder="kaspa:address / block / tx " />
+                    <Button type="submit" className="shadow-none searchButton" variant="dark"><i className='fa fa-search' /></Button>
+                  </InputGroup>
+                </Form>
               </Col></Row>
             </Container>
           </div>

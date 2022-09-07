@@ -141,7 +141,7 @@ const AddressInfo = () => {
                     </Col>
                     <Col sm={6} md={4}>
                         <div className="utxo-header mt-3">amount</div>
-                        <div className="utxo-value d-flex flex-row"><div className="utxo-amount">+{x.utxoEntry.amount / 100000000} KAS</div></div>
+                        <div className="utxo-value d-flex flex-row"><div className="utxo-amount">+{numberWithCommas(x.utxoEntry.amount / 100000000)} KAS</div></div>
                     </Col>
                     <Col sm={6} md={4}>
                         <div className="utxo-header mt-3">value</div>
