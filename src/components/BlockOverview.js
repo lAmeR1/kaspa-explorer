@@ -1,5 +1,4 @@
 import { useContext, useEffect, useRef, useState } from "react";
-import { getNewBlocks } from './blocksupdater'
 import { FaDiceD20, FaPause, FaPlay } from 'react-icons/fa';
 import { useNavigate } from "react-router-dom";
 import LastBlocksContext from "./LastBlocksContext";

@@ -1,31 +1,20 @@
-import logo from './logo.svg';
 
-import { Navbar, Nav, Form, Button, Container, Row, Col, InputGroup, Card } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'font-awesome/css/font-awesome.min.css';
-import './App.scss';
-import BalanceModal from './components/BalanceModal';
 import { useEffect, useRef, useState } from 'react';
-import CoinsupplyBox from './components/CoinsupplyBox';
-import BlockDAGBox from './components/BlockDAG';
-import KaspadInfoBox from './components/KaspadInfoBox';
-import BlockDagVisualization from './components/BlockDagVisualization';
-import BlockOverview from './components/BlockOverview';
-import { Routes, Route, Link } from "react-router-dom";
-import Dashboard from './Dashboard';
-import BlockInfo from './components/BlockInfo';
-import { LinkContainer } from 'react-router-bootstrap';
+import { Button, Col, Container, Form, InputGroup, Nav, Navbar, Row } from 'react-bootstrap';
 import { useLocation, useNavigate } from 'react-router';
-import NotFound from './components/NotFound';
-import AddressInfo from './components/AddressInfo';
-import { FaDollarSign, FaSearch } from 'react-icons/fa';
-import BlocksPage from './components/BlocksPage';
-import PriceContext from './components/PriceContext';
-import AddressInfoPage from './components/AddressInfo';
+import { Link, NavLink, Route, Routes } from "react-router-dom";
 import io from 'socket.io-client';
+import './App.scss';
+import AddressInfoPage from './components/AddressInfo';
+import BlockInfo from './components/BlockInfo';
+import BlocksPage from './components/BlocksPage';
 import LastBlocksContext from './components/LastBlocksContext';
+import NotFound from './components/NotFound';
+import PriceContext from './components/PriceContext';
 import TxPage from './components/TxPage';
-import { NavLink } from 'react-router-dom';
+import Dashboard from './Dashboard';
 
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -46,15 +35,6 @@ const socket = io("wss://api.kaspa.org", {
 });
 
 function App() {
-
-  const [show, setShow] = useState(false);
-
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
-
-  const [balance, setBalance] = useState(0);
-  const [address, setAddress] = useState("kaspa:");
-
   const [price, setPrice] = useState("")
 
   const [blocks, setBlocks] = useState([]);
@@ -152,6 +132,7 @@ function App() {
                     <div className="navbar-brand">
                       <img className="shake" src="/k-icon-glow.png" style={{ "marginRight": ".5rem", width: "4rem", height: "4rem" }} />
                       <div className="navbar-brand-text text-start">KASPA<br />EXPLORER</div>
+                      <div className="beta">Beta</div>
                     </div>
                   </Link>
                 </Navbar.Brand>
@@ -162,7 +143,7 @@ function App() {
                 <Nav className="me-auto">
                   <Nav.Item><NavLink className="nav-link fs-5" onClick={closeMenuIfNeeded} to={"/"}>Dashboard</NavLink></Nav.Item>
                   <Nav.Item><NavLink className="nav-link fs-5" onClick={closeMenuIfNeeded} to={"/blocks"}>Blocks</NavLink></Nav.Item>
-                  <Nav.Item><NavLink className="nav-link fs-5" onClick={closeMenuIfNeeded}  to={"/txs"}>Transactions</NavLink></Nav.Item>
+                  <Nav.Item><NavLink className="nav-link fs-5" onClick={closeMenuIfNeeded} to={"/txs"}>Transactions</NavLink></Nav.Item>
                 </Nav>
                 <div className='ms-auto navbar-price'>${price} <span className="text-light">/ KAS</span></div>
               </Navbar.Collapse>
@@ -171,12 +152,12 @@ function App() {
           <div className="search-row">
             <Container className="webpage" hidden={location.pathname == "/"}>
               <Row><Col xs={12}>
-                  <Form onSubmit={search} className="">
-                    <InputGroup className="mt-4 mb-4 search-box-group">
-                      <Form.Control className="d-inline-block bg-light text-dark shadow-none" name="searchbox" id="search-box-high" type="text" placeholder="kaspa:address / block / tx " />
-                      <Button type="submit" className="shadow-none searchButton" variant="dark"><i className='fa fa-search' /></Button>
-                    </InputGroup>
-                  </Form>
+                <Form onSubmit={search} className="">
+                  <InputGroup className="mt-4 mb-4 search-box-group">
+                    <Form.Control className="d-inline-block bg-light text-dark shadow-none" name="searchbox" id="search-box-high" type="text" placeholder="Kaspa:address or block" />
+                    <Button type="submit" className="shadow-none searchButton" variant="dark"><i className='fa fa-search' /></Button>
+                  </InputGroup>
+                </Form>
               </Col></Row>
             </Container>
           </div>

@@ -1,13 +1,13 @@
-import { Button, ButtonGroup, Col, Container, Pagination, Row, Spinner, Table } from "react-bootstrap";
-import { useParams } from "react-router";
-import { useContext, useEffect, useState } from 'react'
-import { getAddressBalance, getAddressUtxos, getBlock, getBlockdagInfo } from '../kaspa-api-client.js'
 import moment from "moment";
-import PriceContext from "./PriceContext.js";
-import CopyButton from "./CopyButton.js";
-import UtxoPagination from "./UtxoPagination.js";
-import { numberWithCommas } from "../helper"
+import { useContext, useEffect, useState } from 'react';
+import { Col, Container, Row, Spinner } from "react-bootstrap";
 import { BiGhost } from "react-icons/bi";
+import { useParams } from "react-router";
+import { numberWithCommas } from "../helper";
+import { getAddressBalance, getAddressUtxos, getBlock, getBlockdagInfo } from '../kaspa-api-client.js';
+import CopyButton from "./CopyButton.js";
+import PriceContext from "./PriceContext.js";
+import UtxoPagination from "./UtxoPagination.js";
 
 const AddressInfoPage = () => {
     const { addr } = useParams();
@@ -104,7 +104,7 @@ const AddressInfo = () => {
             <Row>
                 <Col sm={6} md={4}>
                     <div className="addressinfo-header mt-4">balance</div>
-                    <div className="utxo-value d-flex"><div className="utxo-amount">{numberWithCommas(addressBalance / 100000000)} KAS</div></div>
+                    <div className="utxo-value d-flex"><div className="utxo-amount">+{numberWithCommas(addressBalance / 100000000)} KAS</div></div>
                 </Col>
                 <Col sm={6} md={4}>
                     <div className="addressinfo-header mt-4 ms-sm-5">UTXOs count</div>
@@ -141,7 +141,7 @@ const AddressInfo = () => {
                     </Col>
                     <Col sm={6} md={4}>
                         <div className="utxo-header mt-3">amount</div>
-                        <div className="utxo-value d-flex flex-row"><div className="utxo-amount">{x.utxoEntry.amount / 100000000} KAS</div></div>
+                        <div className="utxo-value d-flex flex-row"><div className="utxo-amount">+{numberWithCommas(x.utxoEntry.amount / 100000000)} KAS</div></div>
                     </Col>
                     <Col sm={6} md={4}>
                         <div className="utxo-header mt-3">value</div>

@@ -1,8 +1,7 @@
-import { faRotate } from "@fortawesome/free-solid-svg-icons"
 import { useState } from "react"
-import { FaCheck, FaCopy, FaClipboard, FaClipboardCheck } from "react-icons/fa"
-import { BiCopy, BiCheckCircle } from "react-icons/bi"
 import { OverlayTrigger, Tooltip } from "react-bootstrap"
+import { BiCopy } from "react-icons/bi"
+import { FaCheck } from "react-icons/fa"
 
 export default (props) => {
 

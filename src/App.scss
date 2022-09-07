@@ -47,7 +47,7 @@ body {
 .navbar-price {
   font-family: Rubik;
   color: $color2;
-  font-size: 1rem;
+  font-size: 1.15rem;
   padding: 0rem 2rem;
 }
 
@@ -82,6 +82,27 @@ body {
   width: 100%
 }
 
+.beta {
+  font-family: Righteous, Rubik, 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+  font-stretch: 1.2;
+  color: $color2;
+  opacity: 0;
+  animation: appear 1s linear;
+  animation-fill-mode: forwards;
+}
+
+@keyframes appear {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+
+
 .searchButton {
   height: 100%;
   background-color: $color5;
@@ -103,7 +124,7 @@ body {
   // letter-spacing: 0.01em;
   margin-top: 1rem;
   // margin-left: 8rem;
-  text-shadow: -20px -10px 80px $color1;
+  text-shadow: -20px -10px 80px rgba($color1, 0.8);
   display: flex;
   flex-direction: column;
   justify-content: start;
@@ -245,7 +266,7 @@ body {
 
 .row1 {
   color: $color3;
-  background-color: rgba($color3, 0.7);
+  background-color: rgba($color3, 0.5);
   border-bottom: 2px solid $color1;
   padding: 2rem;
   display: flex;
@@ -460,12 +481,12 @@ body {
   /* transform:translate(-50%, -50%); */
   width: 0px;
   height: 0px;
-  box-shadow: 0px 0px 130px 33px $color2;
+  box-shadow: 0px 0px 130px 30px $color2;
   z-index: 2;
 }
 
 .cardBox:hover .cardLight {
-  box-shadow: 0px 0px 130px 50px $color2;
+  box-shadow: 0px 0px 130px 45px $color2;
 
 }
 

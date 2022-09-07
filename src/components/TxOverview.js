@@ -1,14 +1,12 @@
 import { useContext, useEffect, useRef, useState } from "react";
-import { getNewBlocks } from './blocksupdater'
+import { OverlayTrigger, Tooltip } from "react-bootstrap";
+import { BiHide } from "react-icons/bi";
+import { FaPause, FaPlay } from "react-icons/fa";
 import { RiMoneyDollarCircleFill } from 'react-icons/ri';
-import { HiPlayPause } from 'react-icons/hi'
 import { useNavigate } from "react-router-dom";
 import io from 'socket.io-client';
-import LastBlocksContext from "./LastBlocksContext";
-import { FaPause, FaPlay } from "react-icons/fa";
-import { BiHide, BiRotateLeft } from "react-icons/bi";
-import { OverlayTrigger, Tooltip } from "react-bootstrap";
 import { numberWithCommas } from "../helper";
+import LastBlocksContext from "./LastBlocksContext";
 
 const socket = io("wss://api.kaspa.org", {
     path: '/ws/socket.io'

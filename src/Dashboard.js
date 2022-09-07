@@ -1,18 +1,14 @@
-import logo from './logo.svg';
-
-import { Form, Button, Container, Row, Col, InputGroup } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'font-awesome/css/font-awesome.min.css';
+import { useState } from 'react';
+import { Button, Col, Container, Form, InputGroup, Row } from 'react-bootstrap';
+import { useNavigate } from 'react-router';
 import './App.scss';
 import BalanceModal from './components/BalanceModal';
-import { useState } from 'react';
-import CoinsupplyBox from './components/CoinsupplyBox';
 import BlockDAGBox from './components/BlockDAG';
-import KaspadInfoBox from './components/KaspadInfoBox';
-import BlockDagVisualization from './components/BlockDagVisualization';
 import BlockOverview from './components/BlockOverview';
-import { Routes, Route, Link } from "react-router-dom";
-import { useNavigate } from 'react-router';
+import CoinsupplyBox from './components/CoinsupplyBox';
+import KaspadInfoBox from './components/KaspadInfoBox';
 import TxOverview from './components/TxOverview';
 
 
@@ -57,13 +53,14 @@ function Dashboard() {
               <div className="bigfont">
                 KASPA<br />EXPLORER
               </div>
+              <div className="beta fs-1">BETA</div>
             </Col>
           </Row>
           <Row>
             <Col xs={11}>
               <Form onSubmit={search}>
                 <InputGroup className="ms-md-5 mt-5 me-5 dashboard-search-box">
-                  <Form.Control className="bg-light text-dark shadow-none" name="searchInput" type="text" placeholder="kaspa:address / block / tx " />
+                  <Form.Control className="bg-light text-dark shadow-none" name="searchInput" type="text" placeholder="Kaspa:address or block" />
                   <Button type="submit" className="shadow-none searchButton" variant="dark" ><i className='fa fa-search' /></Button>
                 </InputGroup>
               </Form>
