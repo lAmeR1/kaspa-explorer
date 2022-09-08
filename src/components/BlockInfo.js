@@ -1,6 +1,6 @@
 import moment from "moment";
 import { useContext, useEffect, useState } from 'react';
-import { Col, Container, OverlayTrigger, Row, Tooltip } from "react-bootstrap";
+import { Col, Container, OverlayTrigger, Row, Spinner, Tooltip } from "react-bootstrap";
 import { BiNetworkChart } from "react-icons/bi";
 import { useParams } from "react-router";
 import { Link } from "react-router-dom";
@@ -9,14 +9,21 @@ import { getBlock } from '../kaspa-api-client.js';
 import CopyButton from "./CopyButton.js";
 import PriceContext from "./PriceContext.js";
 
-
+const BlockLamp = (props) => {
+    return <OverlayTrigger overlay={<Tooltip>It is a {props.isBlue ? "blue" : "red"} block!</Tooltip>}>
+        <div className={`ms-3 block-lamp-${props.isBlue ? "blue" : "red"}`} />
+    </OverlayTrigger>
+}
 
 
 const BlockInfo = () => {
     const { id } = useParams();
     const [blockInfo, setBlockInfo] = useState()
+    const [isBlueBlock, setIsBlueBlock] = useState(null)
     const [error, setError] = useState(false)
     const { price } = useContext(PriceContext);
+
+    const [blockColor, setBlockColor] = useState()
 
     useEffect(() => {
         setError(false);
@@ -32,6 +39,33 @@ const BlockInfo = () => {
             )
     }, [id])
 
+
+    useEffect(() => {
+        setIsBlueBlock(null);
+        if (!!blockInfo) {
+            async function isBlueBlock(startBlocks) {
+                var childListGlob = startBlocks
+
+                while (childListGlob.length > 0) {
+                    const hash = childListGlob.shift()
+                    const block = await getBlock(hash)
+                    if (block.verboseData.isChainBlock) {
+                        console.log("found chain block")
+                        return block.verboseData.mergeSetBluesHashes.includes(blockInfo.verboseData.hash)
+                    } else {
+                        // console.log("PUSH", block.verboseData.childrenHashes)
+                        // childListGlob.push(x.verbosedata.childrenHashes)
+                    }
+
+                }
+            }
+
+            isBlueBlock(blockInfo.verboseData.childrenHashes)
+                .then((res) => setIsBlueBlock(res))
+                .catch((err) => console.log("ERROR", err))
+        }
+    }, [blockInfo])
+
     return <div className="blockinfo-page">
         <Container className="webpage" fluid>
             <Row>
@@ -41,7 +75,7 @@ const BlockInfo = () => {
 
                     {!!blockInfo ?
                         <div className="blockinfo-content">
-                            <div className="blockinfo-header"><h4>block details</h4></div>
+                            <div className="blockinfo-header"><h4 className="d-flex flex-row align-items-center">block details {isBlueBlock === null ? <Spinner className="ms-3" animation="grow" /> : <BlockLamp isBlue={isBlueBlock} />}</h4></div>
                             {/* <font className="blockinfo-header-id">{id.substring(0, 20)}...</font> */}
                             <Container className="blockinfo-table" fluid>
                                 <Row className="blockinfo-row">
@@ -54,6 +88,7 @@ const BlockInfo = () => {
                                             </span>
                                         </OverlayTrigger>
                                     </Col>
+                                    {/* {isBlue ? "BLUE" : "RED"} */}
                                 </Row>
                                 <Row className="blockinfo-row">
                                     <Col className="blockinfo-key" lg={2}>Blue Score</Col>
