@@ -155,7 +155,7 @@ const BlockInfo = () => {
                                 </Row>
                                 <Row className="blockinfo-row">
                                     <Col className="blockinfo-key" lg={2}>Blue Work</Col>
-                                    <Col className="blockinfo-value" lg={10}>{blockInfo.header.blueWork}</Col>
+                                    <Col className="blockinfo-value" lg={10}>{blockInfo.header.blueWork} ({parseInt(blockInfo.header.blueWork, 16)})</Col>
                                 </Row>
                                 <Row className="blockinfo-row">
                                     <Col className="blockinfo-key" lg={2}>Pruning Point</Col>
