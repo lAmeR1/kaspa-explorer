@@ -1,3 +1,5 @@
+/* global BigInt */
+
 import moment from "moment";
 import { useContext, useEffect, useState } from 'react';
 import { Col, Container, OverlayTrigger, Row, Spinner, Tooltip } from "react-bootstrap";
@@ -45,6 +47,7 @@ const BlockInfo = () => {
 
 
     useEffect(() => {
+
         setIsBlueBlock(null);
         if (!!blockInfo) {
             async function isBlueBlock(startBlocks) {
@@ -54,7 +57,6 @@ const BlockInfo = () => {
                     const hash = childListGlob.shift()
                     const block = await getBlock(hash)
                     if (block.verboseData.isChainBlock) {
-                        console.log("found chain block")
                         return block.verboseData.mergeSetBluesHashes.includes(blockInfo.verboseData.hash)
                     } else {
                         // console.log("PUSH", block.verboseData.childrenHashes)
@@ -64,14 +66,13 @@ const BlockInfo = () => {
                 }
             }
 
-            isBlueBlock(blockInfo.verboseData.childrenHashes)
+            isBlueBlock([...blockInfo.verboseData.childrenHashes])
                 .then((res) => setIsBlueBlock(res))
                 .catch((err) => console.log("ERROR", err))
 
 
 
             const [address, miner] = parsePayload(blockInfo.transactions[0].payload);
-            console.log("here", address, miner);
             setMinerName(miner);
             setMinerAddress(address);
         }
@@ -129,7 +130,7 @@ const BlockInfo = () => {
                                     <Col className="blockinfo-key" lg={2}>Children</Col>
                                     <Col className="blockinfo-value" lg={10}>
                                         <ul>
-                                            {blockInfo.verboseData.childrenHashes.map(x => <li><Link className="blockinfo-link" to={`/blocks/${x}`}>{x}</Link></li>)}
+                                            {blockInfo.verboseData.childrenHashes.map(child => <li><Link className="blockinfo-link" to={`/blocks/${child}`}>{child}</Link></li>)}
                                         </ul>
                                     </Col>
                                 </Row>
@@ -155,7 +156,7 @@ const BlockInfo = () => {
                                 </Row>
                                 <Row className="blockinfo-row">
                                     <Col className="blockinfo-key" lg={2}>Blue Work</Col>
-                                    <Col className="blockinfo-value" lg={10}>{blockInfo.header.blueWork} ({parseInt(blockInfo.header.blueWork, 16)})</Col>
+                                    <Col className="blockinfo-value" lg={10}>{blockInfo.header.blueWork} ({BigInt(`0x${blockInfo.header.blueWork}`).toString()})</Col>
                                 </Row>
                                 <Row className="blockinfo-row">
                                     <Col className="blockinfo-key" lg={2}>Pruning Point</Col>
