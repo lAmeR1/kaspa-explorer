@@ -4,6 +4,7 @@ import { Col, Container, OverlayTrigger, Row, Spinner, Tooltip } from "react-boo
 import { BiNetworkChart } from "react-icons/bi";
 import { useParams } from "react-router";
 import { Link } from "react-router-dom";
+import { parsePayload } from "../bech32.js";
 import { numberWithCommas } from "../helper.js";
 import { getBlock } from '../kaspa-api-client.js';
 import CopyButton from "./CopyButton.js";
@@ -19,6 +20,8 @@ const BlockLamp = (props) => {
 const BlockInfo = () => {
     const { id } = useParams();
     const [blockInfo, setBlockInfo] = useState()
+    const [minerName, setMinerName] = useState()
+    const [minerAddress, setMinerAddress] = useState()
     const [isBlueBlock, setIsBlueBlock] = useState(null)
     const [error, setError] = useState(false)
     const { price } = useContext(PriceContext);
@@ -38,6 +41,7 @@ const BlockInfo = () => {
             }
             )
     }, [id])
+
 
 
     useEffect(() => {
@@ -63,6 +67,13 @@ const BlockInfo = () => {
             isBlueBlock(blockInfo.verboseData.childrenHashes)
                 .then((res) => setIsBlueBlock(res))
                 .catch((err) => console.log("ERROR", err))
+
+
+
+            const [address, miner] = parsePayload(blockInfo.transactions[0].payload);
+            console.log("here", address, miner);
+            setMinerName(miner);
+            setMinerAddress(address);
         }
     }, [blockInfo])
 
@@ -146,9 +157,13 @@ const BlockInfo = () => {
                                     <Col className="blockinfo-key" lg={2}>Blue Work</Col>
                                     <Col className="blockinfo-value" lg={10}>{blockInfo.header.blueWork}</Col>
                                 </Row>
-                                <Row className="blockinfo-row border-bottom-0">
+                                <Row className="blockinfo-row">
                                     <Col className="blockinfo-key" lg={2}>Pruning Point</Col>
                                     <Col className="blockinfo-value" lg={10}><Link className="blockinfo-link" to={`/blocks/${blockInfo.header.pruningPoint}`}>{blockInfo.header.pruningPoint}</Link></Col>
+                                </Row>
+                                <Row className="blockinfo-row border-bottom-0">
+                                    <Col className="blockinfo-key" lg={2}>Miner Info</Col>
+                                    <Col className="blockinfo-value" lg={10}><Link className="blockinfo-link" to={`/addresses/${minerAddress}`}>{minerAddress}</Link><div>{minerName}</div></Col>
                                 </Row>
                             </Container>
                         </div> : <></>}
