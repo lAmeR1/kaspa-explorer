@@ -115,6 +115,14 @@ const BlockInfo = () => {
                                     </Col>
                                 </Row>
                                 <Row className="blockinfo-row">
+                                    <Col className="blockinfo-key" lg={2}>Children</Col>
+                                    <Col className="blockinfo-value" lg={10}>
+                                        <ul>
+                                            {blockInfo.verboseData.childrenHashes.map(x => <li><Link className="blockinfo-link" to={`/blocks/${x}`}>{x}</Link></li>)}
+                                        </ul>
+                                    </Col>
+                                </Row>
+                                <Row className="blockinfo-row">
                                     <Col className="blockinfo-key" lg={2}>Merkle Root</Col>
                                     <Col className="blockinfo-value" lg={10}>{blockInfo.header.hashMerkleRoot}</Col>
                                 </Row>
