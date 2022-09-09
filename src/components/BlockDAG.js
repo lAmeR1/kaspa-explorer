@@ -1,6 +1,5 @@
-import { Card, Container, Row, Col } from "react-bootstrap"
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCoins, faDiagramProject } from '@fortawesome/free-solid-svg-icons'
+import { faDiagramProject } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useEffect, useState } from "react";
 import { io } from "socket.io-client";
 
@@ -13,7 +12,7 @@ const BlockDAGBox = () => {
     const [data, setData] = useState({});
     const [isConnected, setIsConnected] = useState(false);
 
-    const [blockCount, setBlockCount] = useState("");
+    const [blockCount, setBlockCount] = useState();
     const [headerCount, setHeaderCount] = useState("");
     const [virtualDaaScore, setVirtualDaaScore] = useState("");
     const [hashrate, setHashrate] = useState("");
@@ -32,7 +31,7 @@ const BlockDAGBox = () => {
             setBlockCount(data.blockCount)
             setHeaderCount(data.headerCount)
             setVirtualDaaScore(data.virtualDaaScore)
-            setHashrate((data.difficulty*2 / 1000000000000).toFixed(2))
+            setHashrate((data.difficulty * 2 / 1000000000000).toFixed(2))
         })
 
         // join room to get updates
@@ -52,10 +51,10 @@ const BlockDAGBox = () => {
             { opacity: '1' },
             { opacity: '0.6' },
             { opacity: '1' },
-          ], {
+        ], {
             // timing options
             duration: 300
-          });
+        });
     }, [blockCount])
 
     useEffect((e) => {
@@ -64,10 +63,10 @@ const BlockDAGBox = () => {
             { opacity: '1' },
             { opacity: '0.6' },
             { opacity: '1' },
-          ], {
+        ], {
             // timing options
             duration: 300
-          });
+        });
     }, [headerCount])
 
     useEffect((e) => {
@@ -76,10 +75,10 @@ const BlockDAGBox = () => {
             { opacity: '1' },
             { opacity: '0.6' },
             { opacity: '1' },
-          ], {
+        ], {
             // timing options
             duration: 300
-          });
+        });
     }, [virtualDaaScore])
 
     useEffect((e) => {
@@ -88,10 +87,10 @@ const BlockDAGBox = () => {
             { opacity: '1' },
             { opacity: '0.6' },
             { opacity: '1' },
-          ], {
+        ], {
             // timing options
             duration: 300
-          });
+        });
     }, [hashrate])
 
 
