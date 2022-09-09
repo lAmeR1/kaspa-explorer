@@ -194,6 +194,11 @@
     border-radius: .4rem;
 }
 
+.table-timestamp {
+    word-wrap: normal;
+    flex-wrap: nowrap;
+}
+
 //  .utxo-amount::before {
 //     content: "+";
 
