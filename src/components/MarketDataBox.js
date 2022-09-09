@@ -57,7 +57,7 @@ const MarketDataBox = () => {
 
 
     return <>
-        <div className="cardBox mx-0 mx-sm-5">
+        <div className="cardBox mx-0">
             <table>
                 <tr>
                     <td colspan='2' className="text-center" style={{ "fontSize": "4.5rem" }}>
@@ -72,7 +72,7 @@ const MarketDataBox = () => {
                 </tr>
                 <tr>
                     <td className="cardBoxElement">Price</td>
-                    <td className="utxo-value">$ {price} / KAS</td>
+                    <td>$ {price} / KAS</td>
                 </tr>
                 <tr>
                     <td style={{fontSize: "small"}} className="cardBoxElement" align="right">1h %</td>
@@ -97,15 +97,11 @@ const MarketDataBox = () => {
                 </tr>
                 <tr>
                     <td className="cardBoxElement">Volume</td>
-                    <td className="utxo-value">$ {numberWithCommas(marketData?.total_volume?.usd)}</td>
+                    <td>$ {numberWithCommas(marketData?.total_volume?.usd)}</td>
                 </tr>
                 <tr>
                     <td className="cardBoxElement">MCAP</td>
-                    <td className="utxo-value">$ {(circCoins * price / 1000000).toFixed(2)} M <span className="rank">Rank #{marketData?.market_cap_rank}</span></td>
-                </tr>
-                <tr>
-                    <td className="cardBoxElement"></td>
-                    <td className="utxo-value"></td>
+                    <td>$ {(circCoins * price / 1000000).toFixed(2)} M <span className="rank">Rank #{marketData?.market_cap_rank}</span></td>
                 </tr>
             </table>
         </div>

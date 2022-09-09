@@ -67,7 +67,7 @@ const CBox = () => {
 
 
     return <>
-        <div className="cardBox mx-0 mx-sm-5">
+        <div className="cardBox mx-0">
             <table>
                 <tr>
                     <td colspan='2' className="text-center" style={{ "fontSize": "4rem" }}>
@@ -84,21 +84,21 @@ const CBox = () => {
                     <td className="cardBoxElement">
                         Circulating</td>
                     <td>
-                        <div id="coins" className="utxo-value">{numberWithCommas(circCoins)} KAS
+                        <div id="coins">{numberWithCommas(circCoins)} KAS
                         </div>
                     </td>
                 </tr>
                 <tr>
                     <td className="cardBoxElement">Total <span className="approx">(approx.)</span></td>
-                    <td className="utxo-value">28,700,000,000 KAS</td>
+                    <td>28,700,000,000 KAS</td>
                 </tr>
                 <tr>
                     <td className="cardBoxElement">Mined</td>
-                    <td className="utxo-value">{(circCoins/28700000000*100).toFixed(2)} %</td>
+                    <td>{(circCoins/28700000000*100).toFixed(2)} %</td>
                 </tr>
                 <tr>
                     <td className="cardBoxElement">Block reward</td>
-                    <td className="utxo-value">{blockReward} KAS</td>
+                    <td>{blockReward} KAS</td>
                 </tr>
             </table>
         </div>
