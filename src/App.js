@@ -154,7 +154,7 @@ function App() {
               <Row><Col xs={12}>
                 <Form onSubmit={search} className="">
                   <InputGroup className="mt-4 mb-4 search-box-group">
-                    <Form.Control className="d-inline-block bg-light text-dark shadow-none" name="searchbox" id="search-box-high" type="text" placeholder="Kaspa:address or block" />
+                    <Form.Control className="d-inline-block bg-light text-dark shadow-none" name="searchbox" id="search-box-high" type="text" placeholder="Search for kaspa:address or block" />
                     <Button type="submit" className="shadow-none searchButton" variant="dark"><i className='fa fa-search' /></Button>
                   </InputGroup>
                 </Form>

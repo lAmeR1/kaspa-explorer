@@ -60,7 +60,7 @@ function Dashboard() {
             <Col xs={11}>
               <Form onSubmit={search}>
                 <InputGroup className="ms-md-5 mt-5 me-5 dashboard-search-box">
-                  <Form.Control className="bg-light text-dark shadow-none" name="searchInput" type="text" placeholder="Kaspa:address or block" />
+                  <Form.Control className="bg-light text-dark shadow-none" name="searchInput" type="text" placeholder="Search for kaspa:address or block" />
                   <Button type="submit" className="shadow-none searchButton" variant="dark" ><i className='fa fa-search' /></Button>
                 </InputGroup>
               </Form>
