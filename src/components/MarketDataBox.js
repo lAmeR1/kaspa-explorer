@@ -97,11 +97,11 @@ const MarketDataBox = () => {
                 </tr>
                 <tr>
                     <td className="cardBoxElement">Volume</td>
-                    <td className="utxo-value-mono">$ {numberWithCommas(marketData?.total_volume?.usd)}</td>
+                    <td className="utxo-value">$ {numberWithCommas(marketData?.total_volume?.usd)}</td>
                 </tr>
                 <tr>
                     <td className="cardBoxElement">MCAP</td>
-                    <td className="utxo-value">${(circCoins * price / 1000000).toFixed(2)} M <span className="rank">Rank #{marketData?.market_cap_rank}</span></td>
+                    <td className="utxo-value">$ {(circCoins * price / 1000000).toFixed(2)} M <span className="rank">Rank #{marketData?.market_cap_rank}</span></td>
                 </tr>
                 <tr>
                     <td className="cardBoxElement"></td>

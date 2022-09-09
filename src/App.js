@@ -69,7 +69,6 @@ function App() {
     })
       .then(response => response.json())
       .then(data => {
-        console.log(data['market_data'])
         setPrice(data['market_data']['current_price']['usd'].toFixed(6));
         setMarketData(data['market_data']);
       })
