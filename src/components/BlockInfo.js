@@ -79,7 +79,7 @@ const BlockInfo = () => {
     }, [blockInfo])
 
     return <div className="blockinfo-page">
-        <Container className="webpage mx-0" fluid>
+        <Container className="webpage" fluid>
             <Row>
                 <Col className="mx-0">
 
