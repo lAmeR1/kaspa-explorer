@@ -78,8 +78,8 @@ const TxOverview = (props) => {
                                 key={x.address + x.txId + x.outputIndex}
                                 onClick={onClickRow}
                             >
-                                <td>{x.txId.slice(0, 10)}...</td>
-                                <td>{numberWithCommas(x.amount / 100000000)}&nbsp;KAS</td>
+                                <td>{x.txId.slice(0, 10)}</td>
+                                <td align="right">{numberWithCommas(x.amount / 100000000)}&nbsp;KAS</td>
                                 <td className="hashh">{x.address}</td>
                             </tr>
                         })}

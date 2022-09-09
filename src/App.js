@@ -1,4 +1,4 @@
-
+import './App.scss';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'font-awesome/css/font-awesome.min.css';
 import { useEffect, useRef, useState } from 'react';
@@ -6,7 +6,6 @@ import { Button, Col, Container, Form, InputGroup, Nav, Navbar, Row } from 'reac
 import { useLocation, useNavigate } from 'react-router';
 import { Link, NavLink, Route, Routes } from "react-router-dom";
 import io from 'socket.io-client';
-import './App.scss';
 import AddressInfoPage from './components/AddressInfo';
 import BlockInfo from './components/BlockInfo';
 import BlocksPage from './components/BlocksPage';
