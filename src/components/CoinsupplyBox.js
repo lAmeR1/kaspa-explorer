@@ -13,6 +13,7 @@ const socket = socketIOClient("wss://api.kaspa.org/", {
 const CBox = () => {
     const [circCoins, setCircCoins] = useState("-");
     const [isConnected, setIsConnected] = useState(false);
+    const [blockReward, setBlockReward] = useState("-");
     const { price } = useContext(PriceContext);
 
     useEffect(() => {
@@ -31,13 +32,25 @@ const CBox = () => {
         // join room to get updates
         socket.emit("join-room", "coinsupply")
 
+        getBlockReward();
 
         return () => {
             socket.off('connect');
             socket.off('disconnect');
             socket.off('coinsupply');
         };
+
     }, [])
+
+    async function getBlockReward() {
+        await fetch('https://api.kaspa.org/info/blockreward')
+            .then((response) => response.json())
+            .then(d => {
+                setBlockReward(d.blockreward.toFixed(2))
+                
+            })
+            .catch(err => console.log("Error", err))
+    }
 
 
     useEffect(() => {
@@ -57,7 +70,7 @@ const CBox = () => {
         <div className="cardBox mx-0 mx-sm-5">
             <table>
                 <tr>
-                    <td colspan='2' className="text-center" style={{ "font-size": "4rem" }}>
+                    <td colspan='2' className="text-center" style={{ "fontSize": "4rem" }}>
                         <FontAwesomeIcon icon={faCoins} />
                         <div id="light1" className="cardLight" />
                     </td>
@@ -71,21 +84,21 @@ const CBox = () => {
                     <td className="cardBoxElement">
                         Circulating</td>
                     <td>
-                        <div id="coins" className="utxo-value">{numberWithCommas(circCoins)} KAS
+                        <div id="coins" className="utxo-value">{numberWithCommas(circCoins)} KAS
                         </div>
                     </td>
                 </tr>
                 <tr>
-                    <td className="cardBoxElement">Total ~</td>
-                    <td className="utxo-value">28,700,000,000 KAS</td>
+                    <td className="cardBoxElement">Total <span className="approx">(approx.)</span></td>
+                    <td className="utxo-value">28,700,000,000 KAS</td>
                 </tr>
                 <tr>
                     <td className="cardBoxElement">Mined</td>
                     <td className="utxo-value">{(circCoins/28700000000*100).toFixed(2)} %</td>
                 </tr>
                 <tr>
-                    <td className="cardBoxElement">MCAP</td>
-                    <td className="utxo-value">${(circCoins*price / 1000000).toFixed(2)} M</td>
+                    <td className="cardBoxElement">Block reward</td>
+                    <td className="utxo-value">{blockReward} KAS</td>
                 </tr>
             </table>
         </div>

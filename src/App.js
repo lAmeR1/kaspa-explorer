@@ -36,6 +36,7 @@ const socket = io("wss://api.kaspa.org", {
 
 function App() {
   const [price, setPrice] = useState("")
+  const [marketData, setMarketData] = useState("")
 
   const [blocks, setBlocks] = useState([]);
   const [isConnected, setIsConnected] = useState();
@@ -68,8 +69,9 @@ function App() {
     })
       .then(response => response.json())
       .then(data => {
-        console.log(data['market_data']['current_price']['usd'].toFixed(6))
+        console.log(data['market_data'])
         setPrice(data['market_data']['current_price']['usd'].toFixed(6));
+        setMarketData(data['market_data']);
       })
       .catch(r => console.log(r))
   }
@@ -122,7 +124,7 @@ function App() {
   //<Button variant="primary">Go!</Button>
   return (
     <LastBlocksContext.Provider value={{ blocks, isConnected }}>
-      <PriceContext.Provider value={{ price }}>
+      <PriceContext.Provider value={{ price, marketData }}>
         <div className="big-page">
           <Navbar expand="md" bg="dark" variant="dark" sticky="top" id="navbar_top" className={location.pathname == "/" ? "" : "fixed-top"}>
             <Container id="navbar-container" fluid>

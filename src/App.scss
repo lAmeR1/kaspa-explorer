@@ -620,6 +620,18 @@ body {
   color: $color2;
 }
 
+.rank {
+  background-color: #d63328;
+  background-color: #398851;
+  padding: 0.2rem 0.5rem;
+  border-radius: 1rem;
+  font-size: small;
+}
+
+.approx {
+  font-size: small;
+}
+
 
 @import "./components/blockinfo.scss";
 @import "./components/addressinfo.scss";
