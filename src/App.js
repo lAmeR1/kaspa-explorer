@@ -36,6 +36,7 @@ const socket = io("wss://api.kaspa.org", {
 
 function App() {
   const [price, setPrice] = useState("")
+  const [marketData, setMarketData] = useState("")
 
   const [blocks, setBlocks] = useState([]);
   const [isConnected, setIsConnected] = useState();
@@ -68,8 +69,8 @@ function App() {
     })
       .then(response => response.json())
       .then(data => {
-        console.log(data['market_data']['current_price']['usd'].toFixed(6))
         setPrice(data['market_data']['current_price']['usd'].toFixed(6));
+        setMarketData(data['market_data']);
       })
       .catch(r => console.log(r))
   }
@@ -122,7 +123,7 @@ function App() {
   //<Button variant="primary">Go!</Button>
   return (
     <LastBlocksContext.Provider value={{ blocks, isConnected }}>
-      <PriceContext.Provider value={{ price }}>
+      <PriceContext.Provider value={{ price, marketData }}>
         <div className="big-page">
           <Navbar expand="md" bg="dark" variant="dark" sticky="top" id="navbar_top" className={location.pathname == "/" ? "" : "fixed-top"}>
             <Container id="navbar-container" fluid>
@@ -132,7 +133,7 @@ function App() {
                     <div className="navbar-brand">
                       <img className="shake" src="/k-icon-glow.png" style={{ "marginRight": ".5rem", width: "4rem", height: "4rem" }} />
                       <div className="navbar-brand-text text-start">KASPA<br />EXPLORER</div>
-                      <div className="beta">Beta</div>
+                      <div className="beta"  style={{transform: "translateX(-2.5rem);"}}>Beta</div>
                     </div>
                   </Link>
                 </Navbar.Brand>
@@ -154,7 +155,7 @@ function App() {
               <Row><Col xs={12}>
                 <Form onSubmit={search} className="">
                   <InputGroup className="mt-4 mb-4 search-box-group">
-                    <Form.Control className="d-inline-block bg-light text-dark shadow-none" name="searchbox" id="search-box-high" type="text" placeholder="Kaspa:address or block" />
+                    <Form.Control className="d-inline-block bg-light text-dark shadow-none" name="searchbox" id="search-box-high" type="text" placeholder="Search for kaspa:address or block" />
                     <Button type="submit" className="shadow-none searchButton" variant="dark"><i className='fa fa-search' /></Button>
                   </InputGroup>
                 </Form>

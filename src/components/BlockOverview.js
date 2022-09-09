@@ -1,3 +1,4 @@
+import moment from "moment";
 import { useContext, useEffect, useRef, useState } from "react";
 import { FaDiceD20, FaPause, FaPlay } from 'react-icons/fa';
 import { useNavigate } from "react-router-dom";
@@ -36,14 +37,16 @@ const BlockOverview = (props) => {
             <table className={`styled-table w-100`}>
                 <thead>
                     <tr>
-                        <th>BlueScore</th>
+                        <th>Timestamp</th>
+                        {props.small ? <></> : <th>BlueScore</th>}
                         <th>TXs</th>
                         <th width="100%">Hash</th>
                     </tr>
                 </thead>
                 <tbody>
                     {[...tempBlocks].sort((a,b) => b.verboseData.blueScore - a.verboseData.blueScore).slice(0,props.lines).map((x) => <tr id={x.verboseData.hash} key={x.verboseData.hash} onClick={onClickRow}>
-                        <td>{x.verboseData.blueScore}</td>
+                        <td className="table-timestamp">{moment(parseInt(x.header.timestamp)).format("YYYY‑MM‑DD HH:mm:ss")}</td>
+                        {props.small ? <></> : <td>{x.verboseData.blueScore}</td>}
                         <td>{x.transactions.length}</td>
                         <td className="hashh">{x.verboseData.hash}</td>
                     </tr>)}

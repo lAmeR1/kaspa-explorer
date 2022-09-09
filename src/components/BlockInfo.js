@@ -79,9 +79,9 @@ const BlockInfo = () => {
     }, [blockInfo])
 
     return <div className="blockinfo-page">
-        <Container className="webpage" fluid>
+        <Container className="webpage mx-0" fluid>
             <Row>
-                <Col>
+                <Col className="mx-0">
 
                     {error ? <h1 variant="danger">Error loading block</h1> : <></>}
 
@@ -89,10 +89,10 @@ const BlockInfo = () => {
                         <div className="blockinfo-content">
                             <div className="blockinfo-header"><h4 className="d-flex flex-row align-items-center">block details {isBlueBlock === null ? <Spinner className="ms-3" animation="grow" /> : <BlockLamp isBlue={isBlueBlock} />}</h4></div>
                             {/* <font className="blockinfo-header-id">{id.substring(0, 20)}...</font> */}
-                            <Container className="blockinfo-table" fluid>
+                            <Container className="blockinfo-table mx-0" fluid>
                                 <Row className="blockinfo-row">
                                     <Col className="blockinfo-key" lg={2}>Hash</Col>
-                                    <Col className="blockinfo-value" lg={10}>{blockInfo.verboseData.hash}
+                                    <Col className="blockinfo-value-mono" lg={10}>{blockInfo.verboseData.hash}
                                         <CopyButton text={blockInfo.verboseData.hash} />
                                         <OverlayTrigger overlay={<Tooltip id="tooltip-kgi">Open in Kaspa Graph Inspector</Tooltip>}>
                                             <span>
@@ -120,7 +120,7 @@ const BlockInfo = () => {
                                 </Row>
                                 <Row className="blockinfo-row">
                                     <Col className="blockinfo-key" lg={2}>Parents</Col>
-                                    <Col className="blockinfo-value" lg={10}>
+                                    <Col className="blockinfo-value-mono" lg={10}>
                                         <ul>
                                             {blockInfo.header.parents[0].parentHashes.map(x => <li><Link className="blockinfo-link" to={`/blocks/${x}`}>{x}</Link></li>)}
                                         </ul>
@@ -128,7 +128,7 @@ const BlockInfo = () => {
                                 </Row>
                                 <Row className="blockinfo-row">
                                     <Col className="blockinfo-key" lg={2}>Children</Col>
-                                    <Col className="blockinfo-value" lg={10}>
+                                    <Col className="blockinfo-value-mono" lg={10}>
                                         <ul>
                                             {blockInfo.verboseData.childrenHashes.map(child => <li><Link className="blockinfo-link" to={`/blocks/${child}`}>{child}</Link></li>)}
                                         </ul>
@@ -136,15 +136,15 @@ const BlockInfo = () => {
                                 </Row>
                                 <Row className="blockinfo-row">
                                     <Col className="blockinfo-key" lg={2}>Merkle Root</Col>
-                                    <Col className="blockinfo-value" lg={10}>{blockInfo.header.hashMerkleRoot}</Col>
+                                    <Col className="blockinfo-value-mono" lg={10}>{blockInfo.header.hashMerkleRoot}</Col>
                                 </Row>
                                 <Row className="blockinfo-row">
                                     <Col className="blockinfo-key" lg={2}>Accepted Merkle Root</Col>
-                                    <Col className="blockinfo-value" lg={10}>{blockInfo.header.acceptedIdMerkleRoot}</Col>
+                                    <Col className="blockinfo-value-mono" lg={10}>{blockInfo.header.acceptedIdMerkleRoot}</Col>
                                 </Row>
                                 <Row className="blockinfo-row">
                                     <Col className="blockinfo-key" lg={2}>UTXO Commitment</Col>
-                                    <Col className="blockinfo-value" lg={10}>{blockInfo.header.utxoCommitment}</Col>
+                                    <Col className="blockinfo-value-mono" lg={10}>{blockInfo.header.utxoCommitment}</Col>
                                 </Row>
                                 <Row className="blockinfo-row">
                                     <Col className="blockinfo-key" lg={2}>Nonce</Col>
@@ -160,11 +160,14 @@ const BlockInfo = () => {
                                 </Row>
                                 <Row className="blockinfo-row">
                                     <Col className="blockinfo-key" lg={2}>Pruning Point</Col>
-                                    <Col className="blockinfo-value" lg={10}><Link className="blockinfo-link" to={`/blocks/${blockInfo.header.pruningPoint}`}>{blockInfo.header.pruningPoint}</Link></Col>
+                                    <Col className="blockinfo-value-mono" lg={10}><Link className="blockinfo-link" to={`/blocks/${blockInfo.header.pruningPoint}`}>{blockInfo.header.pruningPoint}</Link></Col>
                                 </Row>
                                 <Row className="blockinfo-row border-bottom-0">
                                     <Col className="blockinfo-key" lg={2}>Miner Info</Col>
-                                    <Col className="blockinfo-value" lg={10}><Link className="blockinfo-link" to={`/addresses/${minerAddress}`}>{minerAddress}</Link><div>{minerName}</div></Col>
+                                    <Col className="blockinfo-value-mono md-3" lg={10}>
+                                        <div className="blockinfo-value">{minerName}</div>
+                                        <div><Link className="blockinfo-link" to={`/addresses/${minerAddress}`}>{minerAddress}</Link></div>
+                                    </Col>
                                 </Row>
                             </Container>
                         </div> : <></>}
@@ -184,7 +187,7 @@ const BlockInfo = () => {
                                         <Row className="utxo-border py-3">
                                             <Col sm={12} md={12} lg={12}>
                                                 <div className="utxo-header">transaction id</div>
-                                                <div className="utxo-value">
+                                                <div className="utxo-value-mono">
                                                     {tx.verboseData.transactionId}
                                                     <CopyButton text={tx.verboseData.transactionId} />
                                                 </div>
@@ -192,7 +195,7 @@ const BlockInfo = () => {
 
                                                 <Col sm={12} md={12}>
                                                     <div className="utxo-header mt-3">FROM</div>
-                                                    <Container className="utxo-value">
+                                                    <Container className="utxo-value-mono">
                                                         {(tx.inputs || []).map((txInput) => <Row>
                                                             <Col xs={12} sm={8} md={9} lg={9} xl={8} xxl={7} className="text-truncate">
                                                                 <a className="blockinfo-link" href={`https://katnip.kaspad.net/tx/${txInput.previousOutpoint.transactionId}`} target="_blank">
@@ -207,7 +210,7 @@ const BlockInfo = () => {
 
                                                 <Col sm={12} md={12}>
                                                     <div className="utxo-header mt-1">TO</div>
-                                                    <Container className="utxo-value" fluid>
+                                                    <Container className="utxo-value-mono" fluid>
                                                         {(tx.outputs || []).map((txOutput) => <Row>
                                                             <Col xs={12} sm={8} md={9} lg={9} xl={8} xxl={7} className="text-truncate">
                                                                 <Link to={`/addresses/${txOutput.verboseData.scriptPublicKeyAddress}`} className="blockinfo-link">

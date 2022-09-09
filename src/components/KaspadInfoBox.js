@@ -21,10 +21,10 @@ const KaspadInfoBox = () => {
 
 
     return <>
-        <div className="cardBox mx-0 mx-sm-5">
+        <div className="cardBox mx-0">
             <table>
                 <tr>
-                    <td colspan='2' className="text-center" style={{ "font-size": "4rem" }}>
+                    <td colspan='2' className="text-center" style={{ "fontSize": "4rem" }}>
                         <FontAwesomeIcon icon={faMemory} />
                         <div className="cardLight" />
                     </td>

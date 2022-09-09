@@ -134,7 +134,7 @@ const AddressInfo = () => {
             </Row>
             {errorLoadingUtxos && <BiGhost className="error-icon" />}
             {!loadingUtxos ? utxos.sort((a, b) => b.utxoEntry.blockDaaScore - a.utxoEntry.blockDaaScore).slice((active - 1) * 10, (active - 1) * 10 + 10).map((x) =>
-                <Row className="utxo-border pb-5 mb-5">
+                <Row className="utxo-border pb-4 mb-4">
                     <Col sm={6} md={4}>
                         <div className="utxo-header mt-3">Block DAA Score</div>
                         <div className="utxo-value">{x.utxoEntry.blockDaaScore}<br />({moment(((currentEpochTime) - (currentDaaScore - x.utxoEntry.blockDaaScore)) * 1000).format("YYYY-MM-DD HH:mm:ss")})</div>
