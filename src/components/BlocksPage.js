@@ -5,7 +5,7 @@ export default () => {
     return <div className="blocks-page">
 
         <Container className="webpage px-md-5 blocks-page-overview" fluid>
-            <BlockOverview font="normal" lines={40} />
+            <BlockOverview lines={40} />
         </Container>
     </div>
 }

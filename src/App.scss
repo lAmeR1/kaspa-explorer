@@ -33,7 +33,7 @@ $nav-link-color: $color1;
 
 body {
   margin: 0;
-  font-family: Rubik, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+  font-family: 'Rubik', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -84,6 +84,9 @@ body {
 }
 
 .beta {
+  position: relative;
+  top: 0.5rem;
+  left: -3rem;
   font-family: Righteous, Rubik, 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
   font-stretch: 1.2;
   color: $color2;
@@ -91,6 +94,34 @@ body {
   animation: appear 1s linear;
   animation-fill-mode: forwards;
 }
+
+@include media-breakpoint-down(sm) {
+  .beta {
+    left: -2rem;
+    top: 0.5rem;
+  }
+}
+
+
+.beta-dashboard {
+  position: relative;
+  top: -1rem;
+  left: -2rem;
+  font-family: Righteous, Rubik, 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+  font-stretch: 1.2;
+  color: $color2;
+  opacity: 0;
+  animation: appear 1s linear;
+  animation-fill-mode: forwards;
+}
+
+@include media-breakpoint-up(md) {
+  .beta-dashboard {
+    left: -2.5rem;
+    top: 0.5rem;
+  }
+}
+
 
 @keyframes appear {
   0% {
@@ -233,6 +264,13 @@ body {
   font-weight: bold;
   line-height: 2rem;
 }
+
+@include media-breakpoint-down(sm) {
+  .navbar-brand-text {
+    font-size: 1.4rem;
+  }
+}
+
 
 .navbar-brand-text a:link {
   text-decoration: none;
@@ -416,12 +454,26 @@ body {
 .styled-table th,
 .styled-table td {
   font-family: "Roboto Mono";
+  font-size: small;
   padding: 0.7rem 1rem;
+}
+
+@include media-breakpoint-down(sm) {
+  .styled-table td {
+    font-size: x-small;
+    padding: 0.7rem 0.5rem;
+  }
+
+  .styled-table thead th {
+    font-size: x-small;
+    padding: 0.7rem 0.5rem;
+  }
 }
 
 .styled-table thead tr {
   border-bottom: 2px solid $color3;
 }
+
 
 .styled-table tbody tr {
   border-bottom: 1px solid $color3;
@@ -495,6 +547,7 @@ body {
 
 
 .cardBoxElement {
+  font-family: 'Rubik';
   padding-right: 1rem;
   text-transform: none;
   font-size: medium;

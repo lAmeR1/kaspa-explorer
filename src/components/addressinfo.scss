@@ -34,25 +34,30 @@
 
 @keyframes spinIcon {
     from {
-        transform: rotate(0);}
-    to {transform: rotate(360deg);}
-  }
+        transform: rotate(0);
+    }
 
-  .error-icon {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.error-icon {
     color: red;
     font-size: xx-large;
-  }
+}
 
 
-  .copy-symbol-div {
+.copy-symbol-div {
     // font-size: 1rem;
     transform: translateY(-.1rem);
-  }
+}
 
 .copy-symbol:hover {
     color: $color2;
     cursor: pointer;
 }
+
 .copy-symbol:hover {
     animation: fadeIn 1s linear 0 5;
 }
@@ -161,9 +166,29 @@
 .utxo-value {
     color: $color1;
     text-align: left;
+    font-family: 'Rubik', 'Courier New', Courier, monospace;
+    word-wrap: break-word;
+    width: 100%;
+    font-size: medium;
+}
+
+.utxo-value-mono {
+    color: $color1;
+    text-align: left;
     font-family: 'Roboto Mono', 'Courier New', Courier, monospace;
     word-wrap: break-word;
     width: 100%;
+    font-size: medium;
+}
+
+@include media-breakpoint-down(sm) {
+    .utxo-value {
+        font-size: small;
+    }
+
+    .utxo-value-mono {
+        font-size: small;
+    }
 }
 
 .utxo-table {
@@ -206,10 +231,11 @@
 }
 
 .page-link {
-    background-color: $color5 !important;
+    background-color: $color5  !important;
     // border: none;
     color: $color1;
 }
+
 .page-link:any-link {
     color: $color1;
 }
