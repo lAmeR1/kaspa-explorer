@@ -478,8 +478,7 @@ body {
   
 
   .styled-table thead th {
-    font-size: x-small;
-    padding: 0.7rem 0.5rem;
+    font-size: medium;
   }
 }
 
@@ -643,6 +642,20 @@ body {
 
 .approx {
   font-size: small;
+}
+
+.footerfull {
+  border-top: 2px solid $color1;
+  border-color: $color1;
+  border-style: solid;
+  border-left: 0;
+  border-right: 0;
+  border-bottom: 0;
+  // margin-top: 1rem;
+}
+
+.footer {
+  width: 100%;
 }
 
 

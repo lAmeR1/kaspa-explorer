@@ -2,7 +2,7 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'font-awesome/css/font-awesome.min.css';
 import { useEffect, useRef, useState } from 'react';
-import { Button, Col, Container, Form, InputGroup, Nav, Navbar, Row } from 'react-bootstrap';
+import { Button, Col, Container, Form, InputGroup, Nav, Navbar, OverlayTrigger, Row, Tooltip } from 'react-bootstrap';
 import { useLocation, useNavigate } from 'react-router';
 import { Link, NavLink, Route, Routes } from "react-router-dom";
 import io from 'socket.io-client';
@@ -15,6 +15,15 @@ import NotFound from './components/NotFound';
 import PriceContext from './components/PriceContext';
 import TxPage from './components/TxPage';
 import Dashboard from './Dashboard';
+import moment from 'moment';
+import { FaGithub } from 'react-icons/fa';
+import { BiDonateHeart } from 'react-icons/bi';
+import { SiFastapi } from 'react-icons/si';
+// import 'moment/min/locales';
+
+// var locale = window.navigator.userLanguage || window.navigator.language || "en";
+// moment.locale(locale);
+// moment.locale('en');
 
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -133,7 +142,7 @@ function App() {
                     <div className="navbar-brand">
                       <img className="shake" src="/k-icon-glow.png" style={{ "marginRight": ".5rem", width: "4rem", height: "4rem" }} />
                       <div className="navbar-brand-text text-start">KASPA<br />EXPLORER</div>
-                      <div className="beta"  style={{transform: "translateX(-2.5rem);"}}>Beta</div>
+                      <div className="beta" style={{ transform: "translateX(-2.5rem);" }}>Beta</div>
                     </div>
                   </Link>
                 </Navbar.Brand>
@@ -172,6 +181,22 @@ function App() {
             <Route path="*" element={<NotFound />} />
           </Routes>
           {/* <div className="alpha">ALPHA VERSION</div> */}
+        </div>
+        <div className="text-light footerfull d-flex flex-row justify-content-center">
+          <div className="footer webpage px-5 py-3 text-center">Made with <font className="fs-5" color="red">♥</font> by lAmeR1
+            <span className="ms-3">
+              <OverlayTrigger placement="left" overlay={<Tooltip id="github">Source code</Tooltip>}>
+                <a className="blockinfo-link" href="https://github.com/lAmeR1/kaspa-explorer" target="_blank"><FaGithub size="2rem" /></a>
+              </OverlayTrigger>
+              <OverlayTrigger placement="right" overlay={<Tooltip id="donate">Donation address</Tooltip>}>
+                <Link className="blockinfo-link ms-3" to="/addresses/kaspa:qqkqkzjvr7zwxxmjxjkmxxdwju9kjs6e9u82uh59z07vgaks6gg62v8707g73"><BiDonateHeart size="2rem" /></Link>
+              </OverlayTrigger>
+              <OverlayTrigger placement="right" overlay={<Tooltip id="github">REST-API server</Tooltip>}>
+                <a className="blockinfo-link ms-3" href="https://api.kaspa.org/" target="_blank"><SiFastapi size="2rem" /></a>
+              </OverlayTrigger>
+
+            </span>
+          </div>
         </div>
       </PriceContext.Provider>
     </LastBlocksContext.Provider>

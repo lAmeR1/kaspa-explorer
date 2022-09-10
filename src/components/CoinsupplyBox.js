@@ -3,7 +3,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useContext, useEffect, useState } from "react";
 import socketIOClient from 'socket.io-client';
 import { numberWithCommas } from "../helper";
+import { getHalving } from '../kaspa-api-client';
 import PriceContext from "./PriceContext";
+import moment from 'moment';
+
 
 const socket = socketIOClient("wss://api.kaspa.org/", {
     path: '/ws/socket.io'
@@ -14,6 +17,7 @@ const CBox = () => {
     const [circCoins, setCircCoins] = useState("-");
     const [isConnected, setIsConnected] = useState(false);
     const [blockReward, setBlockReward] = useState("-");
+    const [halvingDate, setHalvingDate] = useState("-");
     const { price } = useContext(PriceContext);
 
     useEffect(() => {
@@ -34,12 +38,16 @@ const CBox = () => {
 
         getBlockReward();
 
+        getHalving().then((d) => {
+            console.log("hre", d)
+            setHalvingDate(moment(d.nextHalvingTimestamp*1000).format("YYYY-MM-DD hh:mm"))
+        })
+
         return () => {
             socket.off('connect');
             socket.off('disconnect');
             socket.off('coinsupply');
         };
-
     }, [])
 
     async function getBlockReward() {
@@ -99,6 +107,10 @@ const CBox = () => {
                 <tr>
                     <td className="cardBoxElement">Block reward</td>
                     <td>{blockReward} KAS</td>
+                </tr>
+                <tr>
+                    <td className="cardBoxElement">Next halving</td>
+                    <td>{halvingDate}</td>
                 </tr>
             </table>
         </div>
