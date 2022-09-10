@@ -186,13 +186,13 @@ function App() {
           <div className="footer webpage px-5 py-3 text-center">Made with <font className="fs-5" color="red">♥</font> by lAmeR1
             <span className="ms-3">
               <OverlayTrigger placement="left" overlay={<Tooltip id="github">Source code</Tooltip>}>
-                <a className="blockinfo-link" href="https://github.com/lAmeR1/kaspa-explorer" target="_blank"><FaGithub size="2rem" /></a>
+                <a className="blockinfo-link" href="https://github.com/lAmeR1/kaspa-explorer" target="_blank"><FaGithub size="1.5rem" /></a>
               </OverlayTrigger>
               <OverlayTrigger placement="right" overlay={<Tooltip id="donate">Donation address</Tooltip>}>
-                <Link className="blockinfo-link ms-3" to="/addresses/kaspa:qqkqkzjvr7zwxxmjxjkmxxdwju9kjs6e9u82uh59z07vgaks6gg62v8707g73"><BiDonateHeart size="2rem" /></Link>
+                <Link className="blockinfo-link ms-3" to="/addresses/kaspa:qqkqkzjvr7zwxxmjxjkmxxdwju9kjs6e9u82uh59z07vgaks6gg62v8707g73"><BiDonateHeart size="1.5rem" /></Link>
               </OverlayTrigger>
               <OverlayTrigger placement="right" overlay={<Tooltip id="github">REST-API server</Tooltip>}>
-                <a className="blockinfo-link ms-3" href="https://api.kaspa.org/" target="_blank"><SiFastapi size="2rem" /></a>
+                <a className="blockinfo-link ms-3" href="https://api.kaspa.org/" target="_blank"><SiFastapi size="1.5rem" /></a>
               </OverlayTrigger>
 
             </span>
