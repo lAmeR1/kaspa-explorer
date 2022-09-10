@@ -60,8 +60,8 @@ const MarketDataBox = () => {
         <div className="cardBox mx-0">
             <table>
                 <tr>
-                    <td colspan='2' className="text-center" style={{ "fontSize": "4.5rem" }}>
-                        <HiCurrencyDollar />
+                    <td colspan='2' className="text-center" style={{ "fontSize": "3.8rem" }}>
+                        <HiCurrencyDollar style={{transform: "translateY(-10px)"}} />
                         <div id="light1" className="cardLight" />
                     </td>
                 </tr>
