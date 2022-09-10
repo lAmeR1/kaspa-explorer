@@ -463,6 +463,19 @@ body {
     font-size: x-small;
     padding: 0.7rem 0.5rem;
   }
+  
+
+  .styled-table thead th {
+    font-size: x-small;
+    padding: 0.7rem 0.5rem;
+  }
+}
+
+@include media-breakpoint-up(lg) {
+  .styled-table td {
+    font-size: medium;
+  }
+  
 
   .styled-table thead th {
     font-size: x-small;
