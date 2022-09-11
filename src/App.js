@@ -185,7 +185,7 @@ function App() {
           {/* <div className="alpha">ALPHA VERSION</div> */}
         </div>
         <div className="text-light footerfull d-flex flex-row justify-content-center">
-          <div className="footer webpage px-5 py-3 text-center build">Made with <font className="fs-5" color="red">♥</font> by lAmeR1
+          <div className="footer webpage px-5 py-3 text-center build">Made with <font className="fs-5" color="red">♥</font> by Kaspa Team
             <span className="ms-3">
               <OverlayTrigger placement="left" overlay={<Tooltip id="github">Source code</Tooltip>}>
                 <a className="blockinfo-link" href="https://github.com/lAmeR1/kaspa-explorer" target="_blank"><FaGithub size="1.3rem" /></a>
@@ -198,7 +198,7 @@ function App() {
               </OverlayTrigger>
             </span>
             <span className="px-3 build">|</span>
-            <span className="build">Build version: {buildVersion.substring(0, 10)}</span>
+            <span className="build">Build version: {buildVersion.substring(0, 8)}</span>
           </div>
         </div>
       </PriceContext.Provider>
