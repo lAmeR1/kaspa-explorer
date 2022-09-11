@@ -198,7 +198,7 @@ function App() {
               </OverlayTrigger>
             </span>
             <span className="px-3 build">|</span>
-            <span className="build">Build version: {buildVersion}</span>
+            <span className="build">Build version: {buildVersion.substring(0, 10)}</span>
           </div>
         </div>
       </PriceContext.Provider>
