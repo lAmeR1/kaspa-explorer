@@ -96,7 +96,7 @@ const BlockDAGBox = () => {
 
     return <>
         <div className="cardBox mx-0">
-            <table>
+        <table style={{fontSize: "0.9rem"}}>
                 <tr>
                     <td colspan='2' className="text-center" style={{ "fontSize": "4rem" }}>
                         <FontAwesomeIcon icon={faDiagramProject} />
@@ -109,42 +109,42 @@ const BlockDAGBox = () => {
                     </td>
                 </tr>
                 <tr>
-                    <td className="cardBoxElement">
+                    <td className="cardBoxElement pt-1">
                         Network name
                     </td>
-                    <td>
+                    <td className="pt-1">
                         {data.networkName}
                     </td>
                 </tr>
                 <tr>
-                    <td className="cardBoxElement">
+                    <td className="cardBoxElement pt-1">
                         Block count
                     </td>
-                    <td id="blockCount">
+                    <td className="pt-1" id="blockCount">
                         {blockCount}
                     </td>
                 </tr>
                 <tr>
-                    <td className="cardBoxElement">
+                    <td className="cardBoxElement pt-1">
                         Header count
                     </td>
-                    <td id="headerCount">
+                    <td className="pt-1" id="headerCount">
                         {headerCount}
                     </td>
                 </tr>
                 <tr>
-                    <td className="cardBoxElement">
+                    <td className="cardBoxElement pt-1">
                         Virtual DAA Score
                     </td>
-                    <td id="virtualDaaScore">
+                    <td className="pt-1" id="virtualDaaScore">
                         {virtualDaaScore}
                     </td>
                 </tr>
                 <tr>
-                    <td className="cardBoxElement">
+                    <td className="cardBoxElement pt-1">
                         Hashrate
                     </td>
-                    <td id="hashrate">
+                    <td className="pt-1" id="hashrate">
                         {hashrate} TH/s
                     </td>
                 </tr>
