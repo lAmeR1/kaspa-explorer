@@ -10,7 +10,7 @@ import { FaInfoCircle } from 'react-icons/fa';
 import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 
 
-const socket = socketIOClient("wss://api.kaspa.org/", {
+const socket = socketIOClient("wss://kaspa.herokuapp.com/", {
     path: '/ws/socket.io'
 });
 
@@ -54,7 +54,7 @@ const CBox = () => {
     }, [])
 
     async function getBlockReward() {
-        await fetch('https://api.kaspa.org/info/blockreward')
+        await fetch('https://kaspa.herokuapp.com/info/blockreward')
             .then((response) => response.json())
             .then(d => {
                 setBlockReward(d.blockreward.toFixed(2))

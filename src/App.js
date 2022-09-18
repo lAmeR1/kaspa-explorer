@@ -41,7 +41,7 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 });
 
-const socket = io("wss://api.kaspa.org", {
+const socket = io("wss://kaspa.herokuapp.com", {
   path: '/ws/socket.io'
 });
 
