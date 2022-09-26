@@ -8,7 +8,7 @@ import { useParams } from "react-router";
 import { Link } from "react-router-dom";
 import { parsePayload } from "../bech32.js";
 import { numberWithCommas } from "../helper.js";
-import { getBlock } from '../kaspa-api-client.js';
+import { getBlock, getTransactions } from '../kaspa-api-client.js';
 import CopyButton from "./CopyButton.js";
 import PriceContext from "./PriceContext.js";
 
@@ -18,10 +18,26 @@ const BlockLamp = (props) => {
     </OverlayTrigger>
 }
 
+const getAddrFromOutputs = (outputs, i) => {
+    for (const o of outputs) {
+        if (o.index == i) {
+            return o.scriptPublicKeyAddress
+        }
+    }
+}
+const getAmountFromOutputs = (outputs, i) => {
+    for (const o of outputs) {
+        if (o.index == i) {
+            return o.amount / 100000000
+        }
+    }
+}
+
 
 const BlockInfo = () => {
     const { id } = useParams();
     const [blockInfo, setBlockInfo] = useState()
+    const [txInfo, setTxInfo] = useState()
     const [minerName, setMinerName] = useState()
     const [minerAddress, setMinerAddress] = useState()
     const [isBlueBlock, setIsBlueBlock] = useState(null)
@@ -73,6 +89,24 @@ const BlockInfo = () => {
 
 
             const [address, miner] = parsePayload(blockInfo.transactions[0].payload);
+
+            // request TX input addresses
+            const txToQuery = blockInfo.transactions.flatMap((tx) => tx.inputs?.flatMap(txInput => txInput.previousOutpoint.transactionId)).filter(x => x).concat(
+                blockInfo.transactions.map(tx => tx.verboseData.transactionId)
+            )
+
+            getTransactions(txToQuery, true, true).then(
+                resp => {
+                    const respAsObj = resp.reduce((obj, cur) => {
+                        obj[cur["transaction_id"]] = cur
+                        return obj;
+                    }, {});
+                    console.log(respAsObj)
+                    setTxInfo(respAsObj)
+
+                }
+            ).catch(err => console.log("Error ", err))
+
             setMinerName(miner);
             setMinerAddress(address);
         }
@@ -195,17 +229,29 @@ const BlockInfo = () => {
 
                                                 <Col sm={12} md={12}>
                                                     <div className="utxo-header mt-3">FROM</div>
-                                                    <Container className="utxo-value-mono">
+                                                    <Container className="utxo-value-mono" fluid>
                                                         {(tx.inputs || []).map((txInput) => <Row>
-                                                            <Col xs={12} sm={8} md={9} lg={9} xl={8} xxl={7} className="text-truncate">
-                                                                <a className="blockinfo-link" href={`https://katnip.kaspad.net/tx/${txInput.previousOutpoint.transactionId}`} target="_blank">
-                                                                    TX #{txInput.previousOutpoint.index || 0} {txInput.previousOutpoint.transactionId}
-                                                                </a>
-                                                            </Col><Col className="me-auto" xs={12} sm={4} md={2}></Col>
+                                                            {!!txInfo && txInfo[txInput.previousOutpoint.transactionId] ? <>
+                                                                <Col xs={12} sm={8} md={9} lg={9} xl={8} xxl={7} className="text-truncate">
+                                                                    <Link to={`/addresses/mjj`} className="blockinfo-link">
+                                                                        {getAddrFromOutputs(txInfo[txInput.previousOutpoint.transactionId]["outputs"], txInput.previousOutpoint.index || 0)}
+                                                                    </Link>
+                                                                    <CopyButton text={getAddrFromOutputs(txInfo[txInput.previousOutpoint.transactionId]["outputs"], txInput.previousOutpoint.index || 0)} />
+                                                                </Col><Col className="block-utxo-amount-minus" xs={12} sm={4} md={2}>
+                                                                    -{getAmountFromOutputs(txInfo[txInput.previousOutpoint.transactionId]["outputs"], txInput.previousOutpoint.index || 0)}&nbsp;KAS
+                                                                </Col></>
+                                                                :
+                                                                <><Col xs={12} sm={8} md={9} lg={9} xl={8} xxl={7} className="text-truncate">
+                                                                    <a className="blockinfo-link" href={`https://katnip.kaspad.net/tx/${txInput.previousOutpoint.transactionId}`} target="_blank">
+                                                                        TX #{txInput.previousOutpoint.index || 0} {txInput.previousOutpoint.transactionId}
+                                                                    </a>
+                                                                </Col><Col className="me-auto" xs={12} sm={4} md={2}></Col>
+                                                                </>}
                                                         </Row>)}
                                                         {!tx.inputs ? <Row><Col xs={12} sm={8} md="auto" className="text-truncate">COINBASE (New coins)</Col></Row> : <></>}
 
                                                     </Container>
+                                                    
                                                 </Col>
 
                                                 <Col sm={12} md={12}>
@@ -230,6 +276,12 @@ const BlockInfo = () => {
                                             <Col sm={4} md={2}>
                                                 <div className="utxo-header mt-3">tx value</div>
                                                 <div className="utxo-value">{(tx.outputs.reduce((a, b) => (a || 0) + parseInt(b.amount), 0) / 100000000 * price).toFixed(2)} $</div>
+                                            </Col>
+                                            <Col sm={4} md={2}>
+                                                <div className="utxo-header mt-3">details</div>
+                                                <div className="utxo-value">{!!txInfo && txInfo[tx.verboseData.transactionId] ?
+                                                    <span>{txInfo[tx.verboseData.transactionId].is_accepted ? "accepted" : "not accepted"}</span>
+                                                    : "-"}</div>
                                             </Col>
 
                                         </Row>
