@@ -25,18 +25,22 @@ const TransactionInfo = () => {
 
     const [blockColor, setBlockColor] = useState()
 
+    const getTx = () => getTransaction(id).then(
+        (res) => {
+            setTxInfo(res)
+        })
+        .catch((err) => {
+            setError(true);
+            setTxInfo(undefined);
+            throw err
+        })
+
     useEffect(() => {
         setError(false);
-        getTransaction(id).then(
-            (res) => {
-                setTxInfo(res)
-            }
-        )
-            .catch(() => {
-                setError(true);
-                setTxInfo(null);
-            }
-            )
+
+        getTx()
+
+
     }, [id])
 
     const getAddrFromOutputs = (outputs, i) => {
@@ -56,7 +60,7 @@ const TransactionInfo = () => {
 
     useEffect(() => {
         // request TX input addresses
-        if (!!txInfo) {
+        if (!!txInfo && txInfo?.detail != "Transaction not found") {
             const txToQuery = txInfo.inputs?.flatMap(txInput => txInput.previous_outpoint_hash).filter(x => x)
 
             getTransactions(txToQuery, true, true).then(
@@ -70,6 +74,9 @@ const TransactionInfo = () => {
                 }
             ).catch(err => console.log("Error ", err))
         }
+        if (txInfo?.detail == "Transaction not found") {
+            setTimeout(getTx(), 1000);
+        }
     }, [txInfo])
 
 
@@ -77,7 +84,7 @@ const TransactionInfo = () => {
         <Container className="webpage" fluid>
             <Row>
                 <Col className="mx-0">
-                    {!!txInfo ?
+                    {!!txInfo && txInfo?.detail != "Transaction not found" ?
                         <div className="blockinfo-content">
                             <div className="blockinfo-header"><h4 className="d-flex flex-row align-items-center">tansaction info</h4></div>
                             <Container className="blockinfo-table mx-0" fluid>
@@ -101,7 +108,7 @@ const TransactionInfo = () => {
                                 </Row>
                                 <Row className="blockinfo-row">
                                     <Col className="blockinfo-key" lg={2}>Block Hashes</Col>
-                                    <Col className="blockinfo-value-mono" lg={10}>{txInfo.block_hash.map(x => <li>{x}</li>)}</Col>
+                                    <Col className="blockinfo-value-mono" lg={10}>{txInfo.block_hash?.map(x => <li>{x}</li>)}</Col>
                                 </Row>
                                 <Row className="blockinfo-row">
                                     <Col className="blockinfo-key" lg={2}>Block Time</Col>
@@ -116,10 +123,10 @@ const TransactionInfo = () => {
                                 </Row>
                                 <Row className="blockinfo-row border-bottom-0">
                                     <Col className="blockinfo-key" lg={2}>Accepted Block Hash</Col>
-                                    <Col className="blockinfo-value-mono" lg={10}>{txInfo.accepted_block_hash}</Col>
+                                    <Col className="blockinfo-value-mono" lg={10}>{txInfo.accepted_block_hash || "-"}</Col>
                                 </Row>
                             </Container>
-                        </div> : <></>}
+                        </div> : <><Spinner animation="border" variant="primary" /><h2 className="text-light">Loading...</h2></>}
                 </Col>
             </Row>
 
@@ -135,7 +142,7 @@ const TransactionInfo = () => {
 
             <Row>
                 <Col>
-                    {(!!txInfo) ?
+                    {!!txInfo && txInfo?.detail != "Transaction not found" ?
                         <div className="blockinfo-content mt-4 mb-5">
                             <div className="blockinfo-header"><h4>Inputs</h4></div>
                             <Container className="webpage utxo-box" fluid>

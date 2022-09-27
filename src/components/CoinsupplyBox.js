@@ -93,7 +93,7 @@ const CBox = () => {
                 </tr>
                 <tr>
                     <td className="cardBoxElement align-top">
-                        Total supply</td>
+                        Total</td>
                     <td className="">
                         <div id="coins">{numberWithCommas(circCoins)} KAS
                         </div>

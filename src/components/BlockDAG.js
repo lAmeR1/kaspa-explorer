@@ -136,7 +136,7 @@ const BlockDAGBox = () => {
                     <td className="cardBoxElement">
                         Virtual DAA Score
                     </td>
-                    <td className="pt-1" id="virtualDaaScore">
+                    <td className="pt-1 align-top" id="virtualDaaScore">
                         {virtualDaaScore}
                     </td>
                 </tr>
