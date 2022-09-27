@@ -186,22 +186,52 @@ function App() {
           </Routes>
           {/* <div className="alpha">ALPHA VERSION</div> */}
         </div>
-        <div className="text-light footerfull d-flex flex-row justify-content-center">
-          <div className="footer webpage px-5 py-3 text-center build">Made with <font className="fs-5" color="red">♥</font> by Kaspa Team
-            <span className="ms-3">
-              <OverlayTrigger placement="left" overlay={<Tooltip id="github">Source code</Tooltip>}>
-                <a className="blockinfo-link" href="https://github.com/lAmeR1/kaspa-explorer" target="_blank"><FaGithub size="1.3rem" /></a>
-              </OverlayTrigger>
-              <OverlayTrigger placement="right" overlay={<Tooltip id="donate">Donation address</Tooltip>}>
-                <Link className="blockinfo-link ms-3" to="/addresses/kaspa:qqkqkzjvr7zwxxmjxjkmxxdwju9kjs6e9u82uh59z07vgaks6gg62v8707g73"><BiDonateHeart size="1.3rem" /></Link>
-              </OverlayTrigger>
-              <OverlayTrigger placement="right" overlay={<Tooltip id="github">REST-API server</Tooltip>}>
-                <a className="blockinfo-link ms-3" href="https://api.kaspa.org/" target="_blank"><SiFastapi size="1.3rem" /></a>
-              </OverlayTrigger>
-            </span>
-            <span className="px-3 build">|</span>
-            <span className="build">Build version: {buildVersion.substring(0, 8)}</span>
-          </div>
+        <div className="text-light footerfull d-flex flex-row justify-content-center px-0">
+          <Container className="footer webpage px-sm-5 py-3 text-center madewith" fluid>
+            <Row className="d-none d-sm-block">
+              <Col>
+                Made with <font className="fs-5" color="red">♥</font> by Kaspa Team
+                <span className="ms-3">
+                  <OverlayTrigger placement="left" overlay={<Tooltip id="github">Source code</Tooltip>}>
+                    <a className="blockinfo-link" href="https://github.com/lAmeR1/kaspa-explorer" target="_blank"><FaGithub size="1.3rem" /></a>
+                  </OverlayTrigger>
+                  <OverlayTrigger placement="right" overlay={<Tooltip id="donate">Donation address</Tooltip>}>
+                    <Link className="blockinfo-link ms-3" to="/addresses/kaspa:qqkqkzjvr7zwxxmjxjkmxxdwju9kjs6e9u82uh59z07vgaks6gg62v8707g73"><BiDonateHeart size="1.3rem" /></Link>
+                  </OverlayTrigger>
+                  <OverlayTrigger placement="right" overlay={<Tooltip id="github">REST-API server</Tooltip>}>
+                    <a className="blockinfo-link ms-3" href="https://api.kaspa.org/" target="_blank"><SiFastapi size="1.3rem" /></a>
+                  </OverlayTrigger>
+                </span>
+                <span className="px-3 build">|</span>
+                <span className="build">Build version: {buildVersion.substring(0, 8)}</span>
+              </Col>
+            </Row>
+            <Row className="d-sm-none px-0">
+              <Col className="px-0">
+                Made with <font className="fs-5" color="red">♥</font> by Kaspa Team
+                </Col>
+            </Row>
+            <Row className="py-1">
+              <Col>
+                <span className="ms-2">
+                  <OverlayTrigger placement="left" overlay={<Tooltip id="github">Source code</Tooltip>}>
+                    <a className="blockinfo-link" href="https://github.com/lAmeR1/kaspa-explorer" target="_blank"><FaGithub size="1.1rem" /></a>
+                  </OverlayTrigger>
+                  <OverlayTrigger placement="right" overlay={<Tooltip id="donate">Donation address</Tooltip>}>
+                    <Link className="blockinfo-link ms-2" to="/addresses/kaspa:qqkqkzjvr7zwxxmjxjkmxxdwju9kjs6e9u82uh59z07vgaks6gg62v8707g73"><BiDonateHeart size="1.1rem" /></Link>
+                  </OverlayTrigger>
+                  <OverlayTrigger placement="right" overlay={<Tooltip id="github">REST-API server</Tooltip>}>
+                    <a className="blockinfo-link ms-2" href="https://api.kaspa.org/" target="_blank"><SiFastapi size="1.1rem" /></a>
+                  </OverlayTrigger>
+                </span>
+              </Col>
+            </Row>
+            <Row>
+              <Col>
+                <span className="build">Build version: {buildVersion.substring(0, 8)}</span>
+              </Col>
+            </Row>
+          </Container>
         </div>
       </PriceContext.Provider>
     </LastBlocksContext.Provider>
