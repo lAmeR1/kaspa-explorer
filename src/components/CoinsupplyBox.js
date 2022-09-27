@@ -79,7 +79,7 @@ const CBox = () => {
 
     return <>
         <div className="cardBox mx-0">
-            <table style={{fontSize: "0.9rem"}}>
+            <table style={{fontSize: "1rem"}}>
                 <tr>
                     <td colspan='2' className="text-center" style={{ "fontSize": "4rem" }}>
                         <FontAwesomeIcon icon={faCoins} />
@@ -92,27 +92,27 @@ const CBox = () => {
                     </td>
                 </tr>
                 <tr>
-                    <td className="cardBoxElement pt-1 align-top">
-                        Circulating</td>
-                    <td className="pt-1">
+                    <td className="cardBoxElement align-top">
+                        Total supply</td>
+                    <td className="">
                         <div id="coins">{numberWithCommas(circCoins)} KAS
                         </div>
                     </td>
                 </tr>
                 <tr>
-                    <td className="cardBoxElement pt-1 align-top">Total <span className="approx">(approx.)</span></td>
+                    <td className="cardBoxElement align-top">Max <span className="approx">(approx.)</span></td>
                     <td className="pt-1">28,700,000,000 KAS</td>
                 </tr>
                 <tr>
-                    <td className="cardBoxElement pt-1 align-top">Mined</td>
+                    <td className="cardBoxElement align-top">Mined</td>
                     <td className="pt-1">{(circCoins / 28700000000 * 100).toFixed(2)} %</td>
                 </tr>
                 <tr>
-                    <td className="cardBoxElement pt-1 align-top">Block reward</td>
+                    <td className="cardBoxElement align-top">Block reward</td>
                     <td className="pt-1">{blockReward} KAS</td>
                 </tr>
                 <tr>
-                    <td className="cardBoxElement align-top pt-1 align-top">Reward reduction
+                    <td className="cardBoxElement align-top">Reward reduction
                         {/* <OverlayTrigger overlay={<Tooltip id="halvinginfo">Here is some information about the chromatic halving..</Tooltip>}>
                             <span>
                             <FaInfoCircle />

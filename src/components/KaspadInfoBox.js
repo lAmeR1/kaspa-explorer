@@ -36,18 +36,18 @@ const KaspadInfoBox = () => {
                     </td>
                 </tr>
                 <tr>
-                    <td className="cardBoxElement pt-1">
+                    <td className="cardBoxElement">
                         Mempool size
                     </td>
-                    <td className="pt-1">
+                    <td className="">
                         {data.mempoolSize}
                     </td>
                 </tr>
                 <tr>
-                    <td className="cardBoxElement pt-1">
+                    <td className="cardBoxElement">
                         Server version
                     </td>
-                    <td className="pt-1">
+                    <td className="">
                         {data.serverVersion}
                     </td>
                 </tr>

@@ -96,7 +96,7 @@ const BlockDAGBox = () => {
 
     return <>
         <div className="cardBox mx-0">
-        <table style={{fontSize: "0.9rem"}}>
+        <table style={{fontSize: "1rem"}}>
                 <tr>
                     <td colspan='2' className="text-center" style={{ "fontSize": "4rem" }}>
                         <FontAwesomeIcon icon={faDiagramProject} />
@@ -109,15 +109,15 @@ const BlockDAGBox = () => {
                     </td>
                 </tr>
                 <tr>
-                    <td className="cardBoxElement pt-1">
+                    <td className="cardBoxElement">
                         Network name
                     </td>
-                    <td className="pt-1">
+                    <td className="pt-1 text-nowrap">
                         {data.networkName}
                     </td>
                 </tr>
                 <tr>
-                    <td className="cardBoxElement pt-1">
+                    <td className="cardBoxElement">
                         Block count
                     </td>
                     <td className="pt-1" id="blockCount">
@@ -125,7 +125,7 @@ const BlockDAGBox = () => {
                     </td>
                 </tr>
                 <tr>
-                    <td className="cardBoxElement pt-1">
+                    <td className="cardBoxElement">
                         Header count
                     </td>
                     <td className="pt-1" id="headerCount">
@@ -133,7 +133,7 @@ const BlockDAGBox = () => {
                     </td>
                 </tr>
                 <tr>
-                    <td className="cardBoxElement pt-1">
+                    <td className="cardBoxElement">
                         Virtual DAA Score
                     </td>
                     <td className="pt-1" id="virtualDaaScore">
@@ -141,7 +141,7 @@ const BlockDAGBox = () => {
                     </td>
                 </tr>
                 <tr>
-                    <td className="cardBoxElement pt-1">
+                    <td className="cardBoxElement">
                         Hashrate
                     </td>
                     <td className="pt-1" id="hashrate">

@@ -562,7 +562,7 @@ body {
   font-family: 'Rubik';
   padding-right: 1rem;
   text-transform: none;
-  font-size: 0.9rem;
+  font-size: 1.2rem;
 }
 
 
@@ -638,6 +638,11 @@ body {
   padding: 0.2rem 0.5rem;
   border-radius: 1rem;
   font-size: small;
+}
+
+.rank:any-link {
+  text-decoration: none;
+  color: $color1;
 }
 
 .approx {
