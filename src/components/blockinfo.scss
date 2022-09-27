@@ -17,7 +17,7 @@
     text-align: left;
     font-size: x-large;
     font-weight: bolder;
-    padding-bottom: 1rem;
+    padding-bottom: 0rem;
 
 }
 
@@ -113,6 +113,12 @@
     text-align: left;
 }
 
+@include media-breakpoint-down(sm) {
+    .blockinfo-key {
+        font-size: small;
+    }
+}
+
 .tooltip-inner {
     opacity: 1 !important;
     background-color: $color3;
@@ -198,10 +204,28 @@
     padding: .2rem .7rem;
     border-radius: .4rem;
 }
+.utxo-amount-minus {
+    background-color: rgb(195, 38, 38);
+    padding: .2rem .7rem;
+    border-radius: .4rem;
+}
 
 .table-timestamp {
     word-wrap: normal;
     flex-wrap: nowrap;
+}
+
+.accepted-true {
+    background-color: rgb(65, 141, 65);
+    padding: .2rem .7rem;
+    border-radius: .4rem;
+
+}
+
+.accepted-false {
+    background-color: rgb(255, 82, 59);
+    padding: .2rem .7rem;
+    border-radius: .4rem;
 }
 
 //  .utxo-amount::before {

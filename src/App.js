@@ -19,6 +19,7 @@ import moment from 'moment';
 import { FaGithub } from 'react-icons/fa';
 import { BiDonateHeart } from 'react-icons/bi';
 import { SiFastapi } from 'react-icons/si';
+import TransactionInfo from './components/TransactionInfo';
 // import 'moment/min/locales';
 
 // var locale = window.navigator.userLanguage || window.navigator.language || "en";
@@ -180,6 +181,7 @@ function App() {
             <Route path="/blocks/:id/:txview" element={<BlockInfo />} />
             <Route path="/addresses/:addr" element={<AddressInfoPage />} />
             <Route path="/txs" element={<TxPage />} />
+            <Route path="/txs/:id" element={<TransactionInfo />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
           {/* <div className="alpha">ALPHA VERSION</div> */}
