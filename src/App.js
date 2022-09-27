@@ -211,7 +211,7 @@ function App() {
                 Made with <font className="fs-5" color="red">♥</font> by Kaspa Team
                 </Col>
             </Row>
-            <Row className="py-1">
+            <Row className="py-1 d-sm-none px-0">
               <Col>
                 <span className="ms-2">
                   <OverlayTrigger placement="left" overlay={<Tooltip id="github">Source code</Tooltip>}>
@@ -226,7 +226,7 @@ function App() {
                 </span>
               </Col>
             </Row>
-            <Row>
+            <Row className="d-sm-none px-0">
               <Col>
                 <span className="build">Build version: {buildVersion.substring(0, 8)}</span>
               </Col>
