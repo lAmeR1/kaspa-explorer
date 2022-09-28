@@ -114,9 +114,9 @@ const TransactionInfo = () => {
                                 </Row>
                                 <Row className="blockinfo-row">
                                     <Col className="blockinfo-key" lg={2}>Block Hashes</Col>
-                                    <Col className="blockinfo-value-mono" lg={10}>{txInfo.block_hash?.map(x => <li>
+                                    <Col className="blockinfo-value-mono" lg={10}><ul>{txInfo.block_hash?.map(x => <li>
                                         <Link to={`/blocks/${x}`} className="blockinfo-link">{x}</Link>
-                                    </li>)}</Col>
+                                    </li>)}</ul></Col>
                                 </Row>
                                 <Row className="blockinfo-row">
                                     <Col className="blockinfo-key" lg={2}>Block Time</Col>
@@ -131,14 +131,14 @@ const TransactionInfo = () => {
                                     </Col>
                                 </Row>
                                 <Row className="blockinfo-row border-bottom-0">
-                                    <Col className="blockinfo-key" lg={2}>Details</Col>
-                                    <Col className="blockinfo-value" lg={2}>
+                                    <Col className="blockinfo-key" md={2}>Details</Col>
+                                    <Col className="blockinfo-value mt-2" md={3} lg={2}>
                                         {txInfo.is_accepted ? <span className="accepted-true">accepted</span> :
                                             <span className="accepted-false">not accepted</span>}
 
 
                                     </Col>
-                                    <Col className="blockinfo-value mt-3 mt-lg-0" lg={3}>
+                                    <Col className="blockinfo-value mt-3 mt-md-2" md={4} lg={3}>
                                         {txInfo.is_accepted && blueScore !== 0 && (blueScore - txInfo.accepted_block_blue_score) < 10000 && <span className="confirmations">{blueScore - txInfo.accepted_block_blue_score}&nbsp;confirmations</span>}
                                         {txInfo.is_accepted && blueScore !== 0 && (blueScore - txInfo.accepted_block_blue_score) >= 10000 && <span className="confirmations">confirmed</span>}
                                     </Col>
