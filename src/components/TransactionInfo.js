@@ -116,7 +116,7 @@ const TransactionInfo = () => {
                                     <Col className="blockinfo-key" lg={2}>Block Hashes</Col>
                                     <Col className="blockinfo-value-mono" lg={10}>{txInfo.block_hash?.map(x => <li>
                                         <Link to={`/blocks/${x}`} className="blockinfo-link">{x}</Link>
-                                        </li>)}</Col>
+                                    </li>)}</Col>
                                 </Row>
                                 <Row className="blockinfo-row">
                                     <Col className="blockinfo-key" lg={2}>Block Time</Col>
@@ -126,18 +126,21 @@ const TransactionInfo = () => {
                                     <Col className="blockinfo-key" lg={2}>Accepting Block Hash</Col>
                                     <Col className="blockinfo-value-mono" lg={10}>
                                         <Link to={`/blocks/${txInfo.accepted_block_hash}`} className="blockinfo-link">
-                                        {txInfo.accepted_block_hash || "-"}
+                                            {txInfo.accepted_block_hash || "-"}
                                         </Link>
-                                        </Col>
+                                    </Col>
                                 </Row>
                                 <Row className="blockinfo-row border-bottom-0">
                                     <Col className="blockinfo-key" lg={2}>Details</Col>
-                                    <Col className="blockinfo-value-mono" lg={10}>
+                                    <Col className="blockinfo-value" lg={2}>
                                         {txInfo.is_accepted ? <span className="accepted-true">accepted</span> :
                                             <span className="accepted-false">not accepted</span>}
 
-                                        {txInfo.is_accepted && blueScore && (blueScore - txInfo.accepted_block_blue_score) < 10000 && <span className="confirmations ms-5">{blueScore - txInfo.accepted_block_blue_score} confirmations</span>}
-                                        {txInfo.is_accepted && blueScore && (blueScore - txInfo.accepted_block_blue_score) >= 10000 && <span className="confirmations ms-5">confirmed</span>}
+
+                                    </Col>
+                                    <Col className="blockinfo-value mt-3 mt-lg-0" lg={3}>
+                                        {txInfo.is_accepted && blueScore !== 0 && (blueScore - txInfo.accepted_block_blue_score) < 10000 && <span className="confirmations">{blueScore - txInfo.accepted_block_blue_score}&nbsp;confirmations</span>}
+                                        {txInfo.is_accepted && blueScore !== 0 && (blueScore - txInfo.accepted_block_blue_score) >= 10000 && <span className="confirmations">confirmed</span>}
                                     </Col>
                                 </Row>
                             </Container>
@@ -177,12 +180,12 @@ const TransactionInfo = () => {
                                                 </div>
                                             </Col>
                                             {!!additionalTxInfo && additionalTxInfo[tx_input.previous_outpoint_hash] && <Col sm={12} md={12} lg={3}>
-                                                    <div className="blockinfo-key mt-2">Amount</div>
-                                                    <div className="utxo-value">
-                                                        <span className="utxo-amount-minus">-{additionalTxInfo[tx_input.previous_outpoint_hash]
-                                                            .outputs[tx_input.previous_outpoint_index].amount / 100000000}&nbsp;KAS</span>
-                                                    </div>
-                                                </Col>}
+                                                <div className="blockinfo-key mt-2">Amount</div>
+                                                <div className="utxo-value">
+                                                    <span className="utxo-amount-minus">-{additionalTxInfo[tx_input.previous_outpoint_hash]
+                                                        .outputs[tx_input.previous_outpoint_index].amount / 100000000}&nbsp;KAS</span>
+                                                </div>
+                                            </Col>}
                                             <Col sm={12} md={12} lg={12}>
                                                 <div className="blockinfo-key mt-2">Previous Outpoint Index + Hash</div>
                                                 <div className="utxo-value-mono">
