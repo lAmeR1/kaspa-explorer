@@ -20,6 +20,7 @@ import { FaGithub } from 'react-icons/fa';
 import { BiDonateHeart } from 'react-icons/bi';
 import { SiFastapi } from 'react-icons/si';
 import TransactionInfo from './components/TransactionInfo';
+import BlueScoreContext from './components/BlueScoreContext';
 // import 'moment/min/locales';
 
 // var locale = window.navigator.userLanguage || window.navigator.language || "en";
@@ -51,6 +52,7 @@ function App() {
   const [marketData, setMarketData] = useState("")
 
   const [blocks, setBlocks] = useState([]);
+  const [blueScore, setBlueScore] = useState(0);
   const [isConnected, setIsConnected] = useState();
 
   const location = useLocation()
@@ -97,7 +99,6 @@ function App() {
     // socketio
     socket.on('connect', () => {
       setIsConnected(true);
-
     });
 
     socket.on('disconnect', () => {
@@ -111,6 +112,12 @@ function App() {
     })
 
     socket.emit('last-blocks', "")
+
+    socket.on('bluescore', (e) => {
+      setBlueScore(e.blueScore)
+    })
+    console.log("join room bluescore")
+    socket.emit("join-room", "bluescore")
 
     socket.on('new-block', (d) => {
       setBlocks([...blocksRef.current, d].slice(-100))
@@ -136,103 +143,105 @@ function App() {
   return (
     <LastBlocksContext.Provider value={{ blocks, isConnected }}>
       <PriceContext.Provider value={{ price, marketData }}>
-        <div className="big-page">
-          <Navbar expand="md" bg="dark" variant="dark" sticky="top" id="navbar_top" className={location.pathname == "/" ? "" : "fixed-top"}>
-            <Container id="navbar-container" fluid>
-              <div className="navbar-title">
-                <Navbar.Brand >
-                  <Link to="/">
-                    <div className="navbar-brand">
-                      <img className="shake" src="/k-icon-glow.png" style={{ "marginRight": ".5rem", width: "4rem", height: "4rem" }} />
-                      <div className="navbar-brand-text text-start">KASPA<br />EXPLORER</div>
-                      <div className="beta" style={{ transform: "translateX(-2.5rem);" }}>Beta</div>
-                    </div>
-                  </Link>
-                </Navbar.Brand>
-              </div>
+        <BlueScoreContext.Provider value={{ blueScore }}>
+          <div className="big-page">
+            <Navbar expand="md" bg="dark" variant="dark" sticky="top" id="navbar_top" className={location.pathname == "/" ? "" : "fixed-top"}>
+              <Container id="navbar-container" fluid>
+                <div className="navbar-title">
+                  <Navbar.Brand >
+                    <Link to="/">
+                      <div className="navbar-brand">
+                        <img className="shake" src="/k-icon-glow.png" style={{ "marginRight": ".5rem", width: "4rem", height: "4rem" }} />
+                        <div className="navbar-brand-text text-start">KASPA<br />EXPLORER</div>
+                        <div className="beta" style={{ transform: "translateX(-2.5rem);" }}>Beta</div>
+                      </div>
+                    </Link>
+                  </Navbar.Brand>
+                </div>
 
-              <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-              <Navbar.Collapse id="responsive-navbar-nav">
-                <Nav className="me-auto">
-                  <Nav.Item><NavLink className="nav-link fs-5" onClick={closeMenuIfNeeded} to={"/"}>Dashboard</NavLink></Nav.Item>
-                  <Nav.Item><NavLink className="nav-link fs-5" onClick={closeMenuIfNeeded} to={"/blocks"}>Blocks</NavLink></Nav.Item>
-                  <Nav.Item><NavLink className="nav-link fs-5" onClick={closeMenuIfNeeded} to={"/txs"}>Transactions</NavLink></Nav.Item>
-                </Nav>
-                <div className='ms-auto navbar-price'>${price} <span className="text-light">/ KAS</span></div>
-              </Navbar.Collapse>
-            </Container>
-          </Navbar>
-          <div className="search-row">
-            <Container className="webpage" hidden={location.pathname == "/"}>
-              <Row><Col xs={12}>
-                <Form onSubmit={search} className="">
-                  <InputGroup className="mt-4 mb-4 search-box-group">
-                    <Form.Control className="d-inline-block bg-light text-dark shadow-none" name="searchbox" id="search-box-high" type="text" placeholder="Search for kaspa:address or block" />
-                    <Button type="submit" className="shadow-none searchButton" variant="dark"><i className='fa fa-search' /></Button>
-                  </InputGroup>
-                </Form>
-              </Col></Row>
+                <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+                <Navbar.Collapse id="responsive-navbar-nav">
+                  <Nav className="me-auto">
+                    <Nav.Item><NavLink className="nav-link fs-5" onClick={closeMenuIfNeeded} to={"/"}>Dashboard</NavLink></Nav.Item>
+                    <Nav.Item><NavLink className="nav-link fs-5" onClick={closeMenuIfNeeded} to={"/blocks"}>Blocks</NavLink></Nav.Item>
+                    <Nav.Item><NavLink className="nav-link fs-5" onClick={closeMenuIfNeeded} to={"/txs"}>Transactions</NavLink></Nav.Item>
+                  </Nav>
+                  <div className='ms-auto navbar-price'>${price} <span className="text-light">/ KAS</span></div>
+                </Navbar.Collapse>
+              </Container>
+            </Navbar>
+            <div className="search-row">
+              <Container className="webpage" hidden={location.pathname == "/"}>
+                <Row><Col xs={12}>
+                  <Form onSubmit={search} className="">
+                    <InputGroup className="mt-4 mb-4 search-box-group">
+                      <Form.Control className="d-inline-block bg-light text-dark shadow-none" name="searchbox" id="search-box-high" type="text" placeholder="Search for kaspa:address or block" />
+                      <Button type="submit" className="shadow-none searchButton" variant="dark"><i className='fa fa-search' /></Button>
+                    </InputGroup>
+                  </Form>
+                </Col></Row>
+              </Container>
+            </div>
+            <Routes>
+              <Route path="/" element={<Dashboard />} />
+              <Route path="/blocks" element={<BlocksPage />} />
+              <Route path="/blocks/:id" element={<BlockInfo />} />
+              <Route path="/blocks/:id/:txview" element={<BlockInfo />} />
+              <Route path="/addresses/:addr" element={<AddressInfoPage />} />
+              <Route path="/txs" element={<TxPage />} />
+              <Route path="/txs/:id" element={<TransactionInfo />} />
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+            {/* <div className="alpha">ALPHA VERSION</div> */}
+          </div>
+          <div className="text-light footerfull d-flex flex-row justify-content-center px-0">
+            <Container className="footer webpage px-sm-5 py-3 text-center madewith" fluid>
+              <Row className="d-none d-sm-block">
+                <Col>
+                  Made with <font className="fs-5" color="red">♥</font> by Kaspa Team
+                  <span className="ms-3">
+                    <OverlayTrigger placement="left" overlay={<Tooltip id="github">Source code</Tooltip>}>
+                      <a className="blockinfo-link" href="https://github.com/lAmeR1/kaspa-explorer" target="_blank"><FaGithub size="1.3rem" /></a>
+                    </OverlayTrigger>
+                    <OverlayTrigger placement="right" overlay={<Tooltip id="donate">Donation address</Tooltip>}>
+                      <Link className="blockinfo-link ms-3" to="/addresses/kaspa:qqkqkzjvr7zwxxmjxjkmxxdwju9kjs6e9u82uh59z07vgaks6gg62v8707g73"><BiDonateHeart size="1.3rem" /></Link>
+                    </OverlayTrigger>
+                    <OverlayTrigger placement="right" overlay={<Tooltip id="github">REST-API server</Tooltip>}>
+                      <a className="blockinfo-link ms-3" href="https://api.kaspa.org/" target="_blank"><SiFastapi size="1.3rem" /></a>
+                    </OverlayTrigger>
+                  </span>
+                  <span className="px-3 build">|</span>
+                  <span className="build">Build version: {buildVersion.substring(0, 8)}</span>
+                </Col>
+              </Row>
+              <Row className="d-sm-none px-0">
+                <Col className="px-0">
+                  Made with <font className="fs-5" color="red">♥</font> by Kaspa Team
+                </Col>
+              </Row>
+              <Row className="py-1 d-sm-none px-0">
+                <Col>
+                  <span className="ms-2">
+                    <OverlayTrigger placement="left" overlay={<Tooltip id="github">Source code</Tooltip>}>
+                      <a className="blockinfo-link" href="https://github.com/lAmeR1/kaspa-explorer" target="_blank"><FaGithub size="1.1rem" /></a>
+                    </OverlayTrigger>
+                    <OverlayTrigger placement="right" overlay={<Tooltip id="donate">Donation address</Tooltip>}>
+                      <Link className="blockinfo-link ms-2" to="/addresses/kaspa:qqkqkzjvr7zwxxmjxjkmxxdwju9kjs6e9u82uh59z07vgaks6gg62v8707g73"><BiDonateHeart size="1.1rem" /></Link>
+                    </OverlayTrigger>
+                    <OverlayTrigger placement="right" overlay={<Tooltip id="github">REST-API server</Tooltip>}>
+                      <a className="blockinfo-link ms-2" href="https://api.kaspa.org/" target="_blank"><SiFastapi size="1.1rem" /></a>
+                    </OverlayTrigger>
+                  </span>
+                </Col>
+              </Row>
+              <Row className="d-sm-none px-0">
+                <Col>
+                  <span className="build">Build version: {buildVersion.substring(0, 8)}</span>
+                </Col>
+              </Row>
             </Container>
           </div>
-          <Routes>
-            <Route path="/" element={<Dashboard />} />
-            <Route path="/blocks" element={<BlocksPage />} />
-            <Route path="/blocks/:id" element={<BlockInfo />} />
-            <Route path="/blocks/:id/:txview" element={<BlockInfo />} />
-            <Route path="/addresses/:addr" element={<AddressInfoPage />} />
-            <Route path="/txs" element={<TxPage />} />
-            <Route path="/txs/:id" element={<TransactionInfo />} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-          {/* <div className="alpha">ALPHA VERSION</div> */}
-        </div>
-        <div className="text-light footerfull d-flex flex-row justify-content-center px-0">
-          <Container className="footer webpage px-sm-5 py-3 text-center madewith" fluid>
-            <Row className="d-none d-sm-block">
-              <Col>
-                Made with <font className="fs-5" color="red">♥</font> by Kaspa Team
-                <span className="ms-3">
-                  <OverlayTrigger placement="left" overlay={<Tooltip id="github">Source code</Tooltip>}>
-                    <a className="blockinfo-link" href="https://github.com/lAmeR1/kaspa-explorer" target="_blank"><FaGithub size="1.3rem" /></a>
-                  </OverlayTrigger>
-                  <OverlayTrigger placement="right" overlay={<Tooltip id="donate">Donation address</Tooltip>}>
-                    <Link className="blockinfo-link ms-3" to="/addresses/kaspa:qqkqkzjvr7zwxxmjxjkmxxdwju9kjs6e9u82uh59z07vgaks6gg62v8707g73"><BiDonateHeart size="1.3rem" /></Link>
-                  </OverlayTrigger>
-                  <OverlayTrigger placement="right" overlay={<Tooltip id="github">REST-API server</Tooltip>}>
-                    <a className="blockinfo-link ms-3" href="https://api.kaspa.org/" target="_blank"><SiFastapi size="1.3rem" /></a>
-                  </OverlayTrigger>
-                </span>
-                <span className="px-3 build">|</span>
-                <span className="build">Build version: {buildVersion.substring(0, 8)}</span>
-              </Col>
-            </Row>
-            <Row className="d-sm-none px-0">
-              <Col className="px-0">
-                Made with <font className="fs-5" color="red">♥</font> by Kaspa Team
-                </Col>
-            </Row>
-            <Row className="py-1 d-sm-none px-0">
-              <Col>
-                <span className="ms-2">
-                  <OverlayTrigger placement="left" overlay={<Tooltip id="github">Source code</Tooltip>}>
-                    <a className="blockinfo-link" href="https://github.com/lAmeR1/kaspa-explorer" target="_blank"><FaGithub size="1.1rem" /></a>
-                  </OverlayTrigger>
-                  <OverlayTrigger placement="right" overlay={<Tooltip id="donate">Donation address</Tooltip>}>
-                    <Link className="blockinfo-link ms-2" to="/addresses/kaspa:qqkqkzjvr7zwxxmjxjkmxxdwju9kjs6e9u82uh59z07vgaks6gg62v8707g73"><BiDonateHeart size="1.1rem" /></Link>
-                  </OverlayTrigger>
-                  <OverlayTrigger placement="right" overlay={<Tooltip id="github">REST-API server</Tooltip>}>
-                    <a className="blockinfo-link ms-2" href="https://api.kaspa.org/" target="_blank"><SiFastapi size="1.1rem" /></a>
-                  </OverlayTrigger>
-                </span>
-              </Col>
-            </Row>
-            <Row className="d-sm-none px-0">
-              <Col>
-                <span className="build">Build version: {buildVersion.substring(0, 8)}</span>
-              </Col>
-            </Row>
-          </Container>
-        </div>
+        </BlueScoreContext.Provider>
       </PriceContext.Provider>
     </LastBlocksContext.Provider>
 

@@ -222,7 +222,9 @@ const BlockInfo = () => {
                                             <Col sm={12} md={12} lg={12}>
                                                 <div className="utxo-header">transaction id</div>
                                                 <div className="utxo-value-mono">
+                                                <Link to={`/txs/${tx.verboseData.transactionId}`} className="blockinfo-link">
                                                     {tx.verboseData.transactionId}
+                                                    </Link>
                                                     <CopyButton text={tx.verboseData.transactionId} />
                                                 </div>
 
@@ -233,7 +235,7 @@ const BlockInfo = () => {
                                                         {(tx.inputs || []).map((txInput) => <Row>
                                                             {!!txInfo && txInfo[txInput.previousOutpoint.transactionId] ? <>
                                                                 <Col xs={12} sm={8} md={9} lg={9} xl={8} xxl={7} className="text-truncate">
-                                                                    <Link to={`/addresses/mjj`} className="blockinfo-link">
+                                                                    <Link to={`/addresses/${getAddrFromOutputs(txInfo[txInput.previousOutpoint.transactionId]["outputs"], txInput.previousOutpoint.index || 0)}`} className="blockinfo-link">
                                                                         {getAddrFromOutputs(txInfo[txInput.previousOutpoint.transactionId]["outputs"], txInput.previousOutpoint.index || 0)}
                                                                     </Link>
                                                                     <CopyButton text={getAddrFromOutputs(txInfo[txInput.previousOutpoint.transactionId]["outputs"], txInput.previousOutpoint.index || 0)} />
@@ -273,15 +275,16 @@ const BlockInfo = () => {
                                                 <div className="utxo-header mt-3">tx amount</div>
                                                 <div className="utxo-value d-flex flex-row"><div className="utxo-amount">{(numberWithCommas(tx.outputs.reduce((a, b) => (a || 0) + parseInt(b.amount), 0) / 100000000))} KAS</div></div>
                                             </Col>
-                                            <Col sm={4} md={2}>
+                                            <Col sm={3} md={2}>
                                                 <div className="utxo-header mt-3">tx value</div>
                                                 <div className="utxo-value">{(tx.outputs.reduce((a, b) => (a || 0) + parseInt(b.amount), 0) / 100000000 * price).toFixed(2)} $</div>
                                             </Col>
-                                            <Col sm={4} md={2}>
+                                            <Col sm={4} md={3}>
                                                 <div className="utxo-header mt-3">details</div>
                                                 <div className="utxo-value">{!!txInfo && txInfo[tx.verboseData.transactionId] ?
-                                                    <span>{txInfo[tx.verboseData.transactionId].is_accepted ? "accepted" : "not accepted"}</span>
-                                                    : "-"}</div>
+                                                    txInfo[tx.verboseData.transactionId].is_accepted ? <span className="accepted-true">accepted</span> :
+                                                    <span className="accepted-false">not accepted</span>: <>-</>}
+                                                    </div>
                                             </Col>
 
                                         </Row>

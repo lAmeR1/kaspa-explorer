@@ -25,7 +25,7 @@ const TxOverview = (props) => {
     const navigate = useNavigate();
 
     const onClickRow = (e) => {
-        navigate(`/txs/${e.target.closest("tr").getAttribute("txId")}`)
+        navigate(`/txs/${e.target.closest("tr").getAttribute("txid")}`)
     }
 
     const onClickAddr = (e) => {
@@ -79,7 +79,7 @@ const TxOverview = (props) => {
                         .slice(0, props.lines).map(x => {
                             return <tr
                                 id={x.address}
-                                txId={x.txId}
+                                txid={x.txId}
                                 key={x.address + x.txId + x.outputIndex}
                             >
                                 <td onClick={onClickRow}>{x.txId.slice(0, 10)}</td>

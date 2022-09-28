@@ -1,7 +1,7 @@
 /* global BigInt */
 
 import moment from "moment";
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import { Col, Container, OverlayTrigger, Row, Spinner, Tooltip } from "react-bootstrap";
 import { BiNetworkChart } from "react-icons/bi";
 import { useParams } from "react-router";
@@ -9,6 +9,7 @@ import { Link } from "react-router-dom";
 import { parsePayload } from "../bech32.js";
 import { numberWithCommas } from "../helper.js";
 import { getBlock, getTransaction, getTransactions } from '../kaspa-api-client.js';
+import BlueScoreContext from "./BlueScoreContext.js";
 import CopyButton from "./CopyButton.js";
 import PriceContext from "./PriceContext.js";
 
@@ -22,6 +23,8 @@ const TransactionInfo = () => {
     const [isBlueBlock, setIsBlueBlock] = useState(null)
     const [error, setError] = useState(false)
     const { price } = useContext(PriceContext);
+    const retryCnt = useRef(0)
+    const { blueScore } = useContext(BlueScoreContext);
 
     const [blockColor, setBlockColor] = useState()
 
@@ -37,10 +40,7 @@ const TransactionInfo = () => {
 
     useEffect(() => {
         setError(false);
-
         getTx()
-
-
     }, [id])
 
     const getAddrFromOutputs = (outputs, i) => {
@@ -62,20 +62,26 @@ const TransactionInfo = () => {
         // request TX input addresses
         if (!!txInfo && txInfo?.detail != "Transaction not found") {
             const txToQuery = txInfo.inputs?.flatMap(txInput => txInput.previous_outpoint_hash).filter(x => x)
-
-            getTransactions(txToQuery, true, true).then(
-                resp => {
-                    const respAsObj = resp.reduce((obj, cur) => {
-                        obj[cur["transaction_id"]] = cur
-                        return obj;
-                    }, {});
-                    console.log(respAsObj)
-                    setAdditionalTxInfo(respAsObj)
-                }
-            ).catch(err => console.log("Error ", err))
+            console.log("q", txToQuery)
+            if (!!txToQuery) {
+                getTransactions(txToQuery, true, true).then(
+                    resp => {
+                        const respAsObj = resp.reduce((obj, cur) => {
+                            obj[cur["transaction_id"]] = cur
+                            return obj;
+                        }, {});
+                        console.log(respAsObj)
+                        setAdditionalTxInfo(respAsObj)
+                    }
+                ).catch(err => console.log("Error ", err))
+            }
         }
         if (txInfo?.detail == "Transaction not found") {
-            setTimeout(getTx(), 1000);
+            retryCnt.current += 1
+            if (retryCnt.current < 10) {
+                setTimeout(getTx(), 1000);
+                console.log("retry", retryCnt)
+            }
         }
     }, [txInfo])
 
@@ -86,7 +92,7 @@ const TransactionInfo = () => {
                 <Col className="mx-0">
                     {!!txInfo && txInfo?.detail != "Transaction not found" ?
                         <div className="blockinfo-content">
-                            <div className="blockinfo-header"><h4 className="d-flex flex-row align-items-center">tansaction info</h4></div>
+                            <div className="blockinfo-header"><h4 className="d-flex flex-row align-items-center">transaction info</h4></div>
                             <Container className="blockinfo-table mx-0" fluid>
                                 <Row className="blockinfo-row">
                                     <Col className="blockinfo-key" lg={2}>Transaction Id</Col>
@@ -108,22 +114,31 @@ const TransactionInfo = () => {
                                 </Row>
                                 <Row className="blockinfo-row">
                                     <Col className="blockinfo-key" lg={2}>Block Hashes</Col>
-                                    <Col className="blockinfo-value-mono" lg={10}>{txInfo.block_hash?.map(x => <li>{x}</li>)}</Col>
+                                    <Col className="blockinfo-value-mono" lg={10}>{txInfo.block_hash?.map(x => <li>
+                                        <Link to={`/blocks/${x}`} className="blockinfo-link">{x}</Link>
+                                        </li>)}</Col>
                                 </Row>
                                 <Row className="blockinfo-row">
                                     <Col className="blockinfo-key" lg={2}>Block Time</Col>
-                                    <Col className="blockinfo-value-mono" lg={10}>{txInfo.block_time}</Col>
+                                    <Col className="blockinfo-value" lg={10}>{moment(parseInt(txInfo.block_time)).format("YYYY-MM-DD HH:mm:ss")} ({txInfo.block_time})</Col>
                                 </Row>
                                 <Row className="blockinfo-row">
+                                    <Col className="blockinfo-key" lg={2}>Accepting Block Hash</Col>
+                                    <Col className="blockinfo-value-mono" lg={10}>
+                                        <Link to={`/blocks/${txInfo.accepted_block_hash}`} className="blockinfo-link">
+                                        {txInfo.accepted_block_hash || "-"}
+                                        </Link>
+                                        </Col>
+                                </Row>
+                                <Row className="blockinfo-row border-bottom-0">
                                     <Col className="blockinfo-key" lg={2}>Details</Col>
                                     <Col className="blockinfo-value-mono" lg={10}>
                                         {txInfo.is_accepted ? <span className="accepted-true">accepted</span> :
                                             <span className="accepted-false">not accepted</span>}
+
+                                        {txInfo.is_accepted && blueScore && (blueScore - txInfo.accepted_block_blue_score) < 10000 && <span className="confirmations ms-5">{blueScore - txInfo.accepted_block_blue_score} confirmations</span>}
+                                        {txInfo.is_accepted && blueScore && (blueScore - txInfo.accepted_block_blue_score) >= 10000 && <span className="confirmations ms-5">confirmed</span>}
                                     </Col>
-                                </Row>
-                                <Row className="blockinfo-row border-bottom-0">
-                                    <Col className="blockinfo-key" lg={2}>Accepted Block Hash</Col>
-                                    <Col className="blockinfo-value-mono" lg={10}>{txInfo.accepted_block_hash || "-"}</Col>
                                 </Row>
                             </Container>
                         </div> : <><Spinner animation="border" variant="primary" /><h2 className="text-light">Loading...</h2></>}
@@ -155,12 +170,19 @@ const TransactionInfo = () => {
                                                     {tx_input.sigOpCount}
                                                 </div>
                                             </Col>
-                                            <Col sm={12} md={12} lg={10}>
+                                            <Col sm={12} md={12} lg={7}>
                                                 <div className="blockinfo-key mt-2">Signature Script</div>
                                                 <div className="utxo-value-mono">
                                                     {tx_input.signatureScript}
                                                 </div>
                                             </Col>
+                                            {!!additionalTxInfo && additionalTxInfo[tx_input.previous_outpoint_hash] && <Col sm={12} md={12} lg={3}>
+                                                    <div className="blockinfo-key mt-2">Amount</div>
+                                                    <div className="utxo-value">
+                                                        <span className="utxo-amount-minus">-{additionalTxInfo[tx_input.previous_outpoint_hash]
+                                                            .outputs[tx_input.previous_outpoint_index].amount / 100000000}&nbsp;KAS</span>
+                                                    </div>
+                                                </Col>}
                                             <Col sm={12} md={12} lg={12}>
                                                 <div className="blockinfo-key mt-2">Previous Outpoint Index + Hash</div>
                                                 <div className="utxo-value-mono">
@@ -176,13 +198,6 @@ const TransactionInfo = () => {
                                                             {additionalTxInfo[tx_input.previous_outpoint_hash]
                                                                 .outputs[tx_input.previous_outpoint_index].scriptPublicKeyAddress}
                                                         </Link>
-                                                    </div>
-                                                </Col>
-                                                <Col sm={12} md={12} lg={12}>
-                                                    <div className="blockinfo-key mt-2">Amount</div>
-                                                    <div className="utxo-value">
-                                                        <span className="utxo-amount-minus">-{additionalTxInfo[tx_input.previous_outpoint_hash]
-                                                            .outputs[tx_input.previous_outpoint_index].amount / 100000000}&nbsp;KAS</span>
                                                     </div>
                                                 </Col></>}
                                         </Row>
