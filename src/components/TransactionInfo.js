@@ -132,7 +132,7 @@ const TransactionInfo = () => {
                                 </Row>
                                 <Row className="blockinfo-row border-bottom-0">
                                     <Col className="blockinfo-key" md={2}>Details</Col>
-                                    <Col className="blockinfo-value mt-2" md={3} lg={2}>
+                                    <Col className="blockinfo-value mt-2" md={3} lg={3}>
                                         {txInfo.is_accepted ? <span className="accepted-true">accepted</span> :
                                             <span className="accepted-false">not accepted</span>}
 
