@@ -132,15 +132,11 @@ const TransactionInfo = () => {
                                 </Row>
                                 <Row className="blockinfo-row border-bottom-0">
                                     <Col className="blockinfo-key" md={2}>Details</Col>
-                                    <Col className="blockinfo-value mt-2" md={3} lg={3}>
-                                        {txInfo.is_accepted ? <span className="accepted-true">accepted</span> :
-                                            <span className="accepted-false">not accepted</span>}
-
-
-                                    </Col>
-                                    <Col className="blockinfo-value mt-3 mt-md-2" md={4} lg={3}>
-                                        {txInfo.is_accepted && blueScore !== 0 && (blueScore - txInfo.accepted_block_blue_score) < 10000 && <span className="confirmations">{blueScore - txInfo.accepted_block_blue_score}&nbsp;confirmations</span>}
-                                        {txInfo.is_accepted && blueScore !== 0 && (blueScore - txInfo.accepted_block_blue_score) >= 10000 && <span className="confirmations">confirmed</span>}
+                                    <Col className="blockinfo-value mt-2 d-flex flex-row flex-wrap" md={10} lg={10} style={{marginBottom: "-1rem"}}>
+                                        {txInfo.is_accepted ? <div className="accepted-true me-3 mb-3">accepted</div> :
+                                            <span className="accepted-false me-">not accepted</span>}
+                                        {txInfo.is_accepted && blueScore !== 0 && (blueScore - txInfo.accepted_block_blue_score) < 1000000 && <div className="confirmations mb-3">{blueScore - txInfo.accepted_block_blue_score}&nbsp;confirmations</div>}
+                                        {txInfo.is_accepted && blueScore !== 0 && (blueScore - txInfo.accepted_block_blue_score) >= 1000000 && <div className="confirmations mb-3">confirmed</div>}
                                     </Col>
                                 </Row>
                             </Container>
@@ -220,7 +216,7 @@ const TransactionInfo = () => {
                                                     #{tx_output.index}
                                                 </div>
                                             </Col>
-                                            <Col sm={12} md={12} lg={4}>
+                                            <Col sm={12} md={12} lg={7}>
                                                 <div className="blockinfo-key mt-2 mt-lg-0">Script Public Key Type</div>
                                                 <div className="utxo-value-mono">
                                                     {tx_output.scriptPublicKeyType}

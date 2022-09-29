@@ -9,6 +9,7 @@ import { Link } from "react-router-dom";
 import { parsePayload } from "../bech32.js";
 import { numberWithCommas } from "../helper.js";
 import { getBlock, getTransactions } from '../kaspa-api-client.js';
+import BlueScoreContext from "./BlueScoreContext.js";
 import CopyButton from "./CopyButton.js";
 import PriceContext from "./PriceContext.js";
 
@@ -36,6 +37,7 @@ const getAmountFromOutputs = (outputs, i) => {
 
 const BlockInfo = () => {
     const { id } = useParams();
+    const { blueScore } = useContext(BlueScoreContext);
     const [blockInfo, setBlockInfo] = useState()
     const [txInfo, setTxInfo] = useState()
     const [minerName, setMinerName] = useState()
@@ -222,8 +224,8 @@ const BlockInfo = () => {
                                             <Col sm={12} md={12} lg={12}>
                                                 <div className="utxo-header">transaction id</div>
                                                 <div className="utxo-value-mono">
-                                                <Link to={`/txs/${tx.verboseData.transactionId}`} className="blockinfo-link">
-                                                    {tx.verboseData.transactionId}
+                                                    <Link to={`/txs/${tx.verboseData.transactionId}`} className="blockinfo-link">
+                                                        {tx.verboseData.transactionId}
                                                     </Link>
                                                     <CopyButton text={tx.verboseData.transactionId} />
                                                 </div>
@@ -253,7 +255,7 @@ const BlockInfo = () => {
                                                         {!tx.inputs ? <Row><Col xs={12} sm={8} md="auto" className="text-truncate">COINBASE (New coins)</Col></Row> : <></>}
 
                                                     </Container>
-                                                    
+
                                                 </Col>
 
                                                 <Col sm={12} md={12}>
@@ -279,12 +281,13 @@ const BlockInfo = () => {
                                                 <div className="utxo-header mt-3">tx value</div>
                                                 <div className="utxo-value">{(tx.outputs.reduce((a, b) => (a || 0) + parseInt(b.amount), 0) / 100000000 * price).toFixed(2)} $</div>
                                             </Col>
-                                            <Col sm={4} md={3}>
+                                            <Col sm={4} md={6}>
                                                 <div className="utxo-header mt-3">details</div>
-                                                <div className="utxo-value">{!!txInfo && txInfo[tx.verboseData.transactionId] ?
-                                                    txInfo[tx.verboseData.transactionId].is_accepted ? <span className="accepted-true">accepted</span> :
-                                                    <span className="accepted-false">not accepted</span>: <>-</>}
-                                                    </div>
+                                                <div className="utxo-value d-flex flex-row flex-wrap">{!!txInfo && txInfo[tx.verboseData.transactionId] ?
+                                                    txInfo[tx.verboseData.transactionId].is_accepted ? <div className="accepted-true mb-3 me-3">accepted</div> :
+                                                        <span className="accepted-false">not accepted</span> : <>-</>}
+                                                    {!!txInfo && !!txInfo[tx.verboseData.transactionId].is_accepted && blueScore !== 0 && <div className="confirmations mb-3">{blueScore - txInfo[tx.verboseData.transactionId].accepted_block_blue_score}&nbsp;confirmations</div>}
+                                                </div>
                                             </Col>
 
                                         </Row>
