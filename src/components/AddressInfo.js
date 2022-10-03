@@ -3,6 +3,7 @@ import { useContext, useEffect, useState } from 'react';
 import { Col, Container, Row, Spinner } from "react-bootstrap";
 import { BiGhost } from "react-icons/bi";
 import { useParams } from "react-router";
+import { Link } from "react-router-dom";
 import { numberWithCommas } from "../helper";
 import { getAddressBalance, getAddressUtxos, getBlock, getBlockdagInfo } from '../kaspa-api-client.js';
 import CopyButton from "./CopyButton.js";
@@ -56,10 +57,10 @@ const AddressInfo = () => {
                 setUtxos(res);
             }
         )
-        .catch(ex => {
-            setLoadingUtxos(false);
-            setErrorLoadingUtxos(true);
-        })
+            .catch(ex => {
+                setLoadingUtxos(false);
+                setErrorLoadingUtxos(true);
+            })
     }, [addressBalance])
 
 
@@ -154,8 +155,10 @@ const AddressInfo = () => {
                     <Col sm={6} md={4}>
                         <div className="utxo-header mt-3">transaction id</div>
                         <div className="utxo-value">
-                            {x.outpoint.transactionId}
-                            <CopyButton text={x.outpoint.transactionId} />
+                            <Link className="blockinfo-link" to={`/txs/${x.outpoint.transactionId}`} >
+                                {x.outpoint.transactionId}
+                            </Link>
+
                         </div>
                     </Col>
                     <Col sm={6} md={4}>

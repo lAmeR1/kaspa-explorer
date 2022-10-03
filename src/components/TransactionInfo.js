@@ -135,8 +135,8 @@ const TransactionInfo = () => {
                                     <Col className="blockinfo-value mt-2 d-flex flex-row flex-wrap" md={10} lg={10} style={{marginBottom: "-1rem"}}>
                                         {txInfo.is_accepted ? <div className="accepted-true me-3 mb-3">accepted</div> :
                                             <span className="accepted-false me-">not accepted</span>}
-                                        {txInfo.is_accepted && blueScore !== 0 && (blueScore - txInfo.accepted_block_blue_score) < 1000000 && <div className="confirmations mb-3">{blueScore - txInfo.accepted_block_blue_score}&nbsp;confirmations</div>}
-                                        {txInfo.is_accepted && blueScore !== 0 && (blueScore - txInfo.accepted_block_blue_score) >= 1000000 && <div className="confirmations mb-3">confirmed</div>}
+                                        {txInfo.is_accepted && blueScore !== 0 && (blueScore - txInfo.accepted_block_blue_score) < 86400 && <div className="confirmations mb-3">{blueScore - txInfo.accepted_block_blue_score}&nbsp;confirmations</div>}
+                                        {txInfo.is_accepted && blueScore !== 0 && (blueScore - txInfo.accepted_block_blue_score) >= 86400 && <div className="confirmations mb-3">confirmed</div>}
                                     </Col>
                                 </Row>
                             </Container>
