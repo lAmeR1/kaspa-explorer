@@ -59,6 +59,22 @@ export async function getHalving() {
     return res
 }
 
+export async function getTransactionsFromAddress(addr) {
+    const res = await fetch(`${API_BASE}addresses/${addr}/transactions`, {
+        headers: {
+            'Access-Control-Allow-Origin': '*',
+            'content-type': 'application/json'
+        },
+        method: "GET"
+    })
+        .then((response) => response.json())
+        .then(data => {
+            return data
+        })
+    return res
+}
+
+
 
 export async function getTransactions(tx_list, inputs, outputs) {
     const res = await fetch(`${API_BASE}transactions/search`, {

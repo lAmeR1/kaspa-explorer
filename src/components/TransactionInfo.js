@@ -43,13 +43,7 @@ const TransactionInfo = () => {
         getTx()
     }, [id])
 
-    const getAddrFromOutputs = (outputs, i) => {
-        for (const o of outputs) {
-            if (o.index == i) {
-                return o.scriptPublicKeyAddress
-            }
-        }
-    }
+
     const getAmountFromOutputs = (outputs, i) => {
         for (const o of outputs) {
             if (o.index == i) {
@@ -125,8 +119,8 @@ const TransactionInfo = () => {
                                 <Row className="blockinfo-row">
                                     <Col className="blockinfo-key" lg={2}>Accepting Block Hash</Col>
                                     <Col className="blockinfo-value-mono" lg={10}>
-                                        <Link to={`/blocks/${txInfo.accepted_block_hash}`} className="blockinfo-link">
-                                            {txInfo.accepted_block_hash || "-"}
+                                        <Link to={`/blocks/${txInfo.accepting_block_hash}`} className="blockinfo-link">
+                                            {txInfo.accepting_block_hash || "-"}
                                         </Link>
                                     </Col>
                                 </Row>
@@ -135,8 +129,8 @@ const TransactionInfo = () => {
                                     <Col className="blockinfo-value mt-2 d-flex flex-row flex-wrap" md={10} lg={10} style={{marginBottom: "-1rem"}}>
                                         {txInfo.is_accepted ? <div className="accepted-true me-3 mb-3">accepted</div> :
                                             <span className="accepted-false me-">not accepted</span>}
-                                        {txInfo.is_accepted && blueScore !== 0 && (blueScore - txInfo.accepted_block_blue_score) < 86400 && <div className="confirmations mb-3">{blueScore - txInfo.accepted_block_blue_score}&nbsp;confirmations</div>}
-                                        {txInfo.is_accepted && blueScore !== 0 && (blueScore - txInfo.accepted_block_blue_score) >= 86400 && <div className="confirmations mb-3">confirmed</div>}
+                                        {txInfo.is_accepted && blueScore !== 0 && (blueScore - txInfo.accepting_block_blue_score) < 86400 && <div className="confirmations mb-3">{blueScore - txInfo.accepting_block_blue_score}&nbsp;confirmations</div>}
+                                        {txInfo.is_accepted && blueScore !== 0 && (blueScore - txInfo.accepting_block_blue_score) >= 86400 && <div className="confirmations mb-3">confirmed</div>}
                                     </Col>
                                 </Row>
                             </Container>
@@ -166,13 +160,13 @@ const TransactionInfo = () => {
                                             <Col sm={6} md={6} lg={2}>
                                                 <div className="blockinfo-key mt-0 mt-md-2">Signature Op Count</div>
                                                 <div className="utxo-value-mono">
-                                                    {tx_input.sigOpCount}
+                                                    {tx_input.sig_op_count}
                                                 </div>
                                             </Col>
                                             <Col sm={12} md={12} lg={7}>
                                                 <div className="blockinfo-key mt-2">Signature Script</div>
                                                 <div className="utxo-value-mono">
-                                                    {tx_input.signatureScript}
+                                                    {tx_input.signature_script}
                                                 </div>
                                             </Col>
                                             {!!additionalTxInfo && additionalTxInfo[tx_input.previous_outpoint_hash] && <Col sm={12} md={12} lg={3}>
@@ -193,9 +187,9 @@ const TransactionInfo = () => {
                                                     <div className="blockinfo-key mt-2">Address</div>
                                                     <div className="utxo-value-mono">
                                                         <Link to={`/addresses/${additionalTxInfo[tx_input.previous_outpoint_hash]
-                                                            .outputs[tx_input.previous_outpoint_index].scriptPublicKeyAddress}`} className="blockinfo-link">
+                                                            .outputs[tx_input.previous_outpoint_index].script_public_key_address}`} className="blockinfo-link">
                                                             {additionalTxInfo[tx_input.previous_outpoint_hash]
-                                                                .outputs[tx_input.previous_outpoint_index].scriptPublicKeyAddress}
+                                                                .outputs[tx_input.previous_outpoint_index].script_public_key_address}
                                                         </Link>
                                                     </div>
                                                 </Col></>}
@@ -219,7 +213,7 @@ const TransactionInfo = () => {
                                             <Col sm={12} md={12} lg={7}>
                                                 <div className="blockinfo-key mt-2 mt-lg-0">Script Public Key Type</div>
                                                 <div className="utxo-value-mono">
-                                                    {tx_output.scriptPublicKeyType}
+                                                    {tx_output.script_public_key_type}
                                                 </div>
                                             </Col>
                                             <Col sm={6} md={6} lg={3}>
@@ -231,15 +225,15 @@ const TransactionInfo = () => {
                                             <Col sm={12} md={12} lg={12}>
                                                 <div className="blockinfo-key mt-2">Script Public Key</div>
                                                 <div className="utxo-value-mono">
-                                                    {tx_output.scriptPublicKey}
+                                                    {tx_output.script_public_key}
                                                 </div>
                                             </Col>
                                             <Col sm={12} md={12} lg={12}>
                                                 <div className="blockinfo-key mt-2">Script Public Key Address</div>
                                                 <div className="utxo-value-mono">
 
-                                                    <Link to={`/addresses/${tx_output.scriptPublicKeyAddress}`} className="blockinfo-link">
-                                                        {tx_output.scriptPublicKeyAddress}
+                                                    <Link to={`/addresses/${tx_output.script_public_key_address}`} className="blockinfo-link">
+                                                        {tx_output.script_public_key_address}
                                                     </Link>
                                                 </div>
                                             </Col>

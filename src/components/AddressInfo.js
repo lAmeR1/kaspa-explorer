@@ -5,7 +5,7 @@ import { BiGhost } from "react-icons/bi";
 import { useParams } from "react-router";
 import { Link } from "react-router-dom";
 import { numberWithCommas } from "../helper";
-import { getAddressBalance, getAddressUtxos, getBlock, getBlockdagInfo } from '../kaspa-api-client.js';
+import { getAddressBalance, getAddressUtxos, getBlock, getBlockdagInfo, getTransaction, getTransactions, getTransactionsFromAddress } from '../kaspa-api-client.js';
 import CopyButton from "./CopyButton.js";
 import PriceContext from "./PriceContext.js";
 import UtxoPagination from "./UtxoPagination.js";
@@ -18,8 +18,15 @@ const AddressInfoPage = () => {
 const AddressInfo = () => {
     const { addr } = useParams();
     const [addressBalance, setAddressBalance] = useState(0)
+
     const [utxos, setUtxos] = useState([])
     const [loadingUtxos, setLoadingUtxos] = useState(true)
+
+    const [txs, setTxs] = useState([])
+    const [txsOverview, setTxsOverview] = useState([])
+    const [txsInpCache, setTxsInpCache] = useState([])
+    const [loadingTxs, setLoadingTxs] = useState(true)
+
     const [errorLoadingUtxos, setErrorLoadingUtxos] = useState(false)
     const [active, setActive] = useState(1)
 
@@ -27,6 +34,21 @@ const AddressInfo = () => {
     const [currentDaaScore, setCurrentDaaScore] = useState(0);
 
     const { price } = useContext(PriceContext);
+
+    const getAddrFromOutputs = (outputs, i) => {
+        for (const o of outputs) {
+            if (o.index == i) {
+                return o.script_public_key_address
+            }
+        }
+    }
+    const getAmountFromOutputs = (outputs, i) => {
+        for (const o of outputs) {
+            if (o.index == i) {
+                return o.amount / 100000000
+            }
+        }
+    }
 
     useEffect(() => {
         getAddressBalance(addr).then(
@@ -60,6 +82,33 @@ const AddressInfo = () => {
             .catch(ex => {
                 setLoadingUtxos(false);
                 setErrorLoadingUtxos(true);
+            })
+        getTransactionsFromAddress(addr).then(res => {
+            setTxsOverview(res.transactions)
+            getTransactions(res.transactions.map(x => x.tx_received)
+                .concat(res.transactions.map(x => x.tx_sent)).filter(v => v)).then(
+                    res => {
+                        console.log("prepare", res)
+                        getTransactions(res.flatMap(tx => {
+                            return tx.inputs.map(inp => {
+                                console.log("inp", inp)
+                                return inp.previous_outpoint_hash
+                            })
+                        })).then(res_inputs => {
+
+                            var txInpObj = {}
+
+                            res_inputs.forEach(x => txInpObj[x.transaction_id] = x)
+
+                            setTxsInpCache(txInpObj)
+                        })
+                        setLoadingTxs(false);
+                        setTxs(res)
+                    }
+                )
+        })
+            .catch(ex => {
+                setLoadingTxs(false);
             })
     }, [addressBalance])
 
@@ -122,6 +171,48 @@ const AddressInfo = () => {
                     <div className="utxo-value ms-sm-5">{!loadingUtxos ? utxos.length : <Spinner animation="border" variant="primary" />}{errorLoadingUtxos && <BiGhost className="error-icon" />}</div>
                 </Col>
             </Row>
+        </Container>
+
+        <Container className="webpage addressinfo-box mt-4" fluid>
+            <Row className="border-bottom border-bottom-1">
+                <Col xs={1}>
+                    <div className="utxo-title d-flex flex-row">Transactions</div>
+                </Col>
+                {utxos.length > 10 ? <Col xs={12} sm={11} className="d-flex flex-row justify-items-end">
+                    <UtxoPagination active={active} total={Math.ceil(utxos.length / 10)} setActive={setActive} />
+                </Col> : <></>}
+            </Row>
+            {!loadingTxs ? txs.map((x) =>
+                <>
+                    <Row className="pb-4 mb-4">
+                        <Col sm={12} md={12}>
+                            <div className="utxo-header mt-3">transaction id</div>
+                            <div className="utxo-value">
+                                <Link className="blockinfo-link" to={`/txs/${x.transaction_id}`} >
+                                    {x.transaction_id}
+                                </Link>
+                            </div>
+                        </Col>
+                    </Row>
+                    <Row className="utxo-border pb-4 mb-4">
+                        <Col sm={6} md={6}>
+                            <div className="utxo-header mt-3">Inputs</div>
+                            <div className="utxo-value" style={{ fontSize: "smaller" }}>
+                                {x.inputs.map(x => {
+                                    return (txsInpCache && txsInpCache[x.previous_outpoint_hash]) ? <li>{getAddrFromOutputs(txsInpCache[x.previous_outpoint_hash]["outputs"], x.previous_outpoint_index)} -{getAmountFromOutputs(txsInpCache[x.previous_outpoint_hash]["outputs"], x.previous_outpoint_index)}&nbsp;KAS</li> : <li>{x.previous_outpoint_hash} #{x.previous_outpoint_index}</li>
+                                })}
+                            </div>
+                        </Col>
+                        <Col sm={6} md={6}>
+                            <div className="utxo-header mt-3">Outputs</div>
+                            <div className="utxo-value" style={{ fontSize: "smaller" }}>
+                                {x.outputs.map(x => <li>{x.script_public_key_address} +{x.amount / 100000000}&nbsp;KAS</li>)}
+                            </div>
+                        </Col>
+                    </Row>
+                </>
+            ) : <Spinner animation="border" variant="primary" />}
+
         </Container>
 
         <Container className="webpage addressinfo-box mt-4" fluid>
