@@ -243,3 +243,9 @@
 .page-item.active .page-link {
     border-color: $color2;
 }
+
+.tx-hash-list {
+    list-style-type: none;
+    list-style-position: inside;
+    padding: 0;
+}

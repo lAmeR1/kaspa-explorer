@@ -19,6 +19,8 @@ const AddressInfo = () => {
     const { addr } = useParams();
     const [addressBalance, setAddressBalance] = useState(0)
 
+    const [view, setView] = useState("transactions")
+
     const [utxos, setUtxos] = useState([])
     const [loadingUtxos, setLoadingUtxos] = useState(true)
 
@@ -29,6 +31,7 @@ const AddressInfo = () => {
 
     const [errorLoadingUtxos, setErrorLoadingUtxos] = useState(false)
     const [active, setActive] = useState(1)
+    const [activeTx, setActiveTx] = useState(1)
 
     const [currentEpochTime, setCurrentEpochTime] = useState(0);
     const [currentDaaScore, setCurrentDaaScore] = useState(0);
@@ -73,44 +76,51 @@ const AddressInfo = () => {
     useEffect(() => {
         setErrorLoadingUtxos(false);
         setLoadingUtxos(true);
-        getAddressUtxos(addr).then(
-            (res) => {
-                setLoadingUtxos(false);
-                setUtxos(res);
-            }
-        )
-            .catch(ex => {
-                setLoadingUtxos(false);
-                setErrorLoadingUtxos(true);
-            })
-        getTransactionsFromAddress(addr).then(res => {
-            setTxsOverview(res.transactions)
-            getTransactions(res.transactions.map(x => x.tx_received)
-                .concat(res.transactions.map(x => x.tx_sent)).filter(v => v)).then(
-                    res => {
-                        console.log("prepare", res)
-                        getTransactions(res.flatMap(tx => {
-                            return tx.inputs.map(inp => {
-                                console.log("inp", inp)
-                                return inp.previous_outpoint_hash
-                            })
-                        })).then(res_inputs => {
-
-                            var txInpObj = {}
-
-                            res_inputs.forEach(x => txInpObj[x.transaction_id] = x)
-
-                            setTxsInpCache(txInpObj)
-                        })
-                        setLoadingTxs(false);
-                        setTxs(res)
-                    }
-                )
-        })
-            .catch(ex => {
-                setLoadingTxs(false);
-            })
     }, [addressBalance])
+
+    useEffect(() => {
+        if (view === "transactions") {
+            getTransactionsFromAddress(addr).then(res => {
+                setTxsOverview(res.transactions)
+                getTransactions(res.transactions.map(x => x.tx_received)
+                    .concat(res.transactions.map(x => x.tx_sent)).filter(v => v)).then(
+                        res => {
+                            console.log("prepare", res)
+                            getTransactions(res.flatMap(tx => {
+                                return tx.inputs.map(inp => {
+                                    console.log("inp", inp)
+                                    return inp.previous_outpoint_hash
+                                })
+                            })).then(res_inputs => {
+
+                                var txInpObj = {}
+
+                                res_inputs.forEach(x => txInpObj[x.transaction_id] = x)
+
+                                setTxsInpCache(txInpObj)
+                            })
+                            setLoadingTxs(false);
+                            setTxs(res)
+                        }
+                    )
+            })
+                .catch(ex => {
+                    setLoadingTxs(false);
+                })
+        }
+        if (view === "utxos") {
+            getAddressUtxos(addr).then(
+                (res) => {
+                    setLoadingUtxos(false);
+                    setUtxos(res);
+                }
+            )
+                .catch(ex => {
+                    setLoadingUtxos(false);
+                    setErrorLoadingUtxos(true);
+                })
+        }
+    }, [view])
 
 
     //     <div className="blockinfo-content">
@@ -168,23 +178,24 @@ const AddressInfo = () => {
                 </Col>
                 <Col sm={6} md={4}>
                     <div className="addressinfo-header addressinfo-header-border mt-4 mt-sm-4 pt-sm-4 ms-sm-5">Transactions count</div>
-                    <div className="utxo-value ms-sm-5">{!loadingUtxos ? utxos.length : <Spinner animation="border" variant="primary" />}{errorLoadingUtxos && <BiGhost className="error-icon" />}</div>
+                    <div className="utxo-value ms-sm-5">{!loadingTxs ? txs.length : <Spinner animation="border" variant="primary" />}{errorLoadingUtxos && <BiGhost className="error-icon" />}</div>
                 </Col>
             </Row>
         </Container>
 
-        <Container className="webpage addressinfo-box mt-4" fluid>
+        {view == "transactions" && <Container className="webpage addressinfo-box mt-4" fluid>
             <Row className="border-bottom border-bottom-1">
-                <Col xs={1}>
-                    <div className="utxo-title d-flex flex-row">Transactions</div>
+                <Col xs={3}>
+                    <div className="utxo-title d-flex flex-row">Transaction History</div>
                 </Col>
-                {utxos.length > 10 ? <Col xs={12} sm={11} className="d-flex flex-row justify-items-end">
-                    <UtxoPagination active={active} total={Math.ceil(utxos.length / 10)} setActive={setActive} />
+                {txs.length > 10 ? <Col xs={12} sm={9} className="d-flex flex-row justify-items-end">
+                    <UtxoPagination active={activeTx} total={Math.ceil(txs.length / 10)} setActive={setActiveTx} />
+
                 </Col> : <></>}
             </Row>
-            {!loadingTxs ? txs.map((x) =>
+            {!loadingTxs ? txs.slice((activeTx - 1) * 10, (activeTx - 1) * 10 + 10).map((x) =>
                 <>
-                    <Row className="pb-4 mb-4">
+                    <Row className="pb-4 mb-0">
                         <Col sm={12} md={12}>
                             <div className="utxo-header mt-3">transaction id</div>
                             <div className="utxo-value">
@@ -196,70 +207,77 @@ const AddressInfo = () => {
                     </Row>
                     <Row className="utxo-border pb-4 mb-4">
                         <Col sm={6} md={6}>
-                            <div className="utxo-header mt-3">Inputs</div>
+                            <div className="utxo-header mt-1">FROM</div>
                             <div className="utxo-value" style={{ fontSize: "smaller" }}>
-                                {x.inputs.map(x => {
-                                    return (txsInpCache && txsInpCache[x.previous_outpoint_hash]) ? <li>{getAddrFromOutputs(txsInpCache[x.previous_outpoint_hash]["outputs"], x.previous_outpoint_index)} -{getAmountFromOutputs(txsInpCache[x.previous_outpoint_hash]["outputs"], x.previous_outpoint_index)}&nbsp;KAS</li> : <li>{x.previous_outpoint_hash} #{x.previous_outpoint_index}</li>
-                                })}
+                                <Container fluid>
+                                    {x.inputs.map(x => {
+                                        return (txsInpCache && txsInpCache[x.previous_outpoint_hash]) ? <>
+                                            <Row>
+                                            <Col xs={7} className="pb-2">{getAddrFromOutputs(txsInpCache[x.previous_outpoint_hash]["outputs"], x.previous_outpoint_index)}</Col>
+                                            <Col xs={5}><span className="utxo-amount-minus">-{getAmountFromOutputs(txsInpCache[x.previous_outpoint_hash]["outputs"], x.previous_outpoint_index)}&nbsp;KAS</span></Col></Row></> : <li>{x.previous_outpoint_hash} #{x.previous_outpoint_index}</li>
+                                    })}
+                                </Container>
                             </div>
                         </Col>
                         <Col sm={6} md={6}>
-                            <div className="utxo-header mt-3">Outputs</div>
+                            <div className="utxo-header mt-1">TO</div>
                             <div className="utxo-value" style={{ fontSize: "smaller" }}>
-                                {x.outputs.map(x => <li>{x.script_public_key_address} +{x.amount / 100000000}&nbsp;KAS</li>)}
+                                    {x.outputs.map(x => <Row>
+                                        <Col xs={7} className="pb-2">{x.script_public_key_address}</Col>
+                                        <Col xs={5}><span className="utxo-amount">+{x.amount / 100000000}&nbsp;KAS</span></Col></Row>)}
                             </div>
                         </Col>
                     </Row>
                 </>
             ) : <Spinner animation="border" variant="primary" />}
 
-        </Container>
-
-        <Container className="webpage addressinfo-box mt-4" fluid>
-            <Row className="border-bottom border-bottom-1">
-                <Col xs={1}>
-                    <div className="utxo-title d-flex flex-row">UTXOs</div>
-                </Col>
-                {utxos.length > 10 ? <Col xs={12} sm={11} className="d-flex flex-row justify-items-end">
-                    <UtxoPagination active={active} total={Math.ceil(utxos.length / 10)} setActive={setActive} />
-                </Col> : <></>}
-            </Row>
-            {errorLoadingUtxos && <BiGhost className="error-icon" />}
-            {!loadingUtxos ? utxos.sort((a, b) => b.utxoEntry.blockDaaScore - a.utxoEntry.blockDaaScore).slice((active - 1) * 10, (active - 1) * 10 + 10).map((x) =>
-                <Row className="utxo-border pb-4 mb-4">
-                    <Col sm={6} md={4}>
-                        <div className="utxo-header mt-3">Block DAA Score</div>
-                        <div className="utxo-value">{x.utxoEntry.blockDaaScore}<br />({moment(((currentEpochTime) - (currentDaaScore - x.utxoEntry.blockDaaScore)) * 1000).format("YYYY-MM-DD HH:mm:ss")})</div>
+        </Container>}
+        {view == "utxos" &&
+            <Container className="webpage addressinfo-box mt-4" fluid>
+                <Row className="border-bottom border-bottom-1">
+                    <Col xs={1}>
+                        <div className="utxo-title d-flex flex-row">UTXOs</div>
                     </Col>
-                    <Col sm={6} md={4}>
-                        <div className="utxo-header mt-3">amount</div>
-                        <div className="utxo-value d-flex flex-row"><div className="utxo-amount">+{numberWithCommas(x.utxoEntry.amount / 100000000)} KAS</div></div>
-                    </Col>
-                    <Col sm={6} md={4}>
-                        <div className="utxo-header mt-3">value</div>
-                        <div className="utxo-value">{(x.utxoEntry.amount / 100000000 * price).toFixed(2)} $</div>
-                    </Col>
-                    <Col sm={6} md={4}>
-                        <div className="utxo-header mt-3">index</div>
-                        <div className="utxo-value">{x.outpoint.index}</div>
-                    </Col>
-                    <Col sm={6} md={4}>
-                        <div className="utxo-header mt-3">transaction id</div>
-                        <div className="utxo-value">
-                            <Link className="blockinfo-link" to={`/txs/${x.outpoint.transactionId}`} >
-                                {x.outpoint.transactionId}
-                            </Link>
-
-                        </div>
-                    </Col>
-                    <Col sm={6} md={4}>
-                        <div className="utxo-header mt-3">details</div>
-                        <div className="utxo-value">Unspent</div>
-                    </Col>
+                    {utxos.length > 10 ? <Col xs={12} sm={11} className="d-flex flex-row justify-items-end">
+                        <UtxoPagination active={active} total={Math.ceil(utxos.length / 10)} setActive={setActive} />
+                    </Col> : <></>}
                 </Row>
-            ) : <Spinner animation="border" variant="primary" />}
+                {errorLoadingUtxos && <BiGhost className="error-icon" />}
+                {!loadingUtxos ? utxos.sort((a, b) => b.utxoEntry.blockDaaScore - a.utxoEntry.blockDaaScore).slice((active - 1) * 10, (active - 1) * 10 + 10).map((x) =>
+                    <Row className="utxo-border pb-4 mb-4">
+                        <Col sm={6} md={4}>
+                            <div className="utxo-header mt-3">Block DAA Score</div>
+                            <div className="utxo-value">{x.utxoEntry.blockDaaScore}<br />({moment(((currentEpochTime) - (currentDaaScore - x.utxoEntry.blockDaaScore)) * 1000).format("YYYY-MM-DD HH:mm:ss")})</div>
+                        </Col>
+                        <Col sm={6} md={4}>
+                            <div className="utxo-header mt-3">amount</div>
+                            <div className="utxo-value d-flex flex-row"><div className="utxo-amount">+{numberWithCommas(x.utxoEntry.amount / 100000000)} KAS</div></div>
+                        </Col>
+                        <Col sm={6} md={4}>
+                            <div className="utxo-header mt-3">value</div>
+                            <div className="utxo-value">{(x.utxoEntry.amount / 100000000 * price).toFixed(2)} $</div>
+                        </Col>
+                        <Col sm={6} md={4}>
+                            <div className="utxo-header mt-3">index</div>
+                            <div className="utxo-value">{x.outpoint.index}</div>
+                        </Col>
+                        <Col sm={6} md={4}>
+                            <div className="utxo-header mt-3">transaction id</div>
+                            <div className="utxo-value">
+                                <Link className="blockinfo-link" to={`/txs/${x.outpoint.transactionId}`} >
+                                    {x.outpoint.transactionId}
+                                </Link>
 
-        </Container>
+                            </div>
+                        </Col>
+                        <Col sm={6} md={4}>
+                            <div className="utxo-header mt-3">details</div>
+                            <div className="utxo-value">Unspent</div>
+                        </Col>
+                    </Row>
+                ) : <Spinner animation="border" variant="primary" />}
+
+            </Container>}
 
     </div>
 
