@@ -21,6 +21,7 @@ import { BiDonateHeart } from 'react-icons/bi';
 import { SiFastapi } from 'react-icons/si';
 import TransactionInfo from './components/TransactionInfo';
 import BlueScoreContext from './components/BlueScoreContext';
+import "react-toggle/style.css"
 // import 'moment/min/locales';
 
 // var locale = window.navigator.userLanguage || window.navigator.language || "en";

@@ -203,11 +203,16 @@
     background-color: rgb(65, 141, 65);
     padding: .2rem .7rem;
     border-radius: .4rem;
+    word-wrap: none;
+    display: inline-block;
+    
 }
 .utxo-amount-minus {
     background-color: rgb(195, 38, 38);
     padding: .2rem .7rem;
     border-radius: .4rem;
+    word-wrap: none;
+    display: inline-block;
 }
 
 .table-timestamp {

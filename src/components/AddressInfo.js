@@ -1,9 +1,10 @@
 import moment from "moment";
 import { useContext, useEffect, useState } from 'react';
-import { Col, Container, Row, Spinner } from "react-bootstrap";
+import { Col, Container, Row, Spinner, ToggleButton } from "react-bootstrap";
 import { BiGhost } from "react-icons/bi";
 import { useParams } from "react-router";
 import { Link } from "react-router-dom";
+import Toggle from "react-toggle";
 import { numberWithCommas } from "../helper";
 import { getAddressBalance, getAddressUtxos, getBlock, getBlockdagInfo, getTransaction, getTransactions, getTransactionsFromAddress } from '../kaspa-api-client.js';
 import CopyButton from "./CopyButton.js";
@@ -17,9 +18,11 @@ const AddressInfoPage = () => {
 
 const AddressInfo = () => {
     const { addr } = useParams();
-    const [addressBalance, setAddressBalance] = useState(0)
+    const [addressBalance, setAddressBalance] = useState()
 
     const [view, setView] = useState("transactions")
+
+    const [detailedView, setDetailedView] = useState(false)
 
     const [utxos, setUtxos] = useState([])
     const [loadingUtxos, setLoadingUtxos] = useState(true)
@@ -51,6 +54,21 @@ const AddressInfo = () => {
                 return o.amount / 100000000
             }
         }
+    }
+
+    const getAmount = (outputs, inputs) => {
+        var balance = 0
+        for (const o of outputs) {
+            if (o.script_public_key_address == addr) {
+                balance = balance + o.amount / 100000000
+            }
+        }
+        for (const i of inputs) {
+            if (getAddrFromOutputs(txsInpCache[i.previous_outpoint_hash]?.outputs || [], i.previous_outpoint_index) == addr) {
+                balance = balance - getAmountFromOutputs(txsInpCache[i.previous_outpoint_hash]["outputs"], i.previous_outpoint_index)
+            }
+        }
+        return balance
     }
 
     useEffect(() => {
@@ -164,7 +182,8 @@ const AddressInfo = () => {
             <Row>
                 <Col sm={6} md={4}>
                     <div className="addressinfo-header mt-4">balance</div>
-                    <div className="utxo-value d-flex"><div className="utxo-amount">+{numberWithCommas(addressBalance / 100000000)} KAS</div></div>
+                    <div className="utxo-value d-flex">
+                        {addressBalance !== undefined ? <div className="utxo-amount">+{numberWithCommas(addressBalance / 100000000)} KAS</div> : <Spinner animation="border" variant="primary" />}</div>
                 </Col>
                 <Col sm={6} md={4}>
                     <div className="addressinfo-header mt-4 ms-sm-5">UTXOs count</div>
@@ -185,10 +204,15 @@ const AddressInfo = () => {
 
         {view == "transactions" && <Container className="webpage addressinfo-box mt-4" fluid>
             <Row className="border-bottom border-bottom-1">
-                <Col xs={3}>
+                <Col xs={6} className="d-flex flex-row align-items-center">
                     <div className="utxo-title d-flex flex-row">Transaction History</div>
+                    <div className="ms-auto d-flex flex-row align-items-center"><Toggle
+    defaultChecked={true}
+    size={"1px"}
+    icons={false}
+    onChange={() => {setDetailedView(!detailedView)}} /><span className="text-light ms-2">Show details</span></div>
                 </Col>
-                {txs.length > 10 ? <Col xs={12} sm={9} className="d-flex flex-row justify-items-end">
+                {txs.length > 10 ? <Col xs={12} sm={6} className="d-flex flex-row justify-items-end">
                     <UtxoPagination active={activeTx} total={Math.ceil(txs.length / 10)} setActive={setActiveTx} />
 
                 </Col> : <></>}
@@ -196,7 +220,7 @@ const AddressInfo = () => {
             {!loadingTxs ? txs.slice((activeTx - 1) * 10, (activeTx - 1) * 10 + 10).map((x) =>
                 <>
                     <Row className="pb-4 mb-0">
-                        <Col sm={12} md={12}>
+                        <Col sm={7} md={7}>
                             <div className="utxo-header mt-3">transaction id</div>
                             <div className="utxo-value">
                                 <Link className="blockinfo-link" to={`/txs/${x.transaction_id}`} >
@@ -204,30 +228,49 @@ const AddressInfo = () => {
                                 </Link>
                             </div>
                         </Col>
+                        <Col sm={5} md={5}>
+                            <div className="utxo-header mt-3">amount</div>
+                            <div className="utxo-value">
+                                <Link className="blockinfo-link" to={`/txs/${x.transaction_id}`} >
+                                    <span className={getAmount(x.outputs, x.inputs) > 0 ? "utxo-amount" : "utxo-amount-minus"}>{getAmount(x.outputs, x.inputs)}&nbsp;KAS</span>
+                                </Link>
+                            </div>
+                        </Col>
                     </Row>
+                    {!detailedView &&
                     <Row className="utxo-border pb-4 mb-4">
                         <Col sm={6} md={6}>
                             <div className="utxo-header mt-1">FROM</div>
                             <div className="utxo-value" style={{ fontSize: "smaller" }}>
-                                <Container fluid>
+
                                     {x.inputs.map(x => {
                                         return (txsInpCache && txsInpCache[x.previous_outpoint_hash]) ? <>
                                             <Row>
-                                            <Col xs={7} className="pb-2">{getAddrFromOutputs(txsInpCache[x.previous_outpoint_hash]["outputs"], x.previous_outpoint_index)}</Col>
-                                            <Col xs={5}><span className="utxo-amount-minus">-{getAmountFromOutputs(txsInpCache[x.previous_outpoint_hash]["outputs"], x.previous_outpoint_index)}&nbsp;KAS</span></Col></Row></> : <li>{x.previous_outpoint_hash} #{x.previous_outpoint_index}</li>
+                                                <Col xs={7} className="adressinfo-tx-overflow pb-0">
+                                                    <Link className="blockinfo-link" to={`/txs/${getAddrFromOutputs(txsInpCache[x.previous_outpoint_hash]["outputs"], x.previous_outpoint_index)}`} >
+                                                        <span className={getAddrFromOutputs(txsInpCache[x.previous_outpoint_hash]["outputs"], x.previous_outpoint_index) == addr ? "highlight-addr" : ""}>{getAddrFromOutputs(txsInpCache[x.previous_outpoint_hash]["outputs"], x.previous_outpoint_index)}</span>
+                                                    </Link>
+                                                </Col>
+                                                <Col xs={5}><span className="block-utxo-amount-minus">-{getAmountFromOutputs(txsInpCache[x.previous_outpoint_hash]["outputs"], x.previous_outpoint_index)}&nbsp;KAS</span></Col></Row></> : <li>{x.previous_outpoint_hash} #{x.previous_outpoint_index}</li>
                                     })}
-                                </Container>
+                                
                             </div>
                         </Col>
                         <Col sm={6} md={6}>
                             <div className="utxo-header mt-1">TO</div>
                             <div className="utxo-value" style={{ fontSize: "smaller" }}>
-                                    {x.outputs.map(x => <Row>
-                                        <Col xs={7} className="pb-2">{x.script_public_key_address}</Col>
-                                        <Col xs={5}><span className="utxo-amount">+{x.amount / 100000000}&nbsp;KAS</span></Col></Row>)}
+                                {x.outputs.map(x => <Row>
+                                    <Col xs={7} className="pb-1 adressinfo-tx-overflow">
+                                        <Link className="blockinfo-link" to={`/txs/${x.script_public_key_address}`}>
+                                            <span className={x.script_public_key_address == addr ? "highlight-addr" : ""}>
+                                                {x.script_public_key_address}
+                                            </span>
+                                        </Link>
+                                    </Col>
+                                    <Col xs={5}><span className="block-utxo-amount">+{x.amount / 100000000}&nbsp;KAS</span></Col></Row>)}
                             </div>
                         </Col>
-                    </Row>
+                    </Row>}
                 </>
             ) : <Spinner animation="border" variant="primary" />}
 
