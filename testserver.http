@@ -310,4 +310,4 @@ GET http://127.0.0.1:8000/addresses/kaspa:qp7d7rzrj34s2k3qlxmguuerfh2qmjafc399lj
 
 
 ###
-GET http://127.0.0.1:8000/transactions/015d5fd0ab89f21be8d79e18d0e3b5c425cac6d3a6d49b9034d3969c8492dfc5
+GET http://127.0.0.1:8000/transactions/ff798f2b29dff603878b53b0ca554756759c13ebb0c09e03f7b2887f981427f5?inputs=true&outputs=true
