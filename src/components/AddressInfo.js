@@ -22,7 +22,9 @@ const AddressInfo = () => {
 
     const [view, setView] = useState("transactions")
 
-    const [detailedView, setDetailedView] = useState(false)
+    console.log(Boolean(localStorage.getItem('detailedView')))
+
+    const [detailedView, setDetailedView] = useState(localStorage.getItem('detailedView') == "true")
 
     const [utxos, setUtxos] = useState([])
     const [loadingUtxos, setLoadingUtxos] = useState(true)
@@ -92,6 +94,10 @@ const AddressInfo = () => {
     }, [])
 
     useEffect(() => {
+        localStorage.setItem("detailedView", detailedView)
+    }, [detailedView])
+
+    useEffect(() => {
         setErrorLoadingUtxos(false);
         setLoadingUtxos(true);
     }, [addressBalance])
@@ -108,16 +114,14 @@ const AddressInfo = () => {
     }
 
     useEffect(() => {
-        // if (view === "transactions") {
+        if (view === "transactions") {
             getTransactionsFromAddress(addr).then(res => {
                 setTxsOverview(res.transactions)
                 getTransactions(res.transactions.map(x => x.tx_received)
                     .concat(res.transactions.map(x => x.tx_sent)).filter(v => v)).then(
                         res => {
-                            console.log("prepare", res)
                             getTransactions(res.flatMap(tx => {
                                 return tx.inputs.map(inp => {
-                                    console.log("inp", inp)
                                     return inp.previous_outpoint_hash
                                 })
                             })).then(res_inputs => {
@@ -129,26 +133,27 @@ const AddressInfo = () => {
                                 setTxsInpCache(txInpObj)
                             })
                             setLoadingTxs(false);
-                            setTxs(res)
+                            setTxs(res.sort((a,b) => b.block_time - a.block_time))
+                            getAddressUtxos(addr).then(
+                                (res) => {
+                                    setLoadingUtxos(false);
+                                    setUtxos(res);
+                                }
+                            )
+                                .catch(ex => {
+                                    setLoadingUtxos(false);
+                                    setErrorLoadingUtxos(true);
+                                })
                         }
                     )
             })
                 .catch(ex => {
                     setLoadingTxs(false);
                 })
-        // }
-        // if (view === "utxos") {
-            getAddressUtxos(addr).then(
-                (res) => {
-                    setLoadingUtxos(false);
-                    setUtxos(res);
-                }
-            )
-                .catch(ex => {
-                    setLoadingUtxos(false);
-                    setErrorLoadingUtxos(true);
-                })
-        // }
+        }
+        if (view === "utxos") {
+            
+        }
     }, [view])
 
 
@@ -236,10 +241,10 @@ const AddressInfo = () => {
                 <Col xs={6} className="d-flex flex-row align-items-center">
                     <div className="utxo-title d-flex flex-row">Transactions History</div>
                     <div className="ms-auto d-flex flex-row align-items-center"><Toggle
-                        defaultChecked={true}
+                        defaultChecked={localStorage.getItem('detailedView') == "true"}
                         size={"1px"}
                         icons={false}
-                        onChange={() => { setDetailedView(!detailedView) }} /><span className="text-light ms-2">Show details</span></div>
+                        onChange={(e) => { setDetailedView(e.target.checked) }} /><span className="text-light ms-2">Show details</span></div>
                 </Col>
                 {txs.length > 10 ? <Col xs={12} sm={6} className="d-flex flex-row justify-items-end">
                     <UtxoPagination active={activeTx} total={Math.ceil(txs.length / 10)} setActive={setActiveTx} />
@@ -248,6 +253,11 @@ const AddressInfo = () => {
             </Row>
             {!loadingTxs ? txs.slice((activeTx - 1) * 10, (activeTx - 1) * 10 + 10).map((x) =>
                 <>
+                <Row className="utxo-value text-primary mt-3">
+                <Col sm={7} md={7}>
+                    {moment(x.block_time).format("YYYY-MM-DD HH:mm:ss")}
+                    </Col>
+                </Row>
                     <Row className="pb-4 mb-0">
                         <Col sm={7} md={7}>
                             <div className="utxo-header mt-3">transaction id</div>
@@ -266,7 +276,7 @@ const AddressInfo = () => {
                             </div>
                         </Col>
                     </Row>
-                    {!detailedView &&
+                    {!!detailedView &&
                         <Row className="utxo-border pb-4 mb-4">
                             <Col sm={6} md={6}>
                                 <div className="utxo-header mt-1">FROM</div>
