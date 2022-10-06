@@ -247,7 +247,7 @@ const AddressInfo = () => {
                                         return (txsInpCache && txsInpCache[x.previous_outpoint_hash]) ? <>
                                             <Row>
                                                 <Col xs={7} className="adressinfo-tx-overflow pb-0">
-                                                    <Link className="blockinfo-link" to={`/txs/${getAddrFromOutputs(txsInpCache[x.previous_outpoint_hash]["outputs"], x.previous_outpoint_index)}`} >
+                                                    <Link className="blockinfo-link" to={`/addresses/${getAddrFromOutputs(txsInpCache[x.previous_outpoint_hash]["outputs"], x.previous_outpoint_index)}`} >
                                                         <span className={getAddrFromOutputs(txsInpCache[x.previous_outpoint_hash]["outputs"], x.previous_outpoint_index) == addr ? "highlight-addr" : ""}>{getAddrFromOutputs(txsInpCache[x.previous_outpoint_hash]["outputs"], x.previous_outpoint_index)}</span>
                                                     </Link>
                                                 </Col>
@@ -261,7 +261,7 @@ const AddressInfo = () => {
                             <div className="utxo-value" style={{ fontSize: "smaller" }}>
                                 {x.outputs.map(x => <Row>
                                     <Col xs={7} className="pb-1 adressinfo-tx-overflow">
-                                        <Link className="blockinfo-link" to={`/txs/${x.script_public_key_address}`}>
+                                        <Link className="blockinfo-link" to={`/addresses/${x.script_public_key_address}`}>
                                             <span className={x.script_public_key_address == addr ? "highlight-addr" : ""}>
                                                 {x.script_public_key_address}
                                             </span>

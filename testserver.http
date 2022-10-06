@@ -306,7 +306,7 @@ POST http://127.0.0.1:8000/transactions/search
 ###
 
 
-GET http://127.0.0.1:8000/addresses/kaspa:qp7d7rzrj34s2k3qlxmguuerfh2qmjafc399lj6606fc7s69l84h7mrj49hu6/transactions
+GET http://127.0.0.1:8000/addresses/kaspa:qrsatq67p8eu8kkjp80tedanhulmpcxevsj8rawmxmy75kpn3vrtuqyg7447h/transactions
 
 
 ###
