@@ -261,7 +261,7 @@ const AddressInfo = () => {
                     <Row className="pb-4 mb-0">
                         <Col sm={7} md={7}>
                             <div className="utxo-header mt-3">transaction id</div>
-                            <div className="utxo-value">
+                            <div className="utxo-value-mono">
                                 <Link className="blockinfo-link" to={`/txs/${x.transaction_id}`} >
                                     {x.transaction_id}
                                 </Link>
@@ -280,7 +280,7 @@ const AddressInfo = () => {
                         <Row className="utxo-border pb-4 mb-4">
                             <Col sm={6} md={6}>
                                 <div className="utxo-header mt-1">FROM</div>
-                                <div className="utxo-value" style={{ fontSize: "smaller" }}>
+                                <div className="utxo-value-mono" style={{ fontSize: "smaller" }}>
 
                                     {x.inputs.length > 0 ? x.inputs.map(x => {
                                         return (txsInpCache && txsInpCache[x.previous_outpoint_hash]) ? <>
@@ -297,7 +297,7 @@ const AddressInfo = () => {
                             </Col>
                             <Col sm={6} md={6}>
                                 <div className="utxo-header mt-1">TO</div>
-                                <div className="utxo-value" style={{ fontSize: "smaller" }}>
+                                <div className="utxo-value-mono" style={{ fontSize: "smaller" }}>
                                     {x.outputs.map(x => <Row>
                                         <Col xs={7} className="pb-1 adressinfo-tx-overflow">
                                             <Link className="blockinfo-link" to={`/addresses/${x.script_public_key_address}`}>
