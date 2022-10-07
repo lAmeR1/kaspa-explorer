@@ -261,7 +261,7 @@ const AddressInfo = () => {
                         </Col>
                     </Row>
                     <Row className="pb-4 mb-0">
-                        <Col sm={7} md={7}>
+                        <Col sm={12} md={7}>
                             <div className="utxo-header mt-3">transaction id</div>
                             <div className="utxo-value-mono">
                                 <Link className="blockinfo-link" to={`/txs/${x.transaction_id}`} >
@@ -269,18 +269,24 @@ const AddressInfo = () => {
                                 </Link>
                             </div>
                         </Col>
-                        <Col sm={5} md={5}>
+                        <Col sm={6} md={3}>
                             <div className="utxo-header mt-3">amount</div>
                             <div className="utxo-value">
                                 <Link className="blockinfo-link" to={`/txs/${x.transaction_id}`} >
-                                    <span className={getAmount(x.outputs, x.inputs) > 0 ? "utxo-amount" : "utxo-amount-minus"}>{getAmount(x.outputs, x.inputs)}&nbsp;KAS</span>
+                                    {getAmount(x.outputs, x.inputs) > 0 ?
+                                        <span className="utxo-amount">+{getAmount(x.outputs, x.inputs)}&nbsp;KAS</span> :
+                                        <span className="utxo-amount-minus">{getAmount(x.outputs, x.inputs)}&nbsp;KAS</span>}
                                 </Link>
                             </div>
+                        </Col>
+                        <Col sm={6} md={2}>
+                            <div className="utxo-header mt-3">value</div>
+                            <div className="utxo-value">{(getAmount(x.outputs, x.inputs) * price).toFixed(2)} $</div>
                         </Col>
                     </Row>
                     {!!detailedView &&
                         <Row className="utxo-border pb-4 mb-4">
-                            <Col sm={6} md={6}>
+                            <Col sm={12} md={6}>
                                 <div className="utxo-header mt-1">FROM</div>
                                 <div className="utxo-value-mono" style={{ fontSize: "smaller" }}>
 
@@ -297,7 +303,7 @@ const AddressInfo = () => {
 
                                 </div>
                             </Col>
-                            <Col sm={6} md={6}>
+                            <Col sm={12} md={6}>
                                 <div className="utxo-header mt-1">TO</div>
                                 <div className="utxo-value-mono" style={{ fontSize: "smaller" }}>
                                     {x.outputs.map(x => <Row>
@@ -313,14 +319,14 @@ const AddressInfo = () => {
                             </Col>
                             <Col md={12}>
                                 <div className="utxo-header">Details</div>
-                            <div className="utxo-value mt-2 d-flex flex-row flex-wrap" style={{ marginBottom: "-1rem", textDecoration: "none" }}>
-                                {x.is_accepted ? <div className="accepted-true me-3 mb-3">accepted</div> :
-                                    <span className="accepted-false">not accepted</span>}
-                                {x.is_accepted && blueScore !== 0 && (blueScore - x.accepting_block_blue_score) < 86400 && <div className="confirmations mb-3">{blueScore - x.accepting_block_blue_score}&nbsp;confirmations</div>}
-                                {x.is_accepted && blueScore !== 0 && (blueScore - x.accepting_block_blue_score) >= 86400 && <div className="confirmations mb-3">confirmed</div>}
-                            </div>
+                                <div className="utxo-value mt-2 d-flex flex-row flex-wrap" style={{ marginBottom: "-1rem", textDecoration: "none" }}>
+                                    {x.is_accepted ? <div className="accepted-true me-3 mb-3">accepted</div> :
+                                        <span className="accepted-false">not accepted</span>}
+                                    {x.is_accepted && blueScore !== 0 && (blueScore - x.accepting_block_blue_score) < 86400 && <div className="confirmations mb-3">{blueScore - x.accepting_block_blue_score}&nbsp;confirmations</div>}
+                                    {x.is_accepted && blueScore !== 0 && (blueScore - x.accepting_block_blue_score) >= 86400 && <div className="confirmations mb-3">confirmed</div>}
+                                </div>
                             </Col>
-                        
+
                         </Row>}
 
                 </>
@@ -338,11 +344,21 @@ const AddressInfo = () => {
                     </Col> : <></>}
                 </Row>
                 {errorLoadingUtxos && <BiGhost className="error-icon" />}
-                {!loadingUtxos ? utxos.sort((a, b) => b.utxoEntry.blockDaaScore - a.utxoEntry.blockDaaScore).slice((active - 1) * 10, (active - 1) * 10 + 10).map((x) =>
+                {!loadingUtxos ? utxos.sort((a, b) => b.utxoEntry.blockDaaScore - a.utxoEntry.blockDaaScore).slice((active - 1) * 10, (active - 1) * 10 + 10).map((x) => <>
+                    <Row className="utxo-value text-primary mt-3">
+                        <Col sm={7} md={7}>
+                            {moment(((currentEpochTime) - (currentDaaScore - x.utxoEntry.blockDaaScore)) * 1000).format("YYYY-MM-DD HH:mm:ss")}
+                        </Col>
+                    </Row>
                     <Row className="utxo-border pb-4 mb-4">
                         <Col sm={6} md={4}>
-                            <div className="utxo-header mt-3">Block DAA Score</div>
-                            <div className="utxo-value">{x.utxoEntry.blockDaaScore}<br />({moment(((currentEpochTime) - (currentDaaScore - x.utxoEntry.blockDaaScore)) * 1000).format("YYYY-MM-DD HH:mm:ss")})</div>
+                            <div className="utxo-header mt-3">transaction id</div>
+                            <div className="utxo-value">
+                                <Link className="blockinfo-link" to={`/txs/${x.outpoint.transactionId}`} >
+                                    {x.outpoint.transactionId}
+                                </Link>
+
+                            </div>
                         </Col>
                         <Col sm={6} md={4}>
                             <div className="utxo-header mt-3">amount</div>
@@ -357,19 +373,14 @@ const AddressInfo = () => {
                             <div className="utxo-value">{x.outpoint.index}</div>
                         </Col>
                         <Col sm={6} md={4}>
-                            <div className="utxo-header mt-3">transaction id</div>
-                            <div className="utxo-value">
-                                <Link className="blockinfo-link" to={`/txs/${x.outpoint.transactionId}`} >
-                                    {x.outpoint.transactionId}
-                                </Link>
-
-                            </div>
+                            <div className="utxo-header mt-3">Block DAA Score</div>
+                            <div className="utxo-value">{x.utxoEntry.blockDaaScore}</div>
                         </Col>
                         <Col sm={6} md={4}>
                             <div className="utxo-header mt-3">details</div>
                             <div className="utxo-value">Unspent</div>
                         </Col>
-                    </Row>
+                    </Row></>
                 ) : <Spinner animation="border" variant="primary" />}
 
             </Container>}
