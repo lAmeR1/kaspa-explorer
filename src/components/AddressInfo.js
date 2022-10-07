@@ -215,7 +215,7 @@ const AddressInfo = () => {
                 </Col>
                 <Col sm={6} md={4}>
                     <div className="addressinfo-header addressinfo-header-border mt-4 mt-sm-4 pt-sm-4 ms-sm-5">Transactions count</div>
-                    <div className="utxo-value ms-sm-5">{!loadingTxs ? txs.length : <Spinner animation="border" variant="primary" />}{errorLoadingUtxos && <BiGhost className="error-icon" />}</div>
+                    <div className="utxo-value ms-sm-5">{!loadingTxs ? (txs.length < 200 ? txs.length : `> ${txs.length}`) : <Spinner animation="border" variant="primary" />}{errorLoadingUtxos && <BiGhost className="error-icon" />}</div>
                 </Col>
             </Row>
         </Container>
