@@ -22,6 +22,7 @@ import { SiFastapi } from 'react-icons/si';
 import TransactionInfo from './components/TransactionInfo';
 import BlueScoreContext from './components/BlueScoreContext';
 import "react-toggle/style.css"
+import { getBlock } from './kaspa-api-client';
 // import 'moment/min/locales';
 
 // var locale = window.navigator.userLanguage || window.navigator.language || "en";
@@ -63,14 +64,24 @@ function App() {
   blocksRef.current = blocks;
 
 
-  const search = (e) => {
+  const search = async (e) => {
     e.preventDefault();
     const v = e.target.searchbox.value
 
     if (v.length == 64) {
-      navigate(`/blocks/${v}`)
+      getBlock(v).then(
+        data => {
+          if (data.detail == "Block not found") {
+            navigate(`/txs/${v}`)
+          }
+          else {
+            navigate(`/blockns/${v}`)
+          }
+        }
+      ).catch((err) => {
+        console.log("hier")
+      })
     }
-
     if (v.startsWith("kaspa:")) {
       navigate(`/addresses/${v}`)
     }
