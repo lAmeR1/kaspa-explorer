@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 import Toggle from "react-toggle";
 import { numberWithCommas } from "../helper";
 import { getAddressBalance, getAddressUtxos, getBlock, getBlockdagInfo, getTransaction, getTransactions, getTransactionsFromAddress } from '../kaspa-api-client.js';
+import BlueScoreContext from "./BlueScoreContext";
 import CopyButton from "./CopyButton.js";
 import PriceContext from "./PriceContext.js";
 import UtxoPagination from "./UtxoPagination.js";
@@ -19,6 +20,7 @@ const AddressInfoPage = () => {
 const AddressInfo = () => {
     const { addr } = useParams();
     const [addressBalance, setAddressBalance] = useState()
+    const { blueScore } = useContext(BlueScoreContext);
 
     const [view, setView] = useState("transactions")
 
@@ -133,7 +135,7 @@ const AddressInfo = () => {
                                 setTxsInpCache(txInpObj)
                             })
                             setLoadingTxs(false);
-                            setTxs(res.sort((a,b) => b.block_time - a.block_time).slice(0, 200))
+                            setTxs(res.sort((a, b) => b.block_time - a.block_time).slice(0, 200))
                             getAddressUtxos(addr).then(
                                 (res) => {
                                     setLoadingUtxos(false);
@@ -152,7 +154,7 @@ const AddressInfo = () => {
                 })
         }
         if (view === "utxos") {
-            
+
         }
     }, [view])
 
@@ -253,11 +255,11 @@ const AddressInfo = () => {
             </Row>
             {!loadingTxs ? txs.slice((activeTx - 1) * 10, (activeTx - 1) * 10 + 10).map((x) =>
                 <>
-                <Row className="utxo-value text-primary mt-3">
-                <Col sm={7} md={7}>
-                    {moment(x.block_time).format("YYYY-MM-DD HH:mm:ss")}
-                    </Col>
-                </Row>
+                    <Row className="utxo-value text-primary mt-3">
+                        <Col sm={7} md={7}>
+                            {moment(x.block_time).format("YYYY-MM-DD HH:mm:ss")}
+                        </Col>
+                    </Row>
                     <Row className="pb-4 mb-0">
                         <Col sm={7} md={7}>
                             <div className="utxo-header mt-3">transaction id</div>
@@ -309,7 +311,18 @@ const AddressInfo = () => {
                                         <Col xs={5}><span className="block-utxo-amount">+{x.amount / 100000000}&nbsp;KAS</span></Col></Row>)}
                                 </div>
                             </Col>
+                            <Col md={12}>
+                                <div className="utxo-header">Details</div>
+                            <div className="utxo-value mt-2 d-flex flex-row flex-wrap" style={{ marginBottom: "-1rem", textDecoration: "none" }}>
+                                {x.is_accepted ? <div className="accepted-true me-3 mb-3">accepted</div> :
+                                    <span className="accepted-false">not accepted</span>}
+                                {x.is_accepted && blueScore !== 0 && (blueScore - x.accepting_block_blue_score) < 86400 && <div className="confirmations mb-3">{blueScore - x.accepting_block_blue_score}&nbsp;confirmations</div>}
+                                {x.is_accepted && blueScore !== 0 && (blueScore - x.accepting_block_blue_score) >= 86400 && <div className="confirmations mb-3">confirmed</div>}
+                            </div>
+                            </Col>
+                        
                         </Row>}
+
                 </>
             ) : <Spinner animation="border" variant="primary" />}
 
