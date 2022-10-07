@@ -85,7 +85,7 @@ const MarketDataBox = () => {
                     <td style={{fontSize: "small"}} className="cardBoxElement" align="right">24h %</td>
                     <td style={{fontSize: "small"}} className="utxo-value-mono">
                     {marketData?.price_change_percentage_24h > 0 ? <IoMdTrendingUp color='#398851' /> : <IoMdTrendingDown color='#d63328' />}
-                         {marketData?.price_change_percentage_24h.toFixed(1)} %<br />
+                         {marketData?.price_change_percentage_24h?.toFixed(1)} %<br />
                     </td>
                 </tr>
                 <tr>
