@@ -1,7 +1,7 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'font-awesome/css/font-awesome.min.css';
 import { useState } from 'react';
-import { Button, Col, Container, Form, InputGroup, Row } from 'react-bootstrap';
+import { Button, Col, Container, Form, InputGroup, Modal, Row, Spinner } from 'react-bootstrap';
 import { useNavigate } from 'react-router';
 import './App.scss';
 import BalanceModal from './components/BalanceModal';
@@ -11,6 +11,7 @@ import CoinsupplyBox from './components/CoinsupplyBox';
 import KaspadInfoBox from './components/KaspadInfoBox';
 import MarketDataBox from './components/MarketDataBox';
 import TxOverview from './components/TxOverview';
+import { getBlock } from './kaspa-api-client';
 
 
 
@@ -23,6 +24,8 @@ function Dashboard() {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
+  const [showLoadingModal, setShowLoadingModal] = useState(false)
+
   const [balance, setBalance] = useState(0);
   const [address, setAddress] = useState("kaspa:");
 
@@ -30,15 +33,28 @@ function Dashboard() {
     e.preventDefault();
     const v = e.target.searchInput.value
 
+    setShowLoadingModal(true);
+
     if (v.length == 64) {
-      navigate(`/blocks/${v}`)
+      getBlock(v).then(
+        data => {
+          if (data.detail == "Block not found") {
+            navigate(`/txs/${v}`)
+          }
+          else {
+            navigate(`/blockns/${v}`)
+          }
+        }
+      ).catch((err) => {
+        console.log("hier")
+      })
     }
 
     if (v.startsWith("kaspa:")) {
       navigate(`/addresses/${v}`)
     }
 
-    
+    setShowLoadingModal(false);
 
   }
 
@@ -46,6 +62,10 @@ function Dashboard() {
   //<Button variant="primary">Go!</Button>
   return (
     <div>
+      <Modal show={showLoadingModal} animation={false} centered>
+        <Modal.Body className="d-flex flex-row justify-content-center" style={{backgroundColor: "#181D30"}}>
+          <Spinner animation="border" variant="primary" size="xl" /></Modal.Body>
+      </Modal>
       <div className="row1">
         <Container className="firstRow webpage" fluid>
           <Row>

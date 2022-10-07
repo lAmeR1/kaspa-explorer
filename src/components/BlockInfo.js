@@ -8,7 +8,8 @@ import { useParams } from "react-router";
 import { Link } from "react-router-dom";
 import { parsePayload } from "../bech32.js";
 import { numberWithCommas } from "../helper.js";
-import { getBlock } from '../kaspa-api-client.js';
+import { getBlock, getTransactions } from '../kaspa-api-client.js';
+import BlueScoreContext from "./BlueScoreContext.js";
 import CopyButton from "./CopyButton.js";
 import PriceContext from "./PriceContext.js";
 
@@ -18,10 +19,27 @@ const BlockLamp = (props) => {
     </OverlayTrigger>
 }
 
+const getAddrFromOutputs = (outputs, i) => {
+    for (const o of outputs) {
+        if (o.index == i) {
+            return o.script_public_key_address
+        }
+    }
+}
+const getAmountFromOutputs = (outputs, i) => {
+    for (const o of outputs) {
+        if (o.index == i) {
+            return o.amount / 100000000
+        }
+    }
+}
+
 
 const BlockInfo = () => {
     const { id } = useParams();
+    const { blueScore } = useContext(BlueScoreContext);
     const [blockInfo, setBlockInfo] = useState()
+    const [txInfo, setTxInfo] = useState()
     const [minerName, setMinerName] = useState()
     const [minerAddress, setMinerAddress] = useState()
     const [isBlueBlock, setIsBlueBlock] = useState(null)
@@ -73,6 +91,24 @@ const BlockInfo = () => {
 
 
             const [address, miner] = parsePayload(blockInfo.transactions[0].payload);
+
+            // request TX input addresses
+            const txToQuery = blockInfo.transactions.flatMap((tx) => tx.inputs?.flatMap(txInput => txInput.previousOutpoint.transactionId)).filter(x => x).concat(
+                blockInfo.transactions.map(tx => tx.verboseData.transactionId)
+            )
+
+            getTransactions(txToQuery, true, true).then(
+                resp => {
+                    const respAsObj = resp.reduce((obj, cur) => {
+                        obj[cur["transaction_id"]] = cur
+                        return obj;
+                    }, {});
+                    console.log(respAsObj)
+                    setTxInfo(respAsObj)
+
+                }
+            ).catch(err => console.log("Error ", err))
+
             setMinerName(miner);
             setMinerAddress(address);
         }
@@ -188,24 +224,38 @@ const BlockInfo = () => {
                                             <Col sm={12} md={12} lg={12}>
                                                 <div className="utxo-header">transaction id</div>
                                                 <div className="utxo-value-mono">
-                                                    {tx.verboseData.transactionId}
+                                                    <Link to={`/txs/${tx.verboseData.transactionId}`} className="blockinfo-link">
+                                                        {tx.verboseData.transactionId}
+                                                    </Link>
                                                     <CopyButton text={tx.verboseData.transactionId} />
                                                 </div>
 
 
                                                 <Col sm={12} md={12}>
                                                     <div className="utxo-header mt-3">FROM</div>
-                                                    <Container className="utxo-value-mono">
+                                                    <Container className="utxo-value-mono" fluid>
                                                         {(tx.inputs || []).map((txInput) => <Row>
-                                                            <Col xs={12} sm={8} md={9} lg={9} xl={8} xxl={7} className="text-truncate">
-                                                                <a className="blockinfo-link" href={`https://katnip.kaspad.net/tx/${txInput.previousOutpoint.transactionId}`} target="_blank">
-                                                                    TX #{txInput.previousOutpoint.index || 0} {txInput.previousOutpoint.transactionId}
-                                                                </a>
-                                                            </Col><Col className="me-auto" xs={12} sm={4} md={2}></Col>
+                                                            {!!txInfo && txInfo[txInput.previousOutpoint.transactionId] ? <>
+                                                                <Col xs={12} sm={8} md={9} lg={9} xl={8} xxl={7} className="text-truncate">
+                                                                    <Link to={`/addresses/${getAddrFromOutputs(txInfo[txInput.previousOutpoint.transactionId]["outputs"], txInput.previousOutpoint.index || 0)}`} className="blockinfo-link">
+                                                                        {getAddrFromOutputs(txInfo[txInput.previousOutpoint.transactionId]["outputs"], txInput.previousOutpoint.index || 0)}
+                                                                    </Link>
+                                                                    <CopyButton text={getAddrFromOutputs(txInfo[txInput.previousOutpoint.transactionId]["outputs"], txInput.previousOutpoint.index || 0)} />
+                                                                </Col><Col className="block-utxo-amount-minus" xs={12} sm={4} md={2}>
+                                                                    -{numberWithCommas(getAmountFromOutputs(txInfo[txInput.previousOutpoint.transactionId]["outputs"], txInput.previousOutpoint.index || 0))}&nbsp;KAS
+                                                                </Col></>
+                                                                :
+                                                                <><Col xs={12} sm={8} md={9} lg={9} xl={8} xxl={7} className="text-truncate">
+                                                                    <a className="blockinfo-link" href={`https://katnip.kaspad.net/tx/${txInput.previousOutpoint.transactionId}`} target="_blank">
+                                                                        TX #{txInput.previousOutpoint.index || 0} {txInput.previousOutpoint.transactionId}
+                                                                    </a>
+                                                                </Col><Col className="me-auto" xs={12} sm={4} md={2}></Col>
+                                                                </>}
                                                         </Row>)}
                                                         {!tx.inputs ? <Row><Col xs={12} sm={8} md="auto" className="text-truncate">COINBASE (New coins)</Col></Row> : <></>}
 
                                                     </Container>
+
                                                 </Col>
 
                                                 <Col sm={12} md={12}>
@@ -227,9 +277,20 @@ const BlockInfo = () => {
                                                 <div className="utxo-header mt-3">tx amount</div>
                                                 <div className="utxo-value d-flex flex-row"><div className="utxo-amount">{(numberWithCommas(tx.outputs.reduce((a, b) => (a || 0) + parseInt(b.amount), 0) / 100000000))} KAS</div></div>
                                             </Col>
-                                            <Col sm={4} md={2}>
+                                            <Col sm={3} md={2}>
                                                 <div className="utxo-header mt-3">tx value</div>
                                                 <div className="utxo-value">{(tx.outputs.reduce((a, b) => (a || 0) + parseInt(b.amount), 0) / 100000000 * price).toFixed(2)} $</div>
+                                            </Col>
+                                            <Col sm={4} md={6}>
+                                                <div className="utxo-header mt-3">details</div>
+                                                <div className="utxo-value d-flex flex-row flex-wrap">{!!txInfo && txInfo[tx.verboseData.transactionId] ?
+                                                    txInfo[tx.verboseData.transactionId]?.is_accepted ? <div className="accepted-true mb-3 me-3">accepted</div> :
+                                                        <span className="accepted-false">not accepted</span> : <>-</>}
+                                                    {!!txInfo && !!txInfo[tx.verboseData.transactionId]?.is_accepted && blueScore !== 0 && (blueScore - txInfo[tx.verboseData.transactionId].accepting_block_blue_score < 86400) && <div className="confirmations mb-3">{blueScore - txInfo[tx.verboseData.transactionId].accepting_block_blue_score}&nbsp;confirmations</div>}
+                                                    {!!txInfo && !!txInfo[tx.verboseData.transactionId]?.is_accepted && blueScore !== 0 && (blueScore - txInfo[tx.verboseData.transactionId].accepting_block_blue_score >= 86400) && <div className="confirmations mb-3">finalized</div>}
+                                                
+                                                    
+                                                </div>
                                             </Col>
 
                                         </Row>

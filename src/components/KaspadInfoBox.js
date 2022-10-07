@@ -1,6 +1,7 @@
 import { faMemory } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useEffect, useState } from "react";
+import { FaMemory } from 'react-icons/fa';
 
 
 
@@ -8,7 +9,7 @@ const KaspadInfoBox = () => {
     const [data, setData] = useState({});
 
     async function updateData() {
-        await fetch('https://api.kaspa.org/info/kaspad')
+        await fetch('https://kaspa.herokuapp.com/info/kaspad')
             .then((response) => response.json())
             .then(d => setData(d))
             .catch(err => console.log("Error", err))
@@ -38,7 +39,7 @@ const KaspadInfoBox = () => {
                     <td className="cardBoxElement">
                         Mempool size
                     </td>
-                    <td>
+                    <td className="">
                         {data.mempoolSize}
                     </td>
                 </tr>
@@ -46,7 +47,7 @@ const KaspadInfoBox = () => {
                     <td className="cardBoxElement">
                         Server version
                     </td>
-                    <td>
+                    <td className="">
                         {data.serverVersion}
                     </td>
                 </tr>

@@ -463,10 +463,22 @@ body {
     font-size: x-small;
     padding: 0.7rem 0.5rem;
   }
+  
 
   .styled-table thead th {
     font-size: x-small;
     padding: 0.7rem 0.5rem;
+  }
+}
+
+@include media-breakpoint-up(lg) {
+  .styled-table td {
+    font-size: medium;
+  }
+  
+
+  .styled-table thead th {
+    font-size: medium;
   }
 }
 
@@ -550,7 +562,7 @@ body {
   font-family: 'Rubik';
   padding-right: 1rem;
   text-transform: none;
-  font-size: medium;
+  font-size: 1.2rem;
 }
 
 
@@ -628,7 +640,35 @@ body {
   font-size: small;
 }
 
+.rank:any-link {
+  text-decoration: none;
+  color: $color1;
+}
+
 .approx {
+  font-size: small;
+}
+
+.footerfull {
+  border-top: 2px solid $color1;
+  border-color: $color1;
+  border-style: solid;
+  border-left: 0;
+  border-right: 0;
+  border-bottom: 0;
+  // margin-top: 1rem;
+}
+
+.footer {
+  width: 100%;
+}
+
+.build {
+  font-size: small;
+  color: #b6b6b6;
+}
+
+.madewith {
   font-size: small;
 }
 

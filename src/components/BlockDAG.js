@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useEffect, useState } from "react";
 import { io } from "socket.io-client";
 
-const socket = io("wss://api.kaspa.org", {
+const socket = io("wss://kaspa.herokuapp.com", {
     path: '/ws/socket.io'
 });
 
@@ -96,7 +96,7 @@ const BlockDAGBox = () => {
 
     return <>
         <div className="cardBox mx-0">
-            <table>
+        <table style={{fontSize: "1rem"}}>
                 <tr>
                     <td colspan='2' className="text-center" style={{ "fontSize": "4rem" }}>
                         <FontAwesomeIcon icon={faDiagramProject} />
@@ -112,7 +112,7 @@ const BlockDAGBox = () => {
                     <td className="cardBoxElement">
                         Network name
                     </td>
-                    <td>
+                    <td className="pt-1 text-nowrap">
                         {data.networkName}
                     </td>
                 </tr>
@@ -120,7 +120,7 @@ const BlockDAGBox = () => {
                     <td className="cardBoxElement">
                         Block count
                     </td>
-                    <td id="blockCount">
+                    <td className="pt-1" id="blockCount">
                         {blockCount}
                     </td>
                 </tr>
@@ -128,7 +128,7 @@ const BlockDAGBox = () => {
                     <td className="cardBoxElement">
                         Header count
                     </td>
-                    <td id="headerCount">
+                    <td className="pt-1" id="headerCount">
                         {headerCount}
                     </td>
                 </tr>
@@ -136,7 +136,7 @@ const BlockDAGBox = () => {
                     <td className="cardBoxElement">
                         Virtual DAA Score
                     </td>
-                    <td id="virtualDaaScore">
+                    <td className="pt-1 align-top" id="virtualDaaScore">
                         {virtualDaaScore}
                     </td>
                 </tr>
@@ -144,7 +144,7 @@ const BlockDAGBox = () => {
                     <td className="cardBoxElement">
                         Hashrate
                     </td>
-                    <td id="hashrate">
+                    <td className="pt-1" id="hashrate">
                         {hashrate} TH/s
                     </td>
                 </tr>

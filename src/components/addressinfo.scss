@@ -243,3 +243,20 @@
 .page-item.active .page-link {
     border-color: $color2;
 }
+
+.tx-hash-list {
+    list-style-type: none;
+    list-style-position: inside;
+    padding: 0;
+}
+
+.highlight-addr {
+    color: $color3;
+    font-weight: bold;
+}
+
+.adressinfo-tx-overflow {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}

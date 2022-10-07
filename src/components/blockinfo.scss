@@ -17,7 +17,7 @@
     text-align: left;
     font-size: x-large;
     font-weight: bolder;
-    padding-bottom: 1rem;
+    padding-bottom: 0rem;
 
 }
 
@@ -93,6 +93,11 @@
     white-space: nowrap;
 }
 
+.block-utxo-amount-minus {
+    color: rgb(255, 82, 59);
+    white-space: nowrap;
+}
+
 
 
 .blockinfo-row {
@@ -106,6 +111,12 @@
 .blockinfo-key {
     font-weight: bold;
     text-align: left;
+}
+
+@include media-breakpoint-down(sm) {
+    .blockinfo-key {
+        font-size: small;
+    }
 }
 
 .tooltip-inner {
@@ -192,11 +203,40 @@
     background-color: rgb(65, 141, 65);
     padding: .2rem .7rem;
     border-radius: .4rem;
+    word-wrap: none;
+    display: inline-block;
+    
+}
+.utxo-amount-minus {
+    background-color: rgb(195, 38, 38);
+    padding: .2rem .7rem;
+    border-radius: .4rem;
+    word-wrap: none;
+    display: inline-block;
 }
 
 .table-timestamp {
     word-wrap: normal;
     flex-wrap: nowrap;
+}
+
+.accepted-true {
+    background-color: rgb(65, 141, 65);
+    padding: 0.2em .4rem;
+    border-radius: .4rem;
+
+}
+
+.accepted-false {
+    background-color: rgb(255, 82, 59);
+    padding: 0.2em .4rem;
+    border-radius: .4rem;
+}
+
+.confirmations {
+    background-color: rgb(65, 141, 65);
+    padding: 0.2em .4rem;
+    border-radius: .4rem;
 }
 
 //  .utxo-amount::before {

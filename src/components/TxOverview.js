@@ -8,7 +8,7 @@ import io from 'socket.io-client';
 import { numberWithCommas } from "../helper";
 import LastBlocksContext from "./LastBlocksContext";
 
-const socket = io("wss://api.kaspa.org", {
+const socket = io("wss://kaspa.herokuapp.com", {
     path: '/ws/socket.io'
 });
 
@@ -25,7 +25,11 @@ const TxOverview = (props) => {
     const navigate = useNavigate();
 
     const onClickRow = (e) => {
-        navigate(`/addresses/${e.target.parentElement.id}`)
+        navigate(`/txs/${e.target.closest("tr").getAttribute("txid")}`)
+    }
+
+    const onClickAddr = (e) => {
+        navigate(`/addresses/${e.target.closest("tr").getAttribute("id")}`)
     }
 
     useEffect(() => {
@@ -75,12 +79,12 @@ const TxOverview = (props) => {
                         .slice(0, props.lines).map(x => {
                             return <tr
                                 id={x.address}
+                                txid={x.txId}
                                 key={x.address + x.txId + x.outputIndex}
-                                onClick={onClickRow}
                             >
-                                <td>{x.txId.slice(0, 10)}</td>
-                                <td align="right">{numberWithCommas(x.amount / 100000000)}&nbsp;KAS</td>
-                                <td className="hashh">{x.address}</td>
+                                <td onClick={onClickRow}>{x.txId.slice(0, 10)}</td>
+                                <td onClick={onClickRow} align="right">{numberWithCommas(x.amount / 100000000)}&nbsp;KAS</td>
+                                <td className="hashh" onClick={onClickAddr}>{x.address}</td>
                             </tr>
                         })}
 
