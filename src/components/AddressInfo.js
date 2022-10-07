@@ -133,7 +133,7 @@ const AddressInfo = () => {
                                 setTxsInpCache(txInpObj)
                             })
                             setLoadingTxs(false);
-                            setTxs(res.sort((a,b) => b.block_time - a.block_time))
+                            setTxs(res.sort((a,b) => b.block_time - a.block_time).slice(0, 200))
                             getAddressUtxos(addr).then(
                                 (res) => {
                                     setLoadingUtxos(false);
@@ -282,7 +282,7 @@ const AddressInfo = () => {
                                 <div className="utxo-header mt-1">FROM</div>
                                 <div className="utxo-value" style={{ fontSize: "smaller" }}>
 
-                                    {x.inputs.map(x => {
+                                    {x.inputs.length > 0 ? x.inputs.map(x => {
                                         return (txsInpCache && txsInpCache[x.previous_outpoint_hash]) ? <>
                                             <Row>
                                                 <Col xs={7} className="adressinfo-tx-overflow pb-0">
@@ -291,7 +291,7 @@ const AddressInfo = () => {
                                                     </Link>
                                                 </Col>
                                                 <Col xs={5}><span className="block-utxo-amount-minus">-{getAmountFromOutputs(txsInpCache[x.previous_outpoint_hash]["outputs"], x.previous_outpoint_index)}&nbsp;KAS</span></Col></Row></> : <li>{x.previous_outpoint_hash} #{x.previous_outpoint_index}</li>
-                                    })}
+                                    }) : "COINBASE (New coins)"}
 
                                 </div>
                             </Col>
