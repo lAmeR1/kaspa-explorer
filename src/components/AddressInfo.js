@@ -310,7 +310,7 @@ const AddressInfo = () => {
                                         <Col xs={7} className="pb-1 adressinfo-tx-overflow">
                                             <Link className="blockinfo-link" to={`/addresses/${x.script_public_key_address}`}>
                                                 <span className={x.script_public_key_address == addr ? "highlight-addr" : ""}>
-                                                    {numberWithCommas(x.script_public_key_address)}
+                                                    {x.script_public_key_address}
                                                 </span>
                                             </Link>
                                         </Col>
