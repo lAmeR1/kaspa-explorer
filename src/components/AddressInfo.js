@@ -120,7 +120,7 @@ const AddressInfo = () => {
             getTransactionsFromAddress(addr).then(res => {
                 setTxsOverview(res.transactions)
                 getTransactions(res.transactions.map(x => x.tx_received)
-                    .concat(res.transactions.map(x => x.tx_sent)).filter(v => v)).then(
+                    .concat(res.transactions.map(x => x.tx_spent)).filter(v => v)).then(
                         res => {
                             getTransactions(res.flatMap(tx => {
                                 return tx.inputs.map(inp => {
@@ -274,14 +274,14 @@ const AddressInfo = () => {
                             <div className="utxo-value">
                                 <Link className="blockinfo-link" to={`/txs/${x.transaction_id}`} >
                                     {getAmount(x.outputs, x.inputs) > 0 ?
-                                        <span className="utxo-amount">+{getAmount(x.outputs, x.inputs)}&nbsp;KAS</span> :
-                                        <span className="utxo-amount-minus">{getAmount(x.outputs, x.inputs)}&nbsp;KAS</span>}
+                                        <span className="utxo-amount">+{numberWithCommas(getAmount(x.outputs, x.inputs))}&nbsp;KAS</span> :
+                                        <span className="utxo-amount-minus">{numberWithCommas(getAmount(x.outputs, x.inputs))}&nbsp;KAS</span>}
                                 </Link>
                             </div>
                         </Col>
                         <Col sm={6} md={2}>
                             <div className="utxo-header mt-3">value</div>
-                            <div className="utxo-value">{(getAmount(x.outputs, x.inputs) * price).toFixed(2)} $</div>
+                            <div className="utxo-value">{numberWithCommas((getAmount(x.outputs, x.inputs) * price).toFixed(2))} $</div>
                         </Col>
                     </Row>
                     {!!detailedView &&
@@ -298,7 +298,7 @@ const AddressInfo = () => {
                                                         <span className={getAddrFromOutputs(txsInpCache[x.previous_outpoint_hash]["outputs"], x.previous_outpoint_index) == addr ? "highlight-addr" : ""}>{getAddrFromOutputs(txsInpCache[x.previous_outpoint_hash]["outputs"], x.previous_outpoint_index)}</span>
                                                     </Link>
                                                 </Col>
-                                                <Col xs={5}><span className="block-utxo-amount-minus">-{getAmountFromOutputs(txsInpCache[x.previous_outpoint_hash]["outputs"], x.previous_outpoint_index)}&nbsp;KAS</span></Col></Row></> : <li>{x.previous_outpoint_hash} #{x.previous_outpoint_index}</li>
+                                                <Col xs={5}><span className="block-utxo-amount-minus">-{numberWithCommas(getAmountFromOutputs(txsInpCache[x.previous_outpoint_hash]["outputs"], x.previous_outpoint_index))}&nbsp;KAS</span></Col></Row></> : <li>{x.previous_outpoint_hash} #{x.previous_outpoint_index}</li>
                                     }) : "COINBASE (New coins)"}
 
                                 </div>
@@ -310,11 +310,11 @@ const AddressInfo = () => {
                                         <Col xs={7} className="pb-1 adressinfo-tx-overflow">
                                             <Link className="blockinfo-link" to={`/addresses/${x.script_public_key_address}`}>
                                                 <span className={x.script_public_key_address == addr ? "highlight-addr" : ""}>
-                                                    {x.script_public_key_address}
+                                                    {numberWithCommas(x.script_public_key_address)}
                                                 </span>
                                             </Link>
                                         </Col>
-                                        <Col xs={5}><span className="block-utxo-amount">+{x.amount / 100000000}&nbsp;KAS</span></Col></Row>)}
+                                        <Col xs={5}><span className="block-utxo-amount">+{numberWithCommas(x.amount / 100000000)}&nbsp;KAS</span></Col></Row>)}
                                 </div>
                             </Col>
                             <Col md={12}>
@@ -366,7 +366,7 @@ const AddressInfo = () => {
                         </Col>
                         <Col sm={6} md={4}>
                             <div className="utxo-header mt-3">value</div>
-                            <div className="utxo-value">{(x.utxoEntry.amount / 100000000 * price).toFixed(2)} $</div>
+                            <div className="utxo-value">{numberWithCommas((x.utxoEntry.amount / 100000000 * price).toFixed(2))} $</div>
                         </Col>
                         <Col sm={6} md={4}>
                             <div className="utxo-header mt-3">index</div>
