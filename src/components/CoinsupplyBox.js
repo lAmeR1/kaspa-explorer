@@ -42,7 +42,7 @@ const CBox = () => {
         getBlockReward();
 
         getHalving().then((d) => {
-            setHalvingDate(moment(d.nextHalvingTimestamp * 1000).format("YYYY-MM-DD hh:mm"))
+            setHalvingDate(moment(d.nextHalvingTimestamp * 1000).format("YYYY-MM-DD HH:mm"))
             setHalvingAmount(d.nextHalvingAmount.toFixed(2))
         })
 
