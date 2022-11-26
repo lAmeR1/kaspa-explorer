@@ -10,7 +10,7 @@ import { FaInfoCircle } from 'react-icons/fa';
 import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 
 
-const socket = socketIOClient("wss://kaspa.herokuapp.com/", {
+const socket = socketIOClient("wss://api.kaspa.org/", {
     path: '/ws/socket.io'
 });
 
@@ -42,7 +42,7 @@ const CBox = () => {
         getBlockReward();
 
         getHalving().then((d) => {
-            setHalvingDate(moment(d.nextHalvingTimestamp * 1000).format("YYYY-MM-DD hh:mm"))
+            setHalvingDate(moment(d.nextHalvingTimestamp * 1000).format("YYYY-MM-DD HH:mm"))
             setHalvingAmount(d.nextHalvingAmount.toFixed(2))
         })
 
@@ -54,7 +54,7 @@ const CBox = () => {
     }, [])
 
     async function getBlockReward() {
-        await fetch('https://kaspa.herokuapp.com/info/blockreward')
+        await fetch('https://api.kaspa.org/info/blockreward')
             .then((response) => response.json())
             .then(d => {
                 setBlockReward(d.blockreward.toFixed(2))
