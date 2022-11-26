@@ -7,7 +7,7 @@ import PriceContext from "./PriceContext";
 import { HiCurrencyDollar } from 'react-icons/hi'
 import { IoMdTrendingDown, IoMdTrendingUp } from 'react-icons/io'
 
-const socket = socketIOClient("wss://kaspa.herokuapp.com/", {
+const socket = socketIOClient("wss://api.kaspa.org/", {
     path: '/ws/socket.io'
 });
 

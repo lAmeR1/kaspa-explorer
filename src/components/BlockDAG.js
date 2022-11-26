@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useEffect, useState } from "react";
 import { io } from "socket.io-client";
 
-const socket = io("wss://kaspa.herokuapp.com", {
+const socket = io("wss://api.kaspa.org", {
     path: '/ws/socket.io'
 });
 
