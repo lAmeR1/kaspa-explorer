@@ -54,7 +54,7 @@ const CBox = () => {
     }, [])
 
     async function getBlockReward() {
-        await fetch('https://kaspa.herokuapp.com/info/blockreward')
+        await fetch('https://api.kaspa.org/info/blockreward')
             .then((response) => response.json())
             .then(d => {
                 setBlockReward(d.blockreward.toFixed(2))
