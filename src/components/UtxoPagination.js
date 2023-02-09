@@ -20,7 +20,7 @@ const UtxoPagination = (props) => {
         items.push(<Pagination.Item active={i === props.active} onClick={() => { props.setActive(i) }}>{i}</Pagination.Item>)
     }
 
-    return <div className="ms-auto fs-6">
+    return <div className="fs-6">
         <Pagination>
             {(Math.min(props.active, props.total - 2) - 2) > 1 ? <>
                 <Pagination.Item onClick={() => { props.setActive(1) }}>{1}</Pagination.Item>

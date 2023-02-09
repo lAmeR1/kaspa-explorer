@@ -69,7 +69,7 @@ export async function getHalving() {
     return res
 }
 
-export async function getTransactionsFromAddress(addr, limit = 80, offset = 0) {
+export async function getTransactionsFromAddress(addr, limit = 20, offset = 0) {
     const res = await fetch(`${API_BASE}addresses/${addr}/full-transactions?limit=${limit}&offset=${offset}`, {
         headers: {
             'Access-Control-Allow-Origin': '*',

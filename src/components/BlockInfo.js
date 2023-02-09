@@ -89,7 +89,8 @@ const BlockInfo = () => {
                 .catch((err) => console.log("ERROR", err))
 
 
-            const [address, miner] = ("No miner info", "No miner info")
+            let [address, miner] = ["No miner info", "No miner info"]
+
             if (blockInfo.transactions[0].payload) {
                 [address, miner] = parsePayload(blockInfo.transactions[0].payload);
             }

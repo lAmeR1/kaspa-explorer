@@ -1,12 +1,12 @@
 import moment from "moment";
 import { useContext, useEffect, useState } from 'react';
-import { Col, Container, Dropdown, Row, Spinner, ToggleButton } from "react-bootstrap";
+import { Col, Container, Dropdown, Row, Spinner } from "react-bootstrap";
 import { BiGhost } from "react-icons/bi";
 import { useParams } from "react-router";
 import { Link } from "react-router-dom";
 import Toggle from "react-toggle";
-import { floatToStr, numberWithCommas } from "../helper";
-import { getAddressBalance, getAddressTxCount, getAddressUtxos, getBlock, getBlockdagInfo, getTransaction, getTransactions, getTransactionsFromAddress } from '../kaspa-api-client.js';
+import usePrevious, { floatToStr, numberWithCommas } from "../helper";
+import { getAddressBalance, getAddressTxCount, getAddressUtxos, getBlock, getBlockdagInfo, getTransactions, getTransactionsFromAddress } from '../kaspa-api-client.js';
 import BlueScoreContext from "./BlueScoreContext";
 import CopyButton from "./CopyButton.js";
 import PriceContext from "./PriceContext.js";
@@ -39,6 +39,7 @@ const AddressInfo = () => {
     const [errorLoadingUtxos, setErrorLoadingUtxos] = useState(false)
     const [active, setActive] = useState(1)
     const [activeTx, setActiveTx] = useState(1)
+    const prevActiveTx = usePrevious(activeTx)
 
     const [currentEpochTime, setCurrentEpochTime] = useState(0);
     const [currentDaaScore, setCurrentDaaScore] = useState(0);
@@ -76,7 +77,7 @@ const AddressInfo = () => {
     }
 
     useEffect(() => {
-        getAddressTxCount(addr).then((totalCount) => setTxCount(totalCount))
+
         getAddressBalance(addr).then(
             (res) => {
                 setAddressBalance(res)
@@ -117,30 +118,41 @@ const AddressInfo = () => {
     }
 
     useEffect(() => {
-        getAddressUtxos(addr).then(
-            (res) => {
-                setLoadingUtxos(false);
-                setUtxos(res);
-            }
-        )
+        if (prevActiveTx !== undefined)
+            loadTransactionsToShow(addr, 20, (activeTx - 1) * 20);
+    }, [activeTx])
+
+
+    const loadTransactionsToShow = (addr, limit, offset) => {
+        setLoadingTxs(true);
+        getTransactionsFromAddress(addr, limit, offset).then(res => {
+            setTxs(res)
+            setLoadingTxs(false);
+            getTransactions(res.map(item => item.inputs).flatMap(x => x).map(x => x.previous_outpoint_hash)).then(
+                txs => {
+                    var txInpObj = {}
+                    txs.forEach(x => txInpObj[x.transaction_id] = x)
+                    setTxsInpCache(txInpObj)
+                })
+        })
+            .catch(ex => {
+                setLoadingTxs(false);
+            })
+    }
+
+    useEffect(() => {
 
         if (view === "transactions") {
-
-            getTransactionsFromAddress(addr).then(res => {
-                setTxs(res)
-                setLoadingTxs(false);
-                console.log(res)
-                getTransactions(res.map(item => item.inputs).flatMap(x => x).map(x => x.previous_outpoint_hash)).then(
-                    txs => {
-                        var txInpObj = {}
-                        txs.forEach(x => txInpObj[x.transaction_id] = x)
-                        setTxsInpCache(txInpObj)
-                    })
-
+            loadTransactionsToShow(addr)
+            getAddressTxCount(addr).then((totalCount) => {
+                setTxCount(totalCount)
+                getAddressUtxos(addr).then(
+                    (res) => {
+                        setLoadingUtxos(false);
+                        setUtxos(res);
+                    }
+                )
             })
-                .catch(ex => {
-                    setLoadingTxs(false);
-                })
         }
         if (view === "utxos") {
 
@@ -237,12 +249,8 @@ const AddressInfo = () => {
                         icons={false}
                         onChange={(e) => { setDetailedView(e.target.checked) }} /><span className="text-light ms-2">Show details</span></div>
                 </Col>
-                {txs.length > 10 ? <Col xs={12} sm={6} className="d-flex flex-row justify-items-end">
-                    <UtxoPagination active={activeTx} total={Math.ceil(txs.length / 10)} setActive={setActiveTx} />
-
-                </Col> : <></>}
             </Row>
-            {!loadingTxs ? txs.slice((activeTx - 1) * 10, (activeTx - 1) * 10 + 10).map((x) =>
+            {!loadingTxs ? <>{txs.map((x) =>
                 <>
                     <Row className="utxo-value text-primary mt-3">
                         <Col sm={7} md={7}>
@@ -318,7 +326,12 @@ const AddressInfo = () => {
                         </Row>}
 
                 </>
-            ) : <Spinner animation="border" variant="primary" />}
+            )}
+            {!!txCount && txCount > 20 ? <Row><Col xs={12} className="d-flex flex-row justify-items-space-around">
+                    <UtxoPagination active={activeTx} total={Math.ceil(txCount / 20)} setActive={setActiveTx} />
+
+                </Col></Row> : <></>}
+            </> : <Spinner className="m-3" animation="border" variant="primary" />}
 
         </Container>}
         {view == "utxos" &&
