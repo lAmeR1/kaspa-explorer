@@ -5,8 +5,8 @@ import { BiGhost } from "react-icons/bi";
 import { useParams } from "react-router";
 import { Link } from "react-router-dom";
 import Toggle from "react-toggle";
-import { numberWithCommas } from "../helper";
-import { getAddressBalance, getAddressUtxos, getBlock, getBlockdagInfo, getTransaction, getTransactions, getTransactionsFromAddress } from '../kaspa-api-client.js';
+import { floatToStr, numberWithCommas } from "../helper";
+import { getAddressBalance, getAddressTxCount, getAddressUtxos, getBlock, getBlockdagInfo, getTransaction, getTransactions, getTransactionsFromAddress } from '../kaspa-api-client.js';
 import BlueScoreContext from "./BlueScoreContext";
 import CopyButton from "./CopyButton.js";
 import PriceContext from "./PriceContext.js";
@@ -32,9 +32,9 @@ const AddressInfo = () => {
     const [loadingUtxos, setLoadingUtxos] = useState(true)
 
     const [txs, setTxs] = useState([])
-    const [txsOverview, setTxsOverview] = useState([])
     const [txsInpCache, setTxsInpCache] = useState([])
     const [loadingTxs, setLoadingTxs] = useState(true)
+    const [txCount, setTxCount] = useState(null);
 
     const [errorLoadingUtxos, setErrorLoadingUtxos] = useState(false)
     const [active, setActive] = useState(1)
@@ -62,12 +62,12 @@ const AddressInfo = () => {
 
     const getAmount = (outputs, inputs) => {
         var balance = 0
-        for (const o of outputs) {
+        for (const o of (outputs || [])) {
             if (o.script_public_key_address == addr) {
                 balance = balance + o.amount / 100000000
             }
         }
-        for (const i of inputs) {
+        for (const i of (inputs || [])) {
             if (getAddrFromOutputs(txsInpCache[i.previous_outpoint_hash]?.outputs || [], i.previous_outpoint_index) == addr) {
                 balance = balance - getAmountFromOutputs(txsInpCache[i.previous_outpoint_hash]["outputs"], i.previous_outpoint_index)
             }
@@ -76,6 +76,7 @@ const AddressInfo = () => {
     }
 
     useEffect(() => {
+        getAddressTxCount(addr).then((totalCount) => setTxCount(totalCount))
         getAddressBalance(addr).then(
             (res) => {
                 setAddressBalance(res)
@@ -116,38 +117,26 @@ const AddressInfo = () => {
     }
 
     useEffect(() => {
+        getAddressUtxos(addr).then(
+            (res) => {
+                setLoadingUtxos(false);
+                setUtxos(res);
+            }
+        )
+
         if (view === "transactions") {
+
             getTransactionsFromAddress(addr).then(res => {
-                setTxsOverview(res.transactions)
-                getTransactions(res.transactions.map(x => x.tx_received)
-                    .concat(res.transactions.map(x => x.tx_spent)).filter(v => v)).then(
-                        res => {
-                            getTransactions(res.flatMap(tx => {
-                                return tx.inputs.map(inp => {
-                                    return inp.previous_outpoint_hash
-                                })
-                            })).then(res_inputs => {
+                setTxs(res)
+                setLoadingTxs(false);
+                console.log(res)
+                getTransactions(res.map(item => item.inputs).flatMap(x => x).map(x => x.previous_outpoint_hash)).then(
+                    txs => {
+                        var txInpObj = {}
+                        txs.forEach(x => txInpObj[x.transaction_id] = x)
+                        setTxsInpCache(txInpObj)
+                    })
 
-                                var txInpObj = {}
-
-                                res_inputs.forEach(x => txInpObj[x.transaction_id] = x)
-
-                                setTxsInpCache(txInpObj)
-                            })
-                            setLoadingTxs(false);
-                            setTxs(res.sort((a, b) => b.block_time - a.block_time).slice(0, 200))
-                            getAddressUtxos(addr).then(
-                                (res) => {
-                                    setLoadingUtxos(false);
-                                    setUtxos(res);
-                                }
-                            )
-                                .catch(ex => {
-                                    setLoadingUtxos(false);
-                                    setErrorLoadingUtxos(true);
-                                })
-                        }
-                    )
             })
                 .catch(ex => {
                     setLoadingTxs(false);
@@ -205,17 +194,17 @@ const AddressInfo = () => {
                 </Col>
                 <Col sm={6} md={4}>
                     <div className="addressinfo-header mt-4 ms-sm-5">UTXOs count</div>
-                    <div className="utxo-value ms-sm-5">{!loadingUtxos ? utxos.length : <Spinner animation="border" variant="primary" />}{errorLoadingUtxos && <BiGhost className="error-icon" />}</div>
+                    <div className="utxo-value ms-sm-5">{!loadingUtxos ? numberWithCommas(utxos.length) : <Spinner animation="border" variant="primary" />}{errorLoadingUtxos && <BiGhost className="error-icon" />}</div>
                 </Col>
             </Row>
             <Row>
                 <Col sm={6} md={4}>
                     <div className="addressinfo-header addressinfo-header-border mt-4 mt-sm-4 pt-sm-4 me-sm-5">value</div>
-                    <div className="utxo-value">{(addressBalance / 100000000 * price).toFixed(2)} USD</div>
+                    <div className="utxo-value">{numberWithCommas((addressBalance / 100000000 * price).toFixed(2))} USD</div>
                 </Col>
                 <Col sm={6} md={4}>
                     <div className="addressinfo-header addressinfo-header-border mt-4 mt-sm-4 pt-sm-4 ms-sm-5">Transactions count</div>
-                    <div className="utxo-value ms-sm-5">{!loadingTxs ? (txs.length < 200 ? txs.length : `> ${txs.length}`) : <Spinner animation="border" variant="primary" />}{errorLoadingUtxos && <BiGhost className="error-icon" />}</div>
+                    <div className="utxo-value ms-sm-5">{!!txCount ? numberWithCommas(txCount) : <Spinner animation="border" variant="primary" />}{errorLoadingUtxos && <BiGhost className="error-icon" />}</div>
                 </Col>
             </Row>
         </Container>
@@ -274,8 +263,8 @@ const AddressInfo = () => {
                             <div className="utxo-value">
                                 <Link className="blockinfo-link" to={`/txs/${x.transaction_id}`} >
                                     {getAmount(x.outputs, x.inputs) > 0 ?
-                                        <span className="utxo-amount">+{numberWithCommas(getAmount(x.outputs, x.inputs))}&nbsp;KAS</span> :
-                                        <span className="utxo-amount-minus">{numberWithCommas(getAmount(x.outputs, x.inputs))}&nbsp;KAS</span>}
+                                        <span className="utxo-amount">+{numberWithCommas(floatToStr(getAmount(x.outputs, x.inputs)))}&nbsp;KAS</span> :
+                                        <span className="utxo-amount-minus">{numberWithCommas(floatToStr(getAmount(x.outputs, x.inputs)))}&nbsp;KAS</span>}
                                 </Link>
                             </div>
                         </Col>
@@ -289,8 +278,7 @@ const AddressInfo = () => {
                             <Col sm={12} md={6}>
                                 <div className="utxo-header mt-1">FROM</div>
                                 <div className="utxo-value-mono" style={{ fontSize: "smaller" }}>
-
-                                    {x.inputs.length > 0 ? x.inputs.map(x => {
+                                    {x.inputs?.length > 0 ? x.inputs.map(x => {
                                         return (txsInpCache && txsInpCache[x.previous_outpoint_hash]) ? <>
                                             <Row>
                                                 <Col xs={7} className="adressinfo-tx-overflow pb-0">

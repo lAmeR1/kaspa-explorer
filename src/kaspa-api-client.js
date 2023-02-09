@@ -38,6 +38,16 @@ export async function getAddressBalance(addr) {
 }
 
 
+export async function getAddressTxCount(addr) {
+    const res = await fetch(`${API_BASE}addresses/${addr}/transactions-count`, { headers: { 'Access-Control-Allow-Origin': '*' } })
+        .then((response) => response.json())
+        .then(data => {
+            return data.total
+        })
+    return res
+}
+
+
 
 export async function getAddressUtxos(addr) {
     const res = await fetch(`${API_BASE}addresses/${addr}/utxos`, { headers: { 'Access-Control-Allow-Origin': '*' } })
@@ -59,8 +69,8 @@ export async function getHalving() {
     return res
 }
 
-export async function getTransactionsFromAddress(addr) {
-    const res = await fetch(`${API_BASE}addresses/${addr}/transactions`, {
+export async function getTransactionsFromAddress(addr, limit = 50, offset = 0) {
+    const res = await fetch(`${API_BASE}addresses/${addr}/full-transactions?limit=${limit}&offset=${offset}`, {
         headers: {
             'Access-Control-Allow-Origin': '*',
             'content-type': 'application/json'
