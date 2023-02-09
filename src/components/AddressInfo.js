@@ -328,7 +328,7 @@ const AddressInfo = () => {
             {!!txCount && txCount > 20 ? <Row><Col xs={12} className="d-flex flex-row justify-content-center">
                     <UtxoPagination active={activeTx} total={Math.ceil(txCount / 20)} setActive={setActiveTx} />
 
-                </Col></Row> : <></>}
+                </Col></Row> : <Spinner className="m-3" animation="border" variant="primary" />}
             </> : <Spinner className="m-3" animation="border" variant="primary" />}
 
         </Container>}
