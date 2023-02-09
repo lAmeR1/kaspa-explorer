@@ -24,8 +24,6 @@ const AddressInfo = () => {
 
     const [view, setView] = useState("transactions")
 
-    console.log(Boolean(localStorage.getItem('detailedView')))
-
     const [detailedView, setDetailedView] = useState(localStorage.getItem('detailedView') == "true")
 
     const [utxos, setUtxos] = useState([])
@@ -294,7 +292,7 @@ const AddressInfo = () => {
                                                         <span className={getAddrFromOutputs(txsInpCache[x.previous_outpoint_hash]["outputs"], x.previous_outpoint_index) == addr ? "highlight-addr" : ""}>{getAddrFromOutputs(txsInpCache[x.previous_outpoint_hash]["outputs"], x.previous_outpoint_index)}</span>
                                                     </Link>
                                                 </Col>
-                                                <Col xs={5}><span className="block-utxo-amount-minus">-{numberWithCommas(getAmountFromOutputs(txsInpCache[x.previous_outpoint_hash]["outputs"], x.previous_outpoint_index))}&nbsp;KAS</span></Col></Row></> : <li>{x.previous_outpoint_hash} #{x.previous_outpoint_index}</li>
+                                                <Col xs={5}><span className="block-utxo-amount-minus">-{numberWithCommas(getAmountFromOutputs(txsInpCache[x.previous_outpoint_hash]["outputs"], x.previous_outpoint_index))}&nbsp;KAS</span></Col></Row></> : <li key={x.previous_outpoint_hash}>{x.previous_outpoint_hash} #{x.previous_outpoint_index}</li>
                                     }) : "COINBASE (New coins)"}
 
                                 </div>
@@ -327,7 +325,7 @@ const AddressInfo = () => {
 
                 </>
             )}
-            {!!txCount && txCount > 20 ? <Row><Col xs={12} className="d-flex flex-row justify-items-space-around">
+            {!!txCount && txCount > 20 ? <Row><Col xs={12} className="d-flex flex-row justify-content-center">
                     <UtxoPagination active={activeTx} total={Math.ceil(txCount / 20)} setActive={setActiveTx} />
 
                 </Col></Row> : <></>}

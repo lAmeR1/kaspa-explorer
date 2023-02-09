@@ -26,8 +26,8 @@ export default (props) => {
     }
 
     if (justCopied) {
-        return <OverlayTrigger key="copied" overlay={<Tooltip contentStyle={{ backgroundColor: '#ff0000' }} id="tooltip-copied">Copied</Tooltip>}><span><FaCheck className="mx-1 copy-symbol-success" /></span></OverlayTrigger>
+        return <OverlayTrigger key="copied" overlay={<Tooltip id="tooltip-copied">Copied</Tooltip>}><span><FaCheck className="mx-1 copy-symbol-success" /></span></OverlayTrigger>
     } else {
-        return <OverlayTrigger key="copy-cb" overlay={<Tooltip contentStyle={{ backgroundColor: '#ff0000' }} id="tooltip-copy-cb">Copy to clipboard</Tooltip>}><span><BiCopy className="fa ms-1 copy-symbol" onClick={handleOnClick} /></span></OverlayTrigger>
+        return <OverlayTrigger key="copy-cb" overlay={<Tooltip id="tooltip-copy-cb">Copy to clipboard</Tooltip>}><span><BiCopy className="fa ms-1 copy-symbol" onClick={handleOnClick} /></span></OverlayTrigger>
     }
 }
