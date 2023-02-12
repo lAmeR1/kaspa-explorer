@@ -249,10 +249,9 @@ body {
   font-weight: bolder;
 }
 
-@include media-breakpoint-up(md) {
-  .active {
-    border-bottom: 4px solid $color2;
-  }
+
+.active > .page-link {
+  border-bottom: 4px solid $color2;
 }
 
 
