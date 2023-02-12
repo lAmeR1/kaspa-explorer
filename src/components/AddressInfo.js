@@ -116,6 +116,7 @@ const AddressInfo = () => {
     }
 
     useEffect(() => {
+        setLoadingTxs(true)
         if (prevActiveTx !== undefined)
             loadTransactionsToShow(addr, 20, (activeTx - 1) * 20);
     }, [activeTx])
@@ -124,8 +125,10 @@ const AddressInfo = () => {
     const loadTransactionsToShow = (addr, limit, offset) => {
         setLoadingTxs(true);
         getTransactionsFromAddress(addr, limit, offset).then(res => {
-            setTxs(res)
+            setTxs(res);
+            console.log("loading done.")
             setLoadingTxs(false);
+            
             getTransactions(res.map(item => item.inputs).flatMap(x => x).map(x => x.previous_outpoint_hash)).then(
                 txs => {
                     var txInpObj = {}
@@ -214,7 +217,7 @@ const AddressInfo = () => {
                 </Col>
                 <Col sm={6} md={4}>
                     <div className="addressinfo-header addressinfo-header-border mt-4 mt-sm-4 pt-sm-4 ms-sm-5">Transactions count</div>
-                    <div className="utxo-value ms-sm-5">{!!txCount ? numberWithCommas(txCount) : <Spinner animation="border" variant="primary" />}{errorLoadingUtxos && <BiGhost className="error-icon" />}</div>
+                    <div className="utxo-value ms-sm-5">{txCount !== null ? numberWithCommas(txCount) : <Spinner animation="border" variant="primary" />}{errorLoadingUtxos && <BiGhost className="error-icon" />}</div>
                 </Col>
             </Row>
         </Container>
@@ -247,7 +250,12 @@ const AddressInfo = () => {
                         icons={false}
                         onChange={(e) => { setDetailedView(e.target.checked) }} /><span className="text-light ms-2">Show details</span></div>
                 </Col>
+                {txCount > 20 && <Col xs={6} className="d-flex flex-row justify-content-end ms-auto">
+                    <UtxoPagination active={activeTx} total={Math.ceil(txCount / 20)} setActive={setActiveTx} />
+
+                </Col>}
             </Row>
+            {txCount === 0 && <Row className="utxo-value mt-3"><Col xs={12}>No transactions to show.</Col></Row>}
             {!loadingTxs ? <>{txs.map((x) =>
                 <>
                     <Row className="utxo-value text-primary mt-3">
@@ -325,10 +333,10 @@ const AddressInfo = () => {
 
                 </>
             )}
-            {!!txCount && txCount > 20 ? <Row><Col xs={12} className="d-flex flex-row justify-content-center">
+            {txCount > 20 && <Row><Col xs={12} className="d-flex flex-row justify-content-center">
                     <UtxoPagination active={activeTx} total={Math.ceil(txCount / 20)} setActive={setActiveTx} />
 
-                </Col></Row> : <Spinner className="m-3" animation="border" variant="primary" />}
+                </Col></Row>}
             </> : <Spinner className="m-3" animation="border" variant="primary" />}
 
         </Container>}

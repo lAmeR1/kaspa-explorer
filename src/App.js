@@ -165,7 +165,7 @@ function App() {
                       <div className="navbar-brand">
                         <img className="shake" src="/k-icon-glow.png" style={{ "marginRight": ".5rem", width: "4rem", height: "4rem" }} />
                         <div className="navbar-brand-text text-start">KASPA<br />EXPLORER</div>
-                        <div className="beta" style={{ transform: "translateX(-2.5rem)" }}>Beta</div>
+                        <div className="beta">Beta</div>
                       </div>
                     </Link>
                   </Navbar.Brand>
