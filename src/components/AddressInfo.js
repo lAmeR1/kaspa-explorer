@@ -147,13 +147,13 @@ const AddressInfo = () => {
             loadTransactionsToShow(addr)
             getAddressTxCount(addr).then((totalCount) => {
                 setTxCount(totalCount)
-                getAddressUtxos(addr).then(
-                    (res) => {
-                        setLoadingUtxos(false);
-                        setUtxos(res);
-                    }
-                )
             })
+            getAddressUtxos(addr).then(
+                (res) => {
+                    setLoadingUtxos(false);
+                    setUtxos(res);
+                }
+            )
         }
         if (view === "utxos") {
 
@@ -250,10 +250,10 @@ const AddressInfo = () => {
                         icons={false}
                         onChange={(e) => { setDetailedView(e.target.checked) }} /><span className="text-light ms-2">Show details</span></div>
                 </Col>
-                {txCount > 20 && <Col xs={6} className="d-flex flex-row justify-content-end ms-auto">
-                    <UtxoPagination active={activeTx} total={Math.ceil(txCount / 20)} setActive={setActiveTx} />
+                <Col xs={6} className="d-flex flex-row justify-content-end ms-auto">
+                    {!!txCount ? <UtxoPagination active={activeTx} total={Math.ceil(txCount / 20)} setActive={setActiveTx} />: <Spinner className="m-3" animation="border" variant="primary" />}
 
-                </Col>}
+                </Col>
             </Row>
             {txCount === 0 && <Row className="utxo-value mt-3"><Col xs={12}>No transactions to show.</Col></Row>}
             {!loadingTxs ? <>{txs.map((x) =>
@@ -333,10 +333,10 @@ const AddressInfo = () => {
 
                 </>
             )}
-            {txCount > 20 && <Row><Col xs={12} className="d-flex flex-row justify-content-center">
-                    <UtxoPagination active={activeTx} total={Math.ceil(txCount / 20)} setActive={setActiveTx} />
+            <Row><Col xs={12} className="d-flex flex-row justify-content-center">
+            {!!txCount ? <UtxoPagination active={activeTx} total={Math.ceil(txCount / 20)} setActive={setActiveTx} /> : <Spinner className="m-3" animation="border" variant="primary" />}
 
-                </Col></Row>}
+                </Col></Row>
             </> : <Spinner className="m-3" animation="border" variant="primary" />}
 
         </Container>}
