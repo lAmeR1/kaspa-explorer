@@ -1,4 +1,4 @@
-import { Pagination } from "react-bootstrap";
+import { Button, Form, Pagination } from "react-bootstrap";
 
 const UtxoPagination = (props) => {
 
@@ -17,20 +17,20 @@ const UtxoPagination = (props) => {
     }
 
     for (let i = Math.max(createIndex - 2, 1); i <= Math.min(createIndex + 2, props.total); i++) {
-        items.push(<Pagination.Item active={i === props.active} onClick={() => { props.setActive(i) }}>{i}</Pagination.Item>)
+        items.push(<Pagination.Item key={i} active={i === props.active} onClick={() => { props.setActive(i) }}>{i}</Pagination.Item>)
     }
 
-    return <div className="ms-auto fs-6">
+    return <div className="pagination">
         <Pagination>
-            {(props.active - 2) > 1 ? <>
-                <Pagination.Item onClick={() => { props.setActive(1) }}>{1}</Pagination.Item>
-                <Pagination.Ellipsis />
+            {(Math.min(props.active, props.total - 2) - 2) > 1 ? <>
+                <Pagination.Item key={1} onClick={() => { props.setActive(1) }}>{1}</Pagination.Item>
+                {props.active > 4 && <Pagination.Ellipsis />}
             </> : <></>}
             {items}
 
-            {props.total > props.active + 2 ? <>
-                <Pagination.Ellipsis />
-                <Pagination.Item onClick={() => { props.setActive(props.total) }}>{props.total}</Pagination.Item>
+            {props.total > Math.max(3, props.active) + 2 ? <>
+                {props.active < (props.total - 3) && <Pagination.Ellipsis />}
+                <Pagination.Item key={props.total} onClick={() => { props.setActive(props.total) }}>{props.total}</Pagination.Item>
             </> : <></>}
         </Pagination>
     </div>

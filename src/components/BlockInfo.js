@@ -78,7 +78,7 @@ const BlockInfo = () => {
                         return block.verboseData.mergeSetBluesHashes.includes(blockInfo.verboseData.hash)
                     } else {
                         // console.log("PUSH", block.verboseData.childrenHashes)
-                        // childListGlob.push(x.verbosedata.childrenHashes)
+                        childListGlob.push(block.verbosedata.childrenHashes)
                     }
 
                 }
@@ -89,8 +89,12 @@ const BlockInfo = () => {
                 .catch((err) => console.log("ERROR", err))
 
 
+            let [address, miner] = ["No miner info", "No miner info"]
 
-            const [address, miner] = parsePayload(blockInfo.transactions[0].payload);
+            if (blockInfo.transactions[0].payload) {
+                [address, miner] = parsePayload(blockInfo.transactions[0].payload);
+            }
+
 
             // request TX input addresses
             const txToQuery = blockInfo.transactions.flatMap((tx) => tx.inputs?.flatMap(txInput => txInput.previousOutpoint.transactionId)).filter(x => x).concat(
@@ -288,8 +292,8 @@ const BlockInfo = () => {
                                                         <span className="accepted-false">not accepted</span> : <>-</>}
                                                     {!!txInfo && !!txInfo[tx.verboseData.transactionId]?.is_accepted && blueScore !== 0 && (blueScore - txInfo[tx.verboseData.transactionId].accepting_block_blue_score < 86400) && <div className="confirmations mb-3">{blueScore - txInfo[tx.verboseData.transactionId].accepting_block_blue_score}&nbsp;confirmations</div>}
                                                     {!!txInfo && !!txInfo[tx.verboseData.transactionId]?.is_accepted && blueScore !== 0 && (blueScore - txInfo[tx.verboseData.transactionId].accepting_block_blue_score >= 86400) && <div className="confirmations mb-3">finalized</div>}
-                                                
-                                                    
+
+
                                                 </div>
                                             </Col>
 

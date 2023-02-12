@@ -42,7 +42,7 @@ function Dashboard() {
             navigate(`/txs/${v}`)
           }
           else {
-            navigate(`/blockns/${v}`)
+            navigate(`/blocks/${v}`)
           }
         }
       ).catch((err) => {

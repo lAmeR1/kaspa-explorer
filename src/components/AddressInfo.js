@@ -1,12 +1,12 @@
 import moment from "moment";
 import { useContext, useEffect, useState } from 'react';
-import { Col, Container, Dropdown, Row, Spinner, ToggleButton } from "react-bootstrap";
+import { Button, Col, Container, Dropdown, Form, Row, Spinner } from "react-bootstrap";
 import { BiGhost } from "react-icons/bi";
 import { useParams } from "react-router";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import Toggle from "react-toggle";
-import { numberWithCommas } from "../helper";
-import { getAddressBalance, getAddressUtxos, getBlock, getBlockdagInfo, getTransaction, getTransactions, getTransactionsFromAddress } from '../kaspa-api-client.js';
+import usePrevious, { floatToStr, numberWithCommas } from "../helper";
+import { getAddressBalance, getAddressTxCount, getAddressUtxos, getBlock, getBlockdagInfo, getTransactions, getTransactionsFromAddress } from '../kaspa-api-client.js';
 import BlueScoreContext from "./BlueScoreContext";
 import CopyButton from "./CopyButton.js";
 import PriceContext from "./PriceContext.js";
@@ -21,10 +21,9 @@ const AddressInfo = () => {
     const { addr } = useParams();
     const [addressBalance, setAddressBalance] = useState()
     const { blueScore } = useContext(BlueScoreContext);
+    const [search, setSearch] = useSearchParams();
 
     const [view, setView] = useState("transactions")
-
-    console.log(Boolean(localStorage.getItem('detailedView')))
 
     const [detailedView, setDetailedView] = useState(localStorage.getItem('detailedView') == "true")
 
@@ -32,18 +31,38 @@ const AddressInfo = () => {
     const [loadingUtxos, setLoadingUtxos] = useState(true)
 
     const [txs, setTxs] = useState([])
-    const [txsOverview, setTxsOverview] = useState([])
     const [txsInpCache, setTxsInpCache] = useState([])
     const [loadingTxs, setLoadingTxs] = useState(true)
+    const [txCount, setTxCount] = useState(null);
+    const [pageError, setPageError] = useState(false);
 
     const [errorLoadingUtxos, setErrorLoadingUtxos] = useState(false)
     const [active, setActive] = useState(1)
-    const [activeTx, setActiveTx] = useState(1)
+    const [activeTx, setActiveTx] = useState((search.get('page') && parseInt(search.get('page'))) || 1)
+    const prevActiveTx = usePrevious(activeTx)
 
     const [currentEpochTime, setCurrentEpochTime] = useState(0);
     const [currentDaaScore, setCurrentDaaScore] = useState(0);
 
     const { price } = useContext(PriceContext);
+
+    const goToPage = (e) => {
+        try {
+            const pageNo = e.target.pageNo.value && parseInt(e.target.pageNo.value)
+
+            if (!!pageNo && pageNo >= 1 && pageNo <= Math.ceil(txCount / 20)) {
+                setActiveTx(pageNo)
+                setPageError(false)
+            } else {
+                setPageError(true)
+            }
+
+        } catch {
+            setPageError(true)
+        }
+
+        e.preventDefault()
+    }
 
     const getAddrFromOutputs = (outputs, i) => {
         for (const o of outputs) {
@@ -62,12 +81,12 @@ const AddressInfo = () => {
 
     const getAmount = (outputs, inputs) => {
         var balance = 0
-        for (const o of outputs) {
+        for (const o of (outputs || [])) {
             if (o.script_public_key_address == addr) {
                 balance = balance + o.amount / 100000000
             }
         }
-        for (const i of inputs) {
+        for (const i of (inputs || [])) {
             if (getAddrFromOutputs(txsInpCache[i.previous_outpoint_hash]?.outputs || [], i.previous_outpoint_index) == addr) {
                 balance = balance - getAmountFromOutputs(txsInpCache[i.previous_outpoint_hash]["outputs"], i.previous_outpoint_index)
             }
@@ -76,6 +95,7 @@ const AddressInfo = () => {
     }
 
     useEffect(() => {
+
         getAddressBalance(addr).then(
             (res) => {
                 setAddressBalance(res)
@@ -116,42 +136,52 @@ const AddressInfo = () => {
     }
 
     useEffect(() => {
-        if (view === "transactions") {
-            getTransactionsFromAddress(addr).then(res => {
-                setTxsOverview(res.transactions)
-                getTransactions(res.transactions.map(x => x.tx_received)
-                    .concat(res.transactions.map(x => x.tx_spent)).filter(v => v)).then(
-                        res => {
-                            getTransactions(res.flatMap(tx => {
-                                return tx.inputs.map(inp => {
-                                    return inp.previous_outpoint_hash
-                                })
-                            })).then(res_inputs => {
+        setSearch({"page": activeTx})
+        setLoadingTxs(true)
+        window.scrollTo(0, 0);
+        if (prevActiveTx !== undefined)
+            loadTransactionsToShow(addr, 20, (activeTx - 1) * 20);
+    }, [activeTx])
 
-                                var txInpObj = {}
 
-                                res_inputs.forEach(x => txInpObj[x.transaction_id] = x)
+    const loadTransactionsToShow = (addr, limit, offset) => {
+        setLoadingTxs(true);
+        getTransactionsFromAddress(addr, limit, offset).then(res => {
+            setTxs(res);
+            if (res.length === 0) {
+                // page was too high. Set page 1
+                setActiveTx(1);
+                return
+            }
+            console.log("loading done.")
+            setLoadingTxs(false);
 
-                                setTxsInpCache(txInpObj)
-                            })
-                            setLoadingTxs(false);
-                            setTxs(res.sort((a, b) => b.block_time - a.block_time).slice(0, 200))
-                            getAddressUtxos(addr).then(
-                                (res) => {
-                                    setLoadingUtxos(false);
-                                    setUtxos(res);
-                                }
-                            )
-                                .catch(ex => {
-                                    setLoadingUtxos(false);
-                                    setErrorLoadingUtxos(true);
-                                })
-                        }
-                    )
-            })
-                .catch(ex => {
-                    setLoadingTxs(false);
+            getTransactions(res.map(item => item.inputs).flatMap(x => x).map(x => x.previous_outpoint_hash)).then(
+                txs => {
+                    var txInpObj = {}
+                    txs.forEach(x => txInpObj[x.transaction_id] = x)
+                    setTxsInpCache(txInpObj)
                 })
+        })
+            .catch(ex => {
+                console.log("nicht eroflgreich", ex)
+                setLoadingTxs(false);
+            })
+    }
+
+    useEffect(() => {
+
+        if (view === "transactions") {
+            loadTransactionsToShow(addr, 20, (activeTx - 1) * 20)
+            getAddressTxCount(addr).then((totalCount) => {
+                setTxCount(totalCount)
+            })
+            getAddressUtxos(addr).then(
+                (res) => {
+                    setLoadingUtxos(false);
+                    setUtxos(res);
+                }
+            )
         }
         if (view === "utxos") {
 
@@ -205,17 +235,17 @@ const AddressInfo = () => {
                 </Col>
                 <Col sm={6} md={4}>
                     <div className="addressinfo-header mt-4 ms-sm-5">UTXOs count</div>
-                    <div className="utxo-value ms-sm-5">{!loadingUtxos ? utxos.length : <Spinner animation="border" variant="primary" />}{errorLoadingUtxos && <BiGhost className="error-icon" />}</div>
+                    <div className="utxo-value ms-sm-5">{!loadingUtxos ? numberWithCommas(utxos.length) : <Spinner animation="border" variant="primary" />}{errorLoadingUtxos && <BiGhost className="error-icon" />}</div>
                 </Col>
             </Row>
             <Row>
                 <Col sm={6} md={4}>
                     <div className="addressinfo-header addressinfo-header-border mt-4 mt-sm-4 pt-sm-4 me-sm-5">value</div>
-                    <div className="utxo-value">{(addressBalance / 100000000 * price).toFixed(2)} USD</div>
+                    <div className="utxo-value">{numberWithCommas((addressBalance / 100000000 * price).toFixed(2))} USD</div>
                 </Col>
                 <Col sm={6} md={4}>
                     <div className="addressinfo-header addressinfo-header-border mt-4 mt-sm-4 pt-sm-4 ms-sm-5">Transactions count</div>
-                    <div className="utxo-value ms-sm-5">{!loadingTxs ? (txs.length < 200 ? txs.length : `> ${txs.length}`) : <Spinner animation="border" variant="primary" />}{errorLoadingUtxos && <BiGhost className="error-icon" />}</div>
+                    <div className="utxo-value ms-sm-5">{txCount !== null ? numberWithCommas(txCount) : <Spinner animation="border" variant="primary" />}{errorLoadingUtxos && <BiGhost className="error-icon" />}</div>
                 </Col>
             </Row>
         </Container>
@@ -248,12 +278,13 @@ const AddressInfo = () => {
                         icons={false}
                         onChange={(e) => { setDetailedView(e.target.checked) }} /><span className="text-light ms-2">Show details</span></div>
                 </Col>
-                {txs.length > 10 ? <Col xs={12} sm={6} className="d-flex flex-row justify-items-end">
-                    <UtxoPagination active={activeTx} total={Math.ceil(txs.length / 10)} setActive={setActiveTx} />
+                <Col xs={12} md={6} className="d-flex flex-row justify-content-end ms-auto">
+                    {!!txCount ? <UtxoPagination active={activeTx} total={Math.ceil(txCount / 20)} setActive={setActiveTx} /> : <Spinner className="m-3" animation="border" variant="primary" />}
 
-                </Col> : <></>}
+                </Col>
             </Row>
-            {!loadingTxs ? txs.slice((activeTx - 1) * 10, (activeTx - 1) * 10 + 10).map((x) =>
+            {txCount === 0 && <Row className="utxo-value mt-3"><Col xs={12}>No transactions to show.</Col></Row>}
+            {!loadingTxs ? <>{txs.map((x) =>
                 <>
                     <Row className="utxo-value text-primary mt-3">
                         <Col sm={7} md={7}>
@@ -274,8 +305,8 @@ const AddressInfo = () => {
                             <div className="utxo-value">
                                 <Link className="blockinfo-link" to={`/txs/${x.transaction_id}`} >
                                     {getAmount(x.outputs, x.inputs) > 0 ?
-                                        <span className="utxo-amount">+{numberWithCommas(getAmount(x.outputs, x.inputs))}&nbsp;KAS</span> :
-                                        <span className="utxo-amount-minus">{numberWithCommas(getAmount(x.outputs, x.inputs))}&nbsp;KAS</span>}
+                                        <span className="utxo-amount">+{numberWithCommas(floatToStr(getAmount(x.outputs, x.inputs)))}&nbsp;KAS</span> :
+                                        <span className="utxo-amount-minus">{numberWithCommas(floatToStr(getAmount(x.outputs, x.inputs)))}&nbsp;KAS</span>}
                                 </Link>
                             </div>
                         </Col>
@@ -289,8 +320,7 @@ const AddressInfo = () => {
                             <Col sm={12} md={6}>
                                 <div className="utxo-header mt-1">FROM</div>
                                 <div className="utxo-value-mono" style={{ fontSize: "smaller" }}>
-
-                                    {x.inputs.length > 0 ? x.inputs.map(x => {
+                                    {x.inputs?.length > 0 ? x.inputs.map(x => {
                                         return (txsInpCache && txsInpCache[x.previous_outpoint_hash]) ? <>
                                             <Row>
                                                 <Col xs={7} className="adressinfo-tx-overflow pb-0">
@@ -298,7 +328,7 @@ const AddressInfo = () => {
                                                         <span className={getAddrFromOutputs(txsInpCache[x.previous_outpoint_hash]["outputs"], x.previous_outpoint_index) == addr ? "highlight-addr" : ""}>{getAddrFromOutputs(txsInpCache[x.previous_outpoint_hash]["outputs"], x.previous_outpoint_index)}</span>
                                                     </Link>
                                                 </Col>
-                                                <Col xs={5}><span className="block-utxo-amount-minus">-{numberWithCommas(getAmountFromOutputs(txsInpCache[x.previous_outpoint_hash]["outputs"], x.previous_outpoint_index))}&nbsp;KAS</span></Col></Row></> : <li>{x.previous_outpoint_hash} #{x.previous_outpoint_index}</li>
+                                                <Col xs={5}><span className="block-utxo-amount-minus">-{numberWithCommas(getAmountFromOutputs(txsInpCache[x.previous_outpoint_hash]["outputs"], x.previous_outpoint_index))}&nbsp;KAS</span></Col></Row></> : <li key={x.previous_outpoint_hash}>{x.previous_outpoint_hash} #{x.previous_outpoint_index}</li>
                                     }) : "COINBASE (New coins)"}
 
                                 </div>
@@ -330,7 +360,29 @@ const AddressInfo = () => {
                         </Row>}
 
                 </>
-            ) : <Spinner animation="border" variant="primary" />}
+            )}
+                <Row><Col xs={12} sm={6} className="d-flex flex-row justify-content-center mb-3 mb-sm-0">
+                    <div className="me-auto" style={{ height: "2.4rem" }}>
+                        <Form onSubmit={goToPage} className="d-flex flex-row">
+                            <Form.Control
+                                type="text"
+                                placeholder="Page"
+                                name="pageNo"
+                                style={{
+                                    width: "4rem",
+                                    border: `${pageError ? "5px solid red" : ""}`
+                                }}
+                            />
+                            <Button type="submit" className="ms-2 me-auto">Go</Button>
+                        </Form>
+                    </div>
+                </Col>
+                    <Col xs={12} sm={6} className="d-flex flex-row justify-content-end">
+                        <UtxoPagination className="ms-auto" active={activeTx} total={Math.ceil(txCount / 20)} setActive={setActiveTx} />
+                        {/* </> : <Spinner className="m-3" animation="border" variant="primary" />} */}
+
+                    </Col></Row>
+            // </> : <Spinner className="m-3" animation="border" variant="primary" />}
 
         </Container>}
         {view == "utxos" &&
