@@ -3,7 +3,7 @@ import { useContext, useEffect, useState } from 'react';
 import { Button, Col, Container, Dropdown, Form, Row, Spinner } from "react-bootstrap";
 import { BiGhost } from "react-icons/bi";
 import { useParams } from "react-router";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import Toggle from "react-toggle";
 import usePrevious, { floatToStr, numberWithCommas } from "../helper";
 import { getAddressBalance, getAddressTxCount, getAddressUtxos, getBlock, getBlockdagInfo, getTransactions, getTransactionsFromAddress } from '../kaspa-api-client.js';
@@ -21,6 +21,7 @@ const AddressInfo = () => {
     const { addr } = useParams();
     const [addressBalance, setAddressBalance] = useState()
     const { blueScore } = useContext(BlueScoreContext);
+    const [search, setSearch] = useSearchParams();
 
     const [view, setView] = useState("transactions")
 
@@ -37,7 +38,7 @@ const AddressInfo = () => {
 
     const [errorLoadingUtxos, setErrorLoadingUtxos] = useState(false)
     const [active, setActive] = useState(1)
-    const [activeTx, setActiveTx] = useState(1)
+    const [activeTx, setActiveTx] = useState((search.get('page') && parseInt(search.get('page'))) || 1)
     const prevActiveTx = usePrevious(activeTx)
 
     const [currentEpochTime, setCurrentEpochTime] = useState(0);
@@ -135,6 +136,7 @@ const AddressInfo = () => {
     }
 
     useEffect(() => {
+        setSearch({"page": activeTx})
         setLoadingTxs(true)
         window.scrollTo(0, 0);
         if (prevActiveTx !== undefined)
@@ -146,6 +148,11 @@ const AddressInfo = () => {
         setLoadingTxs(true);
         getTransactionsFromAddress(addr, limit, offset).then(res => {
             setTxs(res);
+            if (res.length === 0) {
+                // page was too high. Set page 1
+                setActiveTx(1);
+                return
+            }
             console.log("loading done.")
             setLoadingTxs(false);
 
@@ -157,6 +164,7 @@ const AddressInfo = () => {
                 })
         })
             .catch(ex => {
+                console.log("nicht eroflgreich", ex)
                 setLoadingTxs(false);
             })
     }
@@ -164,7 +172,7 @@ const AddressInfo = () => {
     useEffect(() => {
 
         if (view === "transactions") {
-            loadTransactionsToShow(addr)
+            loadTransactionsToShow(addr, 20, (activeTx - 1) * 20)
             getAddressTxCount(addr).then((totalCount) => {
                 setTxCount(totalCount)
             })
