@@ -672,6 +672,21 @@ body {
   font-size: small;
 }
 
+.pagination {
+  font-size: 1rem;
+}
+
+.page-link {
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+}
+
+@include media-breakpoint-up(md) {
+  .pagination {
+    font-size: 1rem;
+  }
+}
+
 
 @import "./components/blockinfo.scss";
 @import "./components/addressinfo.scss";

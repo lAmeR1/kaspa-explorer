@@ -1,6 +1,6 @@
 import moment from "moment";
 import { useContext, useEffect, useState } from 'react';
-import { Col, Container, Dropdown, Row, Spinner } from "react-bootstrap";
+import { Button, Col, Container, Dropdown, Form, Row, Spinner } from "react-bootstrap";
 import { BiGhost } from "react-icons/bi";
 import { useParams } from "react-router";
 import { Link } from "react-router-dom";
@@ -33,6 +33,7 @@ const AddressInfo = () => {
     const [txsInpCache, setTxsInpCache] = useState([])
     const [loadingTxs, setLoadingTxs] = useState(true)
     const [txCount, setTxCount] = useState(null);
+    const [pageError, setPageError] = useState(false);
 
     const [errorLoadingUtxos, setErrorLoadingUtxos] = useState(false)
     const [active, setActive] = useState(1)
@@ -43,6 +44,24 @@ const AddressInfo = () => {
     const [currentDaaScore, setCurrentDaaScore] = useState(0);
 
     const { price } = useContext(PriceContext);
+
+    const goToPage = (e) => {
+        try {
+            const pageNo = e.target.pageNo.value && parseInt(e.target.pageNo.value)
+
+            if (!!pageNo && pageNo >= 1 && pageNo <= Math.ceil(txCount / 20)) {
+                setActiveTx(pageNo)
+                setPageError(false)
+            } else {
+                setPageError(true)
+            }
+
+        } catch {
+            setPageError(true)
+        }
+
+        e.preventDefault()
+    }
 
     const getAddrFromOutputs = (outputs, i) => {
         for (const o of outputs) {
@@ -129,7 +148,7 @@ const AddressInfo = () => {
             setTxs(res);
             console.log("loading done.")
             setLoadingTxs(false);
-            
+
             getTransactions(res.map(item => item.inputs).flatMap(x => x).map(x => x.previous_outpoint_hash)).then(
                 txs => {
                     var txInpObj = {}
@@ -251,8 +270,8 @@ const AddressInfo = () => {
                         icons={false}
                         onChange={(e) => { setDetailedView(e.target.checked) }} /><span className="text-light ms-2">Show details</span></div>
                 </Col>
-                <Col xs={6} className="d-flex flex-row justify-content-end ms-auto">
-                    {!!txCount ? <UtxoPagination active={activeTx} total={Math.ceil(txCount / 20)} setActive={setActiveTx} />: <Spinner className="m-3" animation="border" variant="primary" />}
+                <Col xs={12} md={6} className="d-flex flex-row justify-content-end ms-auto">
+                    {!!txCount ? <UtxoPagination active={activeTx} total={Math.ceil(txCount / 20)} setActive={setActiveTx} /> : <Spinner className="m-3" animation="border" variant="primary" />}
 
                 </Col>
             </Row>
@@ -334,11 +353,28 @@ const AddressInfo = () => {
 
                 </>
             )}
-            <Row><Col xs={12} className="d-flex flex-row justify-content-center">
-            {!!txCount ? <UtxoPagination active={activeTx} total={Math.ceil(txCount / 20)} setActive={setActiveTx} /> : <Spinner className="m-3" animation="border" variant="primary" />}
+                <Row><Col xs={12} sm={6} className="d-flex flex-row justify-content-center mb-3 mb-sm-0">
+                    <div className="me-auto" style={{ height: "2.4rem" }}>
+                        <Form onSubmit={goToPage} className="d-flex flex-row">
+                            <Form.Control
+                                type="text"
+                                placeholder="Page"
+                                name="pageNo"
+                                style={{
+                                    width: "4rem",
+                                    border: `${pageError ? "5px solid red" : ""}`
+                                }}
+                            />
+                            <Button type="submit" className="ms-2 me-auto">Go</Button>
+                        </Form>
+                    </div>
+                </Col>
+                    <Col xs={12} sm={6} className="d-flex flex-row justify-content-end">
+                        <UtxoPagination className="ms-auto" active={activeTx} total={Math.ceil(txCount / 20)} setActive={setActiveTx} />
+                        {/* </> : <Spinner className="m-3" animation="border" variant="primary" />} */}
 
-                </Col></Row>
-            </> : <Spinner className="m-3" animation="border" variant="primary" />}
+                    </Col></Row>
+            // </> : <Spinner className="m-3" animation="border" variant="primary" />}
 
         </Container>}
         {view == "utxos" &&

@@ -1,4 +1,4 @@
-import { Pagination } from "react-bootstrap";
+import { Button, Form, Pagination } from "react-bootstrap";
 
 const UtxoPagination = (props) => {
 
@@ -20,7 +20,7 @@ const UtxoPagination = (props) => {
         items.push(<Pagination.Item key={i} active={i === props.active} onClick={() => { props.setActive(i) }}>{i}</Pagination.Item>)
     }
 
-    return <div className="fs-6">
+    return <div className="pagination">
         <Pagination>
             {(Math.min(props.active, props.total - 2) - 2) > 1 ? <>
                 <Pagination.Item key={1} onClick={() => { props.setActive(1) }}>{1}</Pagination.Item>
