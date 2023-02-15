@@ -326,7 +326,7 @@ const AddressInfo = () => {
                     {!!detailedView &&
                         <Row className="utxo-border pb-4 mb-4">
                             <Col sm={12} md={6}>
-                                <div className="utxo-header mt-1">FROM ({x.inputs?.length})</div>
+                                <div className="utxo-header mt-1">FROM</div>
                                 <div className="utxo-value-mono" style={{ fontSize: "smaller" }}>
                                     {x.inputs?.length > 0 ? x.inputs.map(x => {
                                         return (txsInpCache && txsInpCache[x.previous_outpoint_hash]) ? <>
