@@ -121,7 +121,7 @@ const AddressInfo = () => {
 
     useEffect(() => {
         setErrorLoadingUtxos(false);
-        setLoadingUtxos(true);
+        // setLoadingUtxos(true);
     }, [addressBalance])
 
     const handleViewSwitch = (dontknow, e) => {
@@ -136,13 +136,17 @@ const AddressInfo = () => {
     }
 
     useEffect(() => {
-        setSearch({"page": activeTx})
+        setSearch({ "page": activeTx })
         setLoadingTxs(true)
         window.scrollTo(0, 0);
         if (prevActiveTx !== undefined)
             loadTransactionsToShow(addr, 20, (activeTx - 1) * 20);
     }, [activeTx])
 
+    function removeDuplicates(arr) {
+        return arr.filter((item,
+            index) => arr.indexOf(item) === index);
+    }
 
     const loadTransactionsToShow = (addr, limit, offset) => {
         setLoadingTxs(true);
@@ -156,12 +160,15 @@ const AddressInfo = () => {
             console.log("loading done.")
             setLoadingTxs(false);
 
-            getTransactions(res.map(item => item.inputs).flatMap(x => x).map(x => x.previous_outpoint_hash)).then(
-                txs => {
-                    var txInpObj = {}
-                    txs.forEach(x => txInpObj[x.transaction_id] = x)
-                    setTxsInpCache(txInpObj)
-                })
+            getTransactions(removeDuplicates(res.map(item => item.inputs)
+                .flatMap(x => x)
+                .map(x => x.previous_outpoint_hash))).then(
+                    txs => {
+                        var txInpObj = {}
+                        txs.forEach(x => txInpObj[x.transaction_id] = x)
+                        console.log(txInpObj)
+                        setTxsInpCache(txInpObj)
+                    })
         })
             .catch(ex => {
                 console.log("nicht eroflgreich", ex)
@@ -178,6 +185,7 @@ const AddressInfo = () => {
             })
             getAddressUtxos(addr).then(
                 (res) => {
+                    console.log("UTXOs loaded.")
                     setLoadingUtxos(false);
                     setUtxos(res);
                 }
@@ -318,17 +326,17 @@ const AddressInfo = () => {
                     {!!detailedView &&
                         <Row className="utxo-border pb-4 mb-4">
                             <Col sm={12} md={6}>
-                                <div className="utxo-header mt-1">FROM</div>
+                                <div className="utxo-header mt-1">FROM ({x.inputs?.length})</div>
                                 <div className="utxo-value-mono" style={{ fontSize: "smaller" }}>
                                     {x.inputs?.length > 0 ? x.inputs.map(x => {
                                         return (txsInpCache && txsInpCache[x.previous_outpoint_hash]) ? <>
-                                            <Row>
+                                            <Row id={`N${x.previous_outpoint_hash}${x.previous_outpoint_index}`}>
                                                 <Col xs={7} className="adressinfo-tx-overflow pb-0">
                                                     <Link className="blockinfo-link" to={`/addresses/${getAddrFromOutputs(txsInpCache[x.previous_outpoint_hash]["outputs"], x.previous_outpoint_index)}`} >
                                                         <span className={getAddrFromOutputs(txsInpCache[x.previous_outpoint_hash]["outputs"], x.previous_outpoint_index) == addr ? "highlight-addr" : ""}>{getAddrFromOutputs(txsInpCache[x.previous_outpoint_hash]["outputs"], x.previous_outpoint_index)}</span>
                                                     </Link>
                                                 </Col>
-                                                <Col xs={5}><span className="block-utxo-amount-minus">-{numberWithCommas(getAmountFromOutputs(txsInpCache[x.previous_outpoint_hash]["outputs"], x.previous_outpoint_index))}&nbsp;KAS</span></Col></Row></> : <li key={x.previous_outpoint_hash}>{x.previous_outpoint_hash} #{x.previous_outpoint_index}</li>
+                                                <Col xs={5}><span className="block-utxo-amount-minus">-{numberWithCommas(getAmountFromOutputs(txsInpCache[x.previous_outpoint_hash]["outputs"], x.previous_outpoint_index))}&nbsp;KAS</span></Col></Row></> : <li key={`${x.previous_outpoint_hash}${x.previous_outpoint_index}`}>{x.previous_outpoint_hash} #{x.previous_outpoint_index}</li>
                                     }) : "COINBASE (New coins)"}
 
                                 </div>
