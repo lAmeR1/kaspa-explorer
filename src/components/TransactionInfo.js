@@ -44,6 +44,7 @@ const TransactionInfo = () => {
     }, [id])
 
 
+
     const getAmountFromOutputs = (outputs, i) => {
         for (const o of outputs) {
             if (o.index == i) {
@@ -72,8 +73,8 @@ const TransactionInfo = () => {
         }
         if (txInfo?.detail == "Transaction not found") {
             retryCnt.current += 1
-            if (retryCnt.current < 10) {
-                setTimeout(getTx(), 1000);
+            if (retryCnt.current < 20) {
+                setTimeout(getTx, 1000);
                 console.log("retry", retryCnt)
             }
         }
@@ -126,15 +127,15 @@ const TransactionInfo = () => {
                                 </Row>
                                 <Row className="blockinfo-row border-bottom-0">
                                     <Col className="blockinfo-key" md={2}>Details</Col>
-                                    <Col className="blockinfo-value mt-2 d-flex flex-row flex-wrap" md={10} lg={10} style={{marginBottom: "-1rem"}}>
+                                    <Col className="blockinfo-value mt-2 d-flex flex-row flex-wrap" md={10} lg={10} style={{ marginBottom: "-1rem" }}>
                                         {txInfo.is_accepted ? <div className="accepted-true me-3 mb-3">accepted</div> :
-                                            <span className="accepted-false me-">not accepted</span>}
+                                            <span className="accepted-false mb-2 me-">not accepted</span>}
                                         {txInfo.is_accepted && blueScore !== 0 && (blueScore - txInfo.accepting_block_blue_score) < 86400 && <div className="confirmations mb-3">{blueScore - txInfo.accepting_block_blue_score}&nbsp;confirmations</div>}
                                         {txInfo.is_accepted && blueScore !== 0 && (blueScore - txInfo.accepting_block_blue_score) >= 86400 && <div className="confirmations mb-3">confirmed</div>}
                                     </Col>
                                 </Row>
                             </Container>
-                        </div> : <><Spinner animation="border" variant="primary" /><h2 className="text-light">Loading...</h2></>}
+                        </div> : <><Spinner animation="border" variant="primary" /><h2 className="text-light">Retry {retryCnt.current}/20</h2><p className="blockinfo-row text-light">Sometimes TXs need a few seconds to be added into the database.</p></>}
                 </Col>
             </Row>
 
