@@ -18,12 +18,11 @@ const TransactionInfo = () => {
     const { id } = useParams();
     const [txInfo, setTxInfo] = useState()
     const [additionalTxInfo, setAdditionalTxInfo] = useState()
-    const [minerName, setMinerName] = useState()
-    const [minerAddress, setMinerAddress] = useState()
-    const [isBlueBlock, setIsBlueBlock] = useState(null)
     const [error, setError] = useState(false)
     const { price } = useContext(PriceContext);
+    
     const retryCnt = useRef(0)
+    const retryNotAccepted = useRef(3)
     const { blueScore } = useContext(BlueScoreContext);
 
     const [blockColor, setBlockColor] = useState()
@@ -77,6 +76,10 @@ const TransactionInfo = () => {
                 setTimeout(getTx, 1000);
                 console.log("retry", retryCnt)
             }
+        }
+        if (txInfo?.is_accepted === false && retryNotAccepted.current > 0) {
+            retryNotAccepted.current -= 1
+            setTimeout(getTx, 2000);
         }
     }, [txInfo])
 
@@ -220,7 +223,7 @@ const TransactionInfo = () => {
                                             <Col sm={6} md={6} lg={3}>
                                                 <div className="blockinfo-key mt-2 mt-lg-0">Amount</div>
                                                 <div className="utxo-value">
-                                                    <span className="utxo-amount">+{tx_output.amount / 100000000}&nbsp;KAS</span>
+                                                    <span className="utxo-amount">+{numberWithCommas(tx_output.amount / 100000000)}&nbsp;KAS</span>
                                                 </div>
                                             </Col>
                                             <Col sm={12} md={12} lg={12}>
