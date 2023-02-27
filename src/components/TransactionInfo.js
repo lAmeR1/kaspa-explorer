@@ -22,7 +22,7 @@ const TransactionInfo = () => {
     const { price } = useContext(PriceContext);
     
     const retryCnt = useRef(0)
-    const retryNotAccepted = useRef(3)
+    const retryNotAccepted = useRef(6)
     const { blueScore } = useContext(BlueScoreContext);
 
     const [blockColor, setBlockColor] = useState()
@@ -77,7 +77,12 @@ const TransactionInfo = () => {
                 console.log("retry", retryCnt)
             }
         }
-        if (txInfo?.is_accepted === false && retryNotAccepted.current > 0) {
+        
+
+        const timeDiff = (Date.now() - (txInfo?.block_time || Date.now())) / 1000
+        console.log("time diff", timeDiff)
+
+        if (txInfo?.is_accepted === false && timeDiff < 60 && retryNotAccepted.current > 0) {
             retryNotAccepted.current -= 1
             setTimeout(getTx, 2000);
         }
