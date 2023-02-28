@@ -18,12 +18,11 @@ const TransactionInfo = () => {
     const { id } = useParams();
     const [txInfo, setTxInfo] = useState()
     const [additionalTxInfo, setAdditionalTxInfo] = useState()
-    const [minerName, setMinerName] = useState()
-    const [minerAddress, setMinerAddress] = useState()
-    const [isBlueBlock, setIsBlueBlock] = useState(null)
     const [error, setError] = useState(false)
     const { price } = useContext(PriceContext);
+    
     const retryCnt = useRef(0)
+    const retryNotAccepted = useRef(6)
     const { blueScore } = useContext(BlueScoreContext);
 
     const [blockColor, setBlockColor] = useState()
@@ -78,6 +77,15 @@ const TransactionInfo = () => {
                 console.log("retry", retryCnt)
             }
         }
+        
+
+        const timeDiff = (Date.now() - (txInfo?.block_time || Date.now())) / 1000
+        console.log("time diff", timeDiff)
+
+        if (txInfo?.is_accepted === false && timeDiff < 60 && retryNotAccepted.current > 0) {
+            retryNotAccepted.current -= 1
+            setTimeout(getTx, 2000);
+        }
     }, [txInfo])
 
 
@@ -130,7 +138,7 @@ const TransactionInfo = () => {
                                     <Col className="blockinfo-value mt-2 d-flex flex-row flex-wrap" md={10} lg={10} style={{ marginBottom: "-1rem" }}>
                                         {txInfo.is_accepted ? <div className="accepted-true me-3 mb-3">accepted</div> :
                                             <span className="accepted-false mb-2 me-">not accepted</span>}
-                                        {txInfo.is_accepted && blueScore !== 0 && (blueScore - txInfo.accepting_block_blue_score) < 86400 && <div className="confirmations mb-3">{blueScore - txInfo.accepting_block_blue_score}&nbsp;confirmations</div>}
+                                        {txInfo.is_accepted && blueScore !== 0 && (blueScore - txInfo.accepting_block_blue_score) < 86400 && <div className="confirmations mb-3">{Math.max(blueScore - txInfo.accepting_block_blue_score, 0)}&nbsp;confirmations</div>}
                                         {txInfo.is_accepted && blueScore !== 0 && (blueScore - txInfo.accepting_block_blue_score) >= 86400 && <div className="confirmations mb-3">confirmed</div>}
                                     </Col>
                                 </Row>
@@ -220,7 +228,7 @@ const TransactionInfo = () => {
                                             <Col sm={6} md={6} lg={3}>
                                                 <div className="blockinfo-key mt-2 mt-lg-0">Amount</div>
                                                 <div className="utxo-value">
-                                                    <span className="utxo-amount">+{tx_output.amount / 100000000}&nbsp;KAS</span>
+                                                    <span className="utxo-amount">+{numberWithCommas(tx_output.amount / 100000000)}&nbsp;KAS</span>
                                                 </div>
                                             </Col>
                                             <Col sm={12} md={12} lg={12}>

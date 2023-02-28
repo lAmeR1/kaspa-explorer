@@ -90,13 +90,13 @@ function App() {
   }
 
   const updatePrice = () => {
-    fetch(`https://api.coingecko.com/api/v3/coins/kaspa`, {
+    fetch(`https://api.kaspa.org/info/market-data`, {
       headers: { "Cache-Control": "no-cache" }
     })
       .then(response => response.json())
       .then(data => {
-        setPrice(data['market_data']['current_price']['usd'].toFixed(6));
-        setMarketData(data['market_data']);
+        setPrice(data['current_price']['usd'].toFixed(6));
+        setMarketData(data);
       })
       .catch(r => console.log(r))
   }
