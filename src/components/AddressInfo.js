@@ -264,7 +264,7 @@ const AddressInfo = () => {
                 <Col md={12} className="mt-sm-4">
 
                     <div className="addressinfo-header">Address</div>
-                    <div className="utxo-value">{addr}
+                    <div className="utxo-value-mono">{addr}
                         <CopyButton size="2rem" text={addr} />
                         <div ref={ref} />
                     </div>
