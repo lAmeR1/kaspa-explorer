@@ -1,5 +1,5 @@
 import moment from "moment";
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import { Button, Col, Container, Dropdown, Form, Row, Spinner } from "react-bootstrap";
 import { BiGhost } from "react-icons/bi";
 import { useParams } from "react-router";
@@ -12,6 +12,9 @@ import CopyButton from "./CopyButton.js";
 import PriceContext from "./PriceContext.js";
 import UtxoPagination from "./UtxoPagination.js";
 
+import QRCodeStyling from "qr-code-styling";
+
+
 const AddressInfoPage = () => {
     const { addr } = useParams();
     return <AddressInfo key={addr} />
@@ -19,6 +22,37 @@ const AddressInfoPage = () => {
 
 const AddressInfo = () => {
     const { addr } = useParams();
+    const ref = useRef(null);
+
+    const qrCode = new QRCodeStyling({
+        data: addr,
+        width: 150,
+        height: 150,
+        type: "svg",
+        image: "../k-icon-glow.png",
+        dotsOptions: {
+          color: "#14f1d9",
+          type: "dots",
+          gradient: {
+            type: "linear",
+            colorStops: [{ offset: 0, color: "#14f1d9" }, { offset: 1, color: "#14f1d9" }]
+          }
+        },
+        imageOptions: {
+          crossOrigin: "anonymous",
+          margin: "1"
+        },
+        backgroundOptions: {
+            color: ""
+        },
+        cornersSquareOptions: {
+            color: "#ffffff"
+        },
+        qrOptions: {
+            typeNumber: 0
+        }
+      });
+
     const [addressBalance, setAddressBalance] = useState()
     const { blueScore } = useContext(BlueScoreContext);
     const [search, setSearch] = useSearchParams();
@@ -95,6 +129,8 @@ const AddressInfo = () => {
     }
 
     useEffect(() => {
+
+        qrCode.append(ref.current);
 
         getAddressBalance(addr).then(
             (res) => {
@@ -229,9 +265,9 @@ const AddressInfo = () => {
 
                     <div className="addressinfo-header">Address</div>
                     <div className="utxo-value">{addr}
-                        <CopyButton size="2rem" text={addr} /></div>
-
-
+                        <CopyButton size="2rem" text={addr} />
+                        <div ref={ref} />
+                    </div>
                 </Col>
 
             </Row>
