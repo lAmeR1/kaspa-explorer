@@ -26,13 +26,13 @@ const AddressInfo = () => {
 
     const qrCode = new QRCodeStyling({
         data: addr,
-        width: 150,
-        height: 150,
+        width: 200,
+        height: 200,
         type: "svg",
         image: "../k-icon-glow.png",
         dotsOptions: {
           color: "#14f1d9",
-          type: "dots",
+          type: "rounded",
           gradient: {
             type: "linear",
             colorStops: [{ offset: 0, color: "#14f1d9" }, { offset: 1, color: "#14f1d9" }]
