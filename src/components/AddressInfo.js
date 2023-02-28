@@ -7,12 +7,14 @@ import { Link, useSearchParams } from "react-router-dom";
 import Toggle from "react-toggle";
 import usePrevious, { floatToStr, numberWithCommas } from "../helper";
 import { getAddressBalance, getAddressTxCount, getAddressUtxos, getBlock, getBlockdagInfo, getTransactions, getTransactionsFromAddress } from '../kaspa-api-client.js';
+import { FaQrcode } from "react-icons/fa"
 import BlueScoreContext from "./BlueScoreContext";
 import CopyButton from "./CopyButton.js";
 import PriceContext from "./PriceContext.js";
 import UtxoPagination from "./UtxoPagination.js";
 
 import QRCodeStyling from "qr-code-styling";
+import QrButton from "./QrButton";
 
 
 const AddressInfoPage = () => {
@@ -25,39 +27,41 @@ const AddressInfo = () => {
     const ref = useRef(null);
 
     const qrCode = new QRCodeStyling({
-        data: addr,
+        data: addr.replace(":", "\:"),
         width: 200,
         height: 200,
         type: "svg",
-        image: "../k-icon-glow.png",
+        image: "../kaspa-icon.png",
         dotsOptions: {
-          color: "#14f1d9",
-          type: "rounded",
-          gradient: {
-            type: "linear",
-            colorStops: [{ offset: 0, color: "#14f1d9" }, { offset: 1, color: "#14f1d9" }]
-          }
+            color: "#181D30",
+            type: "extra-rounded",
+            gradient: {
+                type: "linear",
+                colorStops: [{ offset: 0, color: "#134a40" }, { offset: 1, color: "#134a40" }]
+            }
         },
         imageOptions: {
-          crossOrigin: "anonymous",
-          margin: "1"
+            crossOrigin: "anonymous",
+            margin: 0,
+            //   imageSize: 1
         },
         backgroundOptions: {
-            color: ""
+            color: "#ffffff"
         },
         cornersSquareOptions: {
-            color: "#ffffff"
+            color: "#134a40"
         },
         qrOptions: {
             typeNumber: 0
         }
-      });
+    });
 
     const [addressBalance, setAddressBalance] = useState()
     const { blueScore } = useContext(BlueScoreContext);
     const [search, setSearch] = useSearchParams();
 
     const [view, setView] = useState("transactions")
+    const [showQr, setShowQr] = useState(false);
 
     const [detailedView, setDetailedView] = useState(localStorage.getItem('detailedView') == "true")
 
@@ -264,9 +268,11 @@ const AddressInfo = () => {
                 <Col md={12} className="mt-sm-4">
 
                     <div className="addressinfo-header">Address</div>
-                    <div className="utxo-value-mono"><span class="addressinfo-color">kaspa:</span>{addr.substring(6, addr.length - 8)}<span class="addressinfo-color">{addr.substring(addr.length-8)}</span>
+                    <div className="utxo-value-mono"><span class="addressinfo-color">kaspa:</span>{addr.substring(6, addr.length - 8)}<span class="addressinfo-color">{addr.substring(addr.length - 8)}</span>
                         <CopyButton size="2rem" text={addr} />
-                        <div ref={ref} />
+                        <QrButton addr="{addr}" onClick={() => setShowQr(!showQr)} />
+
+                        <div className="qr-code" ref={ref} hidden={!showQr} />
                     </div>
                 </Col>
 
