@@ -159,6 +159,10 @@ const BlockInfo = () => {
                                     <Col className="blockinfo-value" lg={10}>{blockInfo.header.version}</Col>
                                 </Row>
                                 <Row className="blockinfo-row">
+                                    <Col className="blockinfo-key" lg={2}>Is Chain Block</Col>
+                                    <Col className="blockinfo-value" lg={10}>{!!blockInfo.verboseData.isChainBlock ? "true" : "false"}</Col>
+                                </Row>
+                                <Row className="blockinfo-row">
                                     <Col className="blockinfo-key" lg={2}>Parents</Col>
                                     <Col className="blockinfo-value-mono" lg={10}>
                                         <ul>
