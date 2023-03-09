@@ -26,36 +26,6 @@ const AddressInfo = () => {
     const { addr } = useParams();
     const ref = useRef(null);
 
-    const qrCode = new QRCodeStyling({
-        data: addr.replace(":", "\:"),
-        width: 200,
-        height: 200,
-        type: "svg",
-        image: "../kaspa-icon.png",
-        dotsOptions: {
-            color: "#181D30",
-            type: "extra-rounded",
-            gradient: {
-                type: "linear",
-                colorStops: [{ offset: 0, color: "#134a40" }, { offset: 1, color: "#134a40" }]
-            }
-        },
-        imageOptions: {
-            crossOrigin: "anonymous",
-            margin: 0,
-            //   imageSize: 1
-        },
-        backgroundOptions: {
-            color: "#ffffff"
-        },
-        cornersSquareOptions: {
-            color: "#134a40"
-        },
-        qrOptions: {
-            typeNumber: 0
-        }
-    });
-
     const [addressBalance, setAddressBalance] = useState()
     const { blueScore } = useContext(BlueScoreContext);
     const [search, setSearch] = useSearchParams();
@@ -133,6 +103,36 @@ const AddressInfo = () => {
     }
 
     useEffect(() => {
+
+        const qrCode = new QRCodeStyling({
+            data: addr.replace(":", "\:"),
+            width: 200,
+            height: 200,
+            type: "svg",
+            image: "../kaspa-icon.png",
+            dotsOptions: {
+                color: "#181D30",
+                type: "extra-rounded",
+                gradient: {
+                    type: "linear",
+                    colorStops: [{ offset: 0, color: "#134a40" }, { offset: 1, color: "#134a40" }]
+                }
+            },
+            imageOptions: {
+                crossOrigin: "anonymous",
+                margin: 0,
+                //   imageSize: 1
+            },
+            backgroundOptions: {
+                color: "#ffffff"
+            },
+            cornersSquareOptions: {
+                color: "#134a40"
+            },
+            qrOptions: {
+                typeNumber: 0
+            }
+        });
 
         qrCode.append(ref.current);
 
