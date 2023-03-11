@@ -95,7 +95,7 @@ function App() {
     })
       .then(response => response.json())
       .then(data => {
-        setPrice(data['current_price']['usd'].toFixed(6));
+        setPrice(data['current_price']['usd'].toFixed(4));
         setMarketData(data);
       })
       .catch(r => console.log(r))
@@ -165,7 +165,6 @@ function App() {
                       <div className="navbar-brand">
                         <img className="shake" src="/k-icon-glow.png" style={{ "marginRight": ".5rem", width: "4rem", height: "4rem" }} />
                         <div className="navbar-brand-text text-start">KASPA<br />EXPLORER</div>
-                        <div className="beta">Beta</div>
                       </div>
                     </Link>
                   </Navbar.Brand>

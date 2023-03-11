@@ -18,6 +18,7 @@ const TransactionInfo = () => {
     const { id } = useParams();
     const [txInfo, setTxInfo] = useState()
     const [additionalTxInfo, setAdditionalTxInfo] = useState()
+    const [showTxFee, setShowTxFee] = useState(false);
     const [error, setError] = useState(false)
     const { price } = useContext(PriceContext);
     
@@ -60,6 +61,8 @@ const TransactionInfo = () => {
             if (!!txToQuery) {
                 getTransactions(txToQuery, true, true).then(
                     resp => {
+                        console.log("Check all tx? ", txToQuery.length == resp.length)
+                        setShowTxFee(txToQuery.length == resp.length)
                         const respAsObj = resp.reduce((obj, cur) => {
                             obj[cur["transaction_id"]] = cur
                             return obj;
@@ -133,6 +136,14 @@ const TransactionInfo = () => {
                                         </Link>
                                     </Col>
                                 </Row>
+                                {showTxFee && <Row className="blockinfo-row">
+                                    <Col className="blockinfo-key" lg={2}>Transaction fee</Col>
+                                    <Col className="blockinfo-value-mono" lg={10}>
+                                        {txInfo && additionalTxInfo && 
+                                    <>{(txInfo.inputs.map((tx_input) => (additionalTxInfo[tx_input.previous_outpoint_hash]?.outputs[tx_input.previous_outpoint_index].amount || 0)).reduce((a,b) => a+b) - txInfo.outputs.map((v) => v.amount).reduce((a,b) => a+b)) / 100000000} KAS</>
+                                    }
+                                    </Col>
+                                </Row>}
                                 <Row className="blockinfo-row border-bottom-0">
                                     <Col className="blockinfo-key" md={2}>Details</Col>
                                     <Col className="blockinfo-value mt-2 d-flex flex-row flex-wrap" md={10} lg={10} style={{ marginBottom: "-1rem" }}>

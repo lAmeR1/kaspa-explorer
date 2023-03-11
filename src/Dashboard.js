@@ -74,7 +74,6 @@ function Dashboard() {
               <div className="bigfont">
                 KASPA<br />EXPLORER
               </div>
-              <div className="beta-dashboard fs-1" style={{transform: "translateX(-3rem)"}}>BETA</div>
             </Col>
           </Row>
           <Row>
