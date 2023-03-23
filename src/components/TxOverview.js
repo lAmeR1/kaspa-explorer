@@ -8,7 +8,7 @@ import io from 'socket.io-client';
 import { numberWithCommas } from "../helper";
 import LastBlocksContext from "./LastBlocksContext";
 
-const socket = io("wss://api.kaspa.org", {
+const socket = io("wss://kaspa.ddnss.de", {
     path: '/ws/socket.io'
 });
 

@@ -13,6 +13,15 @@ import BlueScoreContext from "./BlueScoreContext.js";
 import CopyButton from "./CopyButton.js";
 import PriceContext from "./PriceContext.js";
 
+const getOutputFromIndex = (outputs, index) => {
+    console.log(outputs)
+    for (const output of outputs) {
+        if (output.index == index) {
+            return output
+        }
+    }
+}
+
 
 const TransactionInfo = () => {
     const { id } = useParams();
@@ -21,7 +30,7 @@ const TransactionInfo = () => {
     const [showTxFee, setShowTxFee] = useState(false);
     const [error, setError] = useState(false)
     const { price } = useContext(PriceContext);
-    
+
     const retryCnt = useRef(0)
     const retryNotAccepted = useRef(6)
     const { blueScore } = useContext(BlueScoreContext);
@@ -67,7 +76,7 @@ const TransactionInfo = () => {
                             obj[cur["transaction_id"]] = cur
                             return obj;
                         }, {});
-                        console.log(respAsObj)
+                        console.log("additional info", respAsObj)
                         setAdditionalTxInfo(respAsObj)
                     }
                 ).catch(err => console.log("Error ", err))
@@ -80,7 +89,7 @@ const TransactionInfo = () => {
                 console.log("retry", retryCnt)
             }
         }
-        
+
 
         const timeDiff = (Date.now() - (txInfo?.block_time || Date.now())) / 1000
         console.log("time diff", timeDiff)
@@ -139,9 +148,9 @@ const TransactionInfo = () => {
                                 {showTxFee && <Row className="blockinfo-row">
                                     <Col className="blockinfo-key" lg={2}>Transaction fee</Col>
                                     <Col className="blockinfo-value-mono" lg={10}>
-                                        {txInfo && additionalTxInfo && 
-                                    <>{(txInfo.inputs.map((tx_input) => (additionalTxInfo[tx_input.previous_outpoint_hash]?.outputs[tx_input.previous_outpoint_index].amount || 0)).reduce((a,b) => a+b) - txInfo.outputs.map((v) => v.amount).reduce((a,b) => a+b)) / 100000000} KAS</>
-                                    }
+                                        {txInfo && additionalTxInfo &&
+                                            <>{(txInfo.inputs.map((tx_input) => (getOutputFromIndex(additionalTxInfo[tx_input.previous_outpoint_hash]?.outputs || [], tx_input.previous_outpoint_index)?.amount || 0)).reduce((a, b) => a + b) - txInfo.outputs.map((v) => v.amount).reduce((a, b) => a + b)) / 100000000} KAS</>
+                                        }
                                     </Col>
                                 </Row>}
                                 <Row className="blockinfo-row border-bottom-0">
