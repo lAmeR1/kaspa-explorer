@@ -45,7 +45,7 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 });
 
-const socket = io("wss://api.kaspa.org", {
+const socket = io("wss://kaspa.ddnss.de", {
   path: '/ws/socket.io'
 });
 
