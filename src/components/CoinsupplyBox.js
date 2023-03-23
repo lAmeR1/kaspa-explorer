@@ -10,7 +10,7 @@ import { FaInfoCircle } from 'react-icons/fa';
 import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 
 
-const socket = socketIOClient("wss://kaspa.ddnss.de", {
+const socket = socketIOClient("wss://kaspa.ddnss.de:8001", {
     path: '/ws/socket.io'
 });
 
