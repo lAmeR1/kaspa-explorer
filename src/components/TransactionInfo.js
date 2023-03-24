@@ -215,10 +215,10 @@ const TransactionInfo = () => {
                                                 <Col sm={12} md={12} lg={12}>
                                                     <div className="blockinfo-key mt-2">Address</div>
                                                     <div className="utxo-value-mono">
-                                                        <Link to={`/addresses/${additionalTxInfo[tx_input.previous_outpoint_hash]
-                                                            .outputs[tx_input.previous_outpoint_index].script_public_key_address}`} className="blockinfo-link">
-                                                            {additionalTxInfo[tx_input.previous_outpoint_hash]
-                                                                .outputs[tx_input.previous_outpoint_index].script_public_key_address}
+                                                        <Link to={`/addresses/${getOutputFromIndex(additionalTxInfo[tx_input.previous_outpoint_hash]
+                                                            .outputs, tx_input.previous_outpoint_index).script_public_key_address}`} className="blockinfo-link">
+                                                            {getOutputFromIndex(additionalTxInfo[tx_input.previous_outpoint_hash]
+                                                                .outputs, tx_input.previous_outpoint_index).script_public_key_address}
                                                         </Link>
                                                     </div>
                                                 </Col></>}
