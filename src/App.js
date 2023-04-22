@@ -131,7 +131,6 @@ function App() {
     socket.emit("join-room", "bluescore")
 
     socket.on('new-block', (d) => {
-      console.log("blocks", d)
       setBlocks([...blocksRef.current, d].slice(-100))
     });
 
