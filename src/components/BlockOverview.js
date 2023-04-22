@@ -44,11 +44,11 @@ const BlockOverview = (props) => {
                     </tr>
                 </thead>
                 <tbody>
-                    {[...tempBlocks].sort((a,b) => b.verboseData.blueScore - a.verboseData.blueScore).slice(0,props.lines).map((x) => <tr id={x.verboseData.hash} key={x.verboseData.hash} onClick={onClickRow}>
-                        <td className="table-timestamp">{moment(parseInt(x.header.timestamp)).format("YYYY‑MM‑DD HH:mm:ss")}</td>
-                        {props.small ? <></> : <td>{x.verboseData.blueScore}</td>}
-                        <td>{x.transactions.length}</td>
-                        <td className="hashh">{x.verboseData.hash}</td>
+                    {[...tempBlocks].sort((a,b) => b.blueScore - a.blueScore).slice(0,props.lines).map((x) => <tr id={x.block_hash} key={x.block_hash} onClick={onClickRow}>
+                        <td className="table-timestamp">{moment(parseInt(x.timestamp)).format("YYYY‑MM‑DD HH:mm:ss")}</td>
+                        {props.small ? <></> : <td>{x.blueScore}</td>}
+                        <td>{x.txs.length}</td>
+                        <td className="hashh">{x.block_hash}</td>
                     </tr>)}
                 </tbody>
             </table>
