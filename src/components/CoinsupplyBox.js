@@ -1,44 +1,20 @@
 import { faCoins } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useContext, useEffect, useState } from "react";
-import socketIOClient from 'socket.io-client';
-import { numberWithCommas } from "../helper";
-import { getHalving } from '../kaspa-api-client';
-import PriceContext from "./PriceContext";
 import moment from 'moment';
-import { FaInfoCircle } from 'react-icons/fa';
-import { OverlayTrigger, Tooltip } from 'react-bootstrap';
-
-
-const socket = socketIOClient("wss://api.kaspa.org", {
-    path: '/ws/socket.io'
-});
+import { useContext, useEffect, useState } from "react";
+import { numberWithCommas } from "../helper";
+import { getCoinSupply, getHalving } from '../kaspa-api-client';
+import PriceContext from "./PriceContext";
 
 
 const CBox = () => {
     const [circCoins, setCircCoins] = useState("-");
-    const [isConnected, setIsConnected] = useState(false);
     const [blockReward, setBlockReward] = useState("-");
     const [halvingDate, setHalvingDate] = useState("-");
     const [halvingAmount, setHalvingAmount] = useState("-");
-    const { price } = useContext(PriceContext);
 
-    useEffect(() => {
-        socket.on('connect', () => {
-            setIsConnected(true);
-        });
-
-        socket.on('disconnect', () => {
-            setIsConnected(false);
-        });
-
-        socket.on('coinsupply', (e) => {
-            setCircCoins(Math.round(parseFloat(e.circulatingSupply) / 100000000))
-        })
-
-        // join room to get updates
-        socket.emit("join-room", "coinsupply")
-
+    const initBox = async () => {
+        const coinSupplyResp = await getCoinSupply()
         getBlockReward();
 
         getHalving().then((d) => {
@@ -46,10 +22,22 @@ const CBox = () => {
             setHalvingAmount(d.nextHalvingAmount.toFixed(2))
         })
 
-        return () => {
-            socket.off('connect');
-            socket.off('disconnect');
-            socket.off('coinsupply');
+        setCircCoins(Math.round(coinSupplyResp.circulatingSupply / 100000000))
+    }
+
+    useEffect(() => {
+        initBox();
+
+        const updateCircCoins = setInterval(async () => {
+
+            const coinSupplyResp = await getCoinSupply()
+            setCircCoins(Math.round(coinSupplyResp.circulatingSupply / 100000000))
+
+        }, 10000)
+
+
+        return async () => {
+            clearInterval(updateCircCoins)
         };
     }, [])
 
@@ -79,7 +67,7 @@ const CBox = () => {
 
     return <>
         <div className="cardBox mx-0">
-            <table style={{fontSize: "1rem"}}>
+            <table style={{ fontSize: "1rem" }}>
                 <tr>
                     <td colspan='2' className="text-center" style={{ "fontSize": "4rem" }}>
                         <FontAwesomeIcon icon={faCoins} />
@@ -119,7 +107,7 @@ const CBox = () => {
                             </span>
                         </OverlayTrigger> */}
                     </td>
-                    <td className="pt-1">{halvingDate}<br /><div className="text-end w-100 pe-3 pt-1" style={{fontSize: "small"}}>to {halvingAmount} KAS</div></td>
+                    <td className="pt-1">{halvingDate}<br /><div className="text-end w-100 pe-3 pt-1" style={{ fontSize: "small" }}>to {halvingAmount} KAS</div></td>
                 </tr>
             </table>
         </div>

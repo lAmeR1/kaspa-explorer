@@ -64,7 +64,7 @@ const TransactionInfo = () => {
 
     useEffect(() => {
         // request TX input addresses
-        if (!!txInfo && txInfo?.detail != "Transaction not found") {
+        if (!!txInfo && txInfo?.detail !== "Transaction not found") {
             const txToQuery = txInfo.inputs?.flatMap(txInput => txInput.previous_outpoint_hash).filter(x => x)
             console.log("q", txToQuery)
             if (!!txToQuery) {
@@ -105,7 +105,7 @@ const TransactionInfo = () => {
         <Container className="webpage" fluid>
             <Row>
                 <Col className="mx-0">
-                    {!!txInfo && txInfo?.detail != "Transaction not found" ?
+                    {!!txInfo && txInfo?.detail !== "Transaction not found" ?
                         <div className="blockinfo-content">
                             <div className="blockinfo-header"><h4 className="d-flex flex-row align-items-center">transaction info</h4></div>
                             <Container className="blockinfo-table mx-0" fluid>
@@ -179,7 +179,7 @@ const TransactionInfo = () => {
 
             <Row>
                 <Col>
-                    {!!txInfo && txInfo?.detail != "Transaction not found" ?
+                    {!!txInfo && txInfo?.detail !== "Transaction not found" ?
                         <div className="blockinfo-content mt-4 mb-5">
                             <div className="blockinfo-header"><h4>Inputs</h4></div>
                             <Container className="webpage utxo-box" fluid>

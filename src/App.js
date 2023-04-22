@@ -3,25 +3,24 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'font-awesome/css/font-awesome.min.css';
 import { useEffect, useRef, useState } from 'react';
 import { Button, Col, Container, Form, InputGroup, Nav, Navbar, OverlayTrigger, Row, Tooltip } from 'react-bootstrap';
+import { BiDonateHeart } from 'react-icons/bi';
+import { FaGithub } from 'react-icons/fa';
+import { SiFastapi } from 'react-icons/si';
 import { useLocation, useNavigate } from 'react-router';
 import { Link, NavLink, Route, Routes } from "react-router-dom";
+import "react-toggle/style.css";
 import io from 'socket.io-client';
 import './App.scss';
 import AddressInfoPage from './components/AddressInfo';
 import BlockInfo from './components/BlockInfo';
 import BlocksPage from './components/BlocksPage';
+import BlueScoreContext from './components/BlueScoreContext';
 import LastBlocksContext from './components/LastBlocksContext';
 import NotFound from './components/NotFound';
 import PriceContext from './components/PriceContext';
+import TransactionInfo from './components/TransactionInfo';
 import TxPage from './components/TxPage';
 import Dashboard from './Dashboard';
-import moment from 'moment';
-import { FaGithub } from 'react-icons/fa';
-import { BiDonateHeart } from 'react-icons/bi';
-import { SiFastapi } from 'react-icons/si';
-import TransactionInfo from './components/TransactionInfo';
-import BlueScoreContext from './components/BlueScoreContext';
-import "react-toggle/style.css"
 import { getBlock } from './kaspa-api-client';
 // import 'moment/min/locales';
 
@@ -132,6 +131,7 @@ function App() {
     socket.emit("join-room", "bluescore")
 
     socket.on('new-block', (d) => {
+      console.log("blocks", d)
       setBlocks([...blocksRef.current, d].slice(-100))
     });
 

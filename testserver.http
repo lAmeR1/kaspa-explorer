@@ -311,3 +311,14 @@ GET http://127.0.0.1:8000/addresses/kaspa:qrsatq67p8eu8kkjp80tedanhulmpcxevsj8ra
 
 ###
 GET http://127.0.0.1:8000/transactions/ff798f2b29dff603878b53b0ca554756759c13ebb0c09e03f7b2887f981427f5?inputs=true&outputs=true
+
+
+
+###
+
+GET http://74.208.108.69:8000/info/health
+
+
+###
+
+GET http://qnos.de:8000/info/health

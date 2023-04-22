@@ -4,13 +4,9 @@ import { BiHide } from "react-icons/bi";
 import { FaPause, FaPlay } from "react-icons/fa";
 import { RiMoneyDollarCircleFill } from 'react-icons/ri';
 import { useNavigate } from "react-router-dom";
-import io from 'socket.io-client';
 import { numberWithCommas } from "../helper";
 import LastBlocksContext from "./LastBlocksContext";
 
-const socket = io("wss://api.kaspa.org", {
-    path: '/ws/socket.io'
-});
 
 const TxOverview = (props) => {
 
@@ -64,14 +60,14 @@ const TxOverview = (props) => {
                 </thead>
                 <tbody>
                     {[...tempBlocks]
-                        .sort((a, b) => b.verboseData.blueScore - a.verboseData.blueScore)
+                        .sort((a, b) => b.blueScore - a.blueScore)
                         // .slice(0, props.lines)
-                        .flatMap((block) => block.transactions.slice(ignoreCoinbaseTx ? 1 : 0)
+                        .flatMap((block) => block.txs.slice(ignoreCoinbaseTx ? 1 : 0)
                             .flatMap((tx) => tx.outputs.flatMap((output, outputIndex) => {
                                 return {
-                                    "amount": output.amount,
-                                    "address": output.verboseData.scriptPublicKeyAddress,
-                                    "txId": tx.verboseData.transactionId,
+                                    "amount": output[1],
+                                    "address": output[0],
+                                    "txId": tx.txId,
                                     outputIndex
                                 }
                             })))

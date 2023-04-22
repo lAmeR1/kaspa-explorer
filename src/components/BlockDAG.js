@@ -1,14 +1,11 @@
 import { faDiagramProject } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useEffect, useState } from "react";
-import { io } from "socket.io-client";
-
-const socket = io("wss://api.kaspa.org", {
-    path: '/ws/socket.io'
-});
+import { getBlockdagInfo } from '../kaspa-api-client';
 
 
 const BlockDAGBox = () => {
+
     const [data, setData] = useState({});
     const [isConnected, setIsConnected] = useState(false);
 
@@ -17,32 +14,29 @@ const BlockDAGBox = () => {
     const [virtualDaaScore, setVirtualDaaScore] = useState("");
     const [hashrate, setHashrate] = useState("");
 
+    const initBox = async () => {
+        const dag_info = await getBlockdagInfo()
+
+        console.log('DAG Info ', dag_info)
+
+        setBlockCount(dag_info.blockCount)
+        setHeaderCount(dag_info.headerCount)
+        setVirtualDaaScore(dag_info.virtualDaaScore)
+        setHashrate((dag_info.difficulty * 2 / 1000000000000).toFixed(2))
+    }
+
     useEffect(() => {
-        socket.on('connect', () => {
-            setIsConnected(true);
-        });
-
-        socket.on('disconnect', () => {
-            setIsConnected(false);
-        });
-
-        socket.on('blockdag', (data) => {
-            setData(data)
-            setBlockCount(data.blockCount)
-            setHeaderCount(data.headerCount)
-            setVirtualDaaScore(data.virtualDaaScore)
-            setHashrate((data.difficulty * 2 / 1000000000000).toFixed(2))
+        initBox();
+        const updateInterval = setInterval(async () => {
+            const dag_info = await getBlockdagInfo()
+            setBlockCount(dag_info.blockCount)
+            setHeaderCount(dag_info.headerCount)
+            setVirtualDaaScore(dag_info.virtualDaaScore)
+            setHashrate((dag_info.difficulty * 2 / 1000000000000).toFixed(2))
+        }, 60000)
+        return (async () => {
+            clearInterval(updateInterval)
         })
-
-        // join room to get updates
-        socket.emit("join-room", "blockdag")
-
-
-        return () => {
-            socket.off('connect');
-            socket.off('disconnect');
-            socket.off('coinsupply');
-        };
     }, [])
 
     useEffect((e) => {
@@ -96,7 +90,7 @@ const BlockDAGBox = () => {
 
     return <>
         <div className="cardBox mx-0">
-        <table style={{fontSize: "1rem"}}>
+            <table style={{ fontSize: "1rem" }}>
                 <tr>
                     <td colspan='2' className="text-center" style={{ "fontSize": "4rem" }}>
                         <FontAwesomeIcon icon={faDiagramProject} />
@@ -113,7 +107,7 @@ const BlockDAGBox = () => {
                         Network name
                     </td>
                     <td className="pt-1 text-nowrap">
-                        {data.networkName}
+                        KASPA MAINNET
                     </td>
                 </tr>
                 <tr>
@@ -145,7 +139,7 @@ const BlockDAGBox = () => {
                         Hashrate
                     </td>
                     <td className="pt-1" id="hashrate">
-                        {hashrate} TH/s
+                        {(hashrate / 1000).toFixed(3)} PH/s
                     </td>
                 </tr>
             </table>

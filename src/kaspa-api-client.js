@@ -28,6 +28,15 @@ export async function getBlockdagInfo() {
     return res
 }
 
+export async function getCoinSupply() {
+    const res = await fetch(`${API_BASE}info/coinsupply`, { headers: { 'Access-Control-Allow-Origin': '*' } })
+        .then((response) => response.json())
+        .then(data => {
+            return data
+        })
+    return res
+}
+
 export async function getAddressBalance(addr) {
     const res = await fetch(`${API_BASE}addresses/${addr}/balance`, { headers: { 'Access-Control-Allow-Origin': '*' } })
         .then((response) => response.json())
