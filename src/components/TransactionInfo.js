@@ -149,7 +149,7 @@ const TransactionInfo = () => {
                                     <Col className="blockinfo-key" lg={2}>Transaction fee</Col>
                                     <Col className="blockinfo-value-mono" lg={10}>
                                         {txInfo && additionalTxInfo &&
-                                            <>{(txInfo.inputs.map((tx_input) => (getOutputFromIndex(additionalTxInfo[tx_input.previous_outpoint_hash]?.outputs || [], tx_input.previous_outpoint_index)?.amount || 0)).reduce((a, b) => a + b) - txInfo.outputs.map((v) => v.amount).reduce((a, b) => a + b)) / 100000000} KAS</>
+                                            <>{(txInfo.inputs.map((tx_input) => (getOutputFromIndex(additionalTxInfo[tx_input.previous_outpoint_hash]?.outputs || [], tx_input.previous_outpoint_index)?.amount || 0)).reduce((a, b) => a + b) - (txInfo.outputs || []).map((v) => v.amount).reduce((a, b) => a + b)) / 100000000} KAS</>
                                         }
                                     </Col>
                                 </Row>}
