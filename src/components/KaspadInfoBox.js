@@ -9,7 +9,7 @@ const KaspadInfoBox = () => {
     const [data, setData] = useState({});
 
     async function updateData() {
-        await fetch('https://127.0.0.1:8000/info/kaspad')
+        await fetch('http://de4.kaspa.org:8100/info/kaspad')
             .then((response) => response.json())
             .then(d => setData(d))
             .catch(err => console.log("Error", err))

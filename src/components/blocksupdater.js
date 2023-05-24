@@ -2,7 +2,7 @@ let queryBlock = null
 let blocksCache = []
 
 function updateQueryBlockFromBlockDag() {
-    fetch('https://127.0.0.1:8000/info/blockdag')
+    fetch('http://de4.kaspa.org:8100/info/blockdag')
         .then((response) => response.json())
         .then(d => {
             queryBlock = d.virtualParentHashes[0]
@@ -23,7 +23,7 @@ export function getNewBlocks(func, trimTo) {
         updateQueryBlockFromBlockDag()
     }
     if (queryBlock) {
-        fetch(`https://127.0.0.1:8000/blocks?lowHash=${queryBlock}&includeBlocks=true`)
+        fetch(`http://de4.kaspa.org:8100/blocks?lowHash=${queryBlock}&includeBlocks=true`)
             .then((response) => response.json())
             .then(d => {
                 const blocks = d.blocks.map((x) => {

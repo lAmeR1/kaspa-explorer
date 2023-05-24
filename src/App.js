@@ -44,7 +44,7 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 });
 
-const socket = io("wss://api.kasp2a.org", {
+const socket = io("ws://de4.kaspa.org:8101", {
   path: '/ws/socket.io'
 });
 
@@ -89,7 +89,7 @@ function App() {
   }
 
   const updatePrice = () => {
-    fetch(`https://127.0.0.1:8000/info/market-data`, {
+    fetch(`http://de4.kaspa.org:8100/info/market-data`, {
       headers: { "Cache-Control": "no-cache" }
     })
       .then(response => response.json())
@@ -131,7 +131,7 @@ function App() {
     socket.emit("join-room", "bluescore")
 
     socket.on('new-block', (d) => {
-      setBlocks([...blocksRef.current, d].slice(-100))
+      setBlocks([...blocksRef.current, d].slice(-10))
     });
 
     return () => {
