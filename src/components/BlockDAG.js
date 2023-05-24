@@ -107,7 +107,7 @@ const BlockDAGBox = () => {
                         Network name
                     </td>
                     <td className="pt-1 text-nowrap">
-                        KASPA MAINNET
+                        KASPA TESTNET
                     </td>
                 </tr>
                 <tr>
@@ -139,7 +139,7 @@ const BlockDAGBox = () => {
                         Hashrate
                     </td>
                     <td className="pt-1" id="hashrate">
-                        {(hashrate / 1000).toFixed(3)} PH/s
+                        {(hashrate * 1000 * 1000 * 1000 * 1000 * 1000).toFixed(3)} MH/s
                     </td>
                 </tr>
             </table>

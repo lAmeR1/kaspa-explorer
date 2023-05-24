@@ -42,7 +42,7 @@ const CBox = () => {
     }, [])
 
     async function getBlockReward() {
-        await fetch('https://api.kaspa.org/info/blockreward')
+        await fetch('https://127.0.0.1:8000/info/blockreward')
             .then((response) => response.json())
             .then(d => {
                 setBlockReward(d.blockreward.toFixed(2))
