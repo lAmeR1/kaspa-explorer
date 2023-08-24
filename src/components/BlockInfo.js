@@ -84,14 +84,14 @@ const BlockInfo = () => {
                 }
             }
 
-            isBlueBlock([...blockInfo.verboseData.childrenHashes])
+            isBlueBlock([...(blockInfo.verboseData.childrenHashes || [])])
                 .then((res) => setIsBlueBlock(res))
                 .catch((err) => console.log("ERROR", err))
 
 
             let [address, miner] = ["No miner info", "No miner info"]
 
-            if (blockInfo.transactions[0].payload) {
+            if (blockInfo.transactions[0]?.payload) {
                 [address, miner] = parsePayload(blockInfo.transactions[0].payload);
             }
 
@@ -174,7 +174,7 @@ const BlockInfo = () => {
                                     <Col className="blockinfo-key" lg={2}>Children</Col>
                                     <Col className="blockinfo-value-mono" lg={10}>
                                         <ul>
-                                            {blockInfo.verboseData.childrenHashes.map(child => <li><Link className="blockinfo-link" to={`/blocks/${child}`}>{child}</Link></li>)}
+                                            {(blockInfo.verboseData.childrenHashes || []).map(child => <li><Link className="blockinfo-link" to={`/blocks/${child}`}>{child}</Link></li>)}
                                         </ul>
                                     </Col>
                                 </Row>
