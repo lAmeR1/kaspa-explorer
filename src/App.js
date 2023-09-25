@@ -154,7 +154,12 @@ function App() {
   return (
     <LastBlocksContext.Provider value={{ blocks, isConnected }}>
       <PriceContext.Provider value={{ price, marketData }}>
-        <BlueScoreContext.Provider value={{ blueScore }}>
+        <BlueScoreContext.Provider value={{ blueScore }}>        
+                    <div style={{ width: "100%", background: "#998800", textAlign: "center", fontSize: "20px", padding: "5px" }}>
+                      <span className="" style={{color: "#FFFFFF"}}>
+                      We're tackling a spam attack. The BlockDAG is <b><font color="lime">fine</font></b>, but our explorer is temporarily delayed. Apologies for any inconvenience, and thank you for your patience.
+                      </span>
+                    </div>
           <div className="big-page">
             <Navbar expand="md" bg="dark" variant="dark" sticky="top" id="navbar_top" className={location.pathname == "/" ? "" : "fixed-top"}>
               <Container id="navbar-container" fluid>
