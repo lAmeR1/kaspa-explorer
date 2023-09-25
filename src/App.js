@@ -131,7 +131,7 @@ function App() {
     socket.emit("join-room", "bluescore")
 
     socket.on('new-block', (d) => {
-      setBlocks([...blocksRef.current, d].slice(-100))
+      setBlocks([...blocksRef.current, d].slice(-20))
     });
 
     return () => {
