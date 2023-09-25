@@ -159,6 +159,9 @@ function App() {
                     <div style={{ width: "100%", background: "#998800", textAlign: "center", fontSize: "20px", padding: "5px" }}>
                       <span className="" style={{color: "#FFFFFF"}}>
                       We're tackling a spam attack. The BlockDAG is <b><font color="lime">fine</font></b>, but our explorer is temporarily delayed. Apologies for any inconvenience, and thank you for your patience.
+                      </span><br />
+                      <span className="" style={{fontFamily: "Verdana", color: "#FFFFFF"}}>
+                        <b>--- Please update your node to version <font color="lime">v0.12.14</font> asap ---</b>
                       </span>
                     </div>
           <div className="big-page">
