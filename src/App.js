@@ -22,6 +22,7 @@ import TransactionInfo from './components/TransactionInfo';
 import TxPage from './components/TxPage';
 import Dashboard from './Dashboard';
 import { getBlock } from './kaspa-api-client';
+import { Analytics } from '@vercel/analytics/react';
 // import 'moment/min/locales';
 
 // var locale = window.navigator.userLanguage || window.navigator.language || "en";
@@ -131,7 +132,7 @@ function App() {
     socket.emit("join-room", "bluescore")
 
     socket.on('new-block', (d) => {
-      setBlocks([...blocksRef.current, d].slice(-100))
+      setBlocks([...blocksRef.current, d].slice(-20))
     });
 
     return () => {
@@ -154,8 +155,17 @@ function App() {
   return (
     <LastBlocksContext.Provider value={{ blocks, isConnected }}>
       <PriceContext.Provider value={{ price, marketData }}>
-        <BlueScoreContext.Provider value={{ blueScore }}>
+        <BlueScoreContext.Provider value={{ blueScore }}>        
+                    <div style={{ width: "100%", background: "#998800", textAlign: "center", fontSize: "20px", padding: "5px" }}>
+                      <span className="" style={{color: "#FFFFFF"}}>
+                      We're tackling a spam attack. The BlockDAG is <b><font color="lime">fine</font></b>, but our explorer is temporarily delayed. Apologies for any inconvenience, and thank you for your patience.
+                      </span><br />
+                      <span className="" style={{fontFamily: "Verdana", color: "#FFFFFF"}}>
+                        <b>--- Please update your node to version <font color="lime">v0.12.14</font> asap ---</b>
+                      </span>
+                    </div>
           <div className="big-page">
+          <Analytics />
             <Navbar expand="md" bg="dark" variant="dark" sticky="top" id="navbar_top" className={location.pathname == "/" ? "" : "fixed-top"}>
               <Container id="navbar-container" fluid>
                 <div className="navbar-title">
