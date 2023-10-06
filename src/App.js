@@ -156,11 +156,6 @@ function App() {
     <LastBlocksContext.Provider value={{ blocks, isConnected }}>
       <PriceContext.Provider value={{ price, marketData }}>
         <BlueScoreContext.Provider value={{ blueScore }}>        
-                    <div style={{ width: "100%", background: "#998800", textAlign: "center", fontSize: "20px", padding: "5px" }}>
-                      <span className="" style={{fontFamily: "Verdana", color: "#FFFFFF"}}>
-                        <b>Important: Please update your kaspad nodes to version <a href="https://github.com/kaspanet/kaspad/releases/tag/v0.12.14" target="_blank"><font color="lime">v0.12.14</font></a> asap ---</b>
-                      </span>
-                    </div>
           <div className="big-page">
           <Analytics />
             <Navbar expand="md" bg="dark" variant="dark" sticky="top" id="navbar_top" className={location.pathname == "/" ? "" : "fixed-top"}>
