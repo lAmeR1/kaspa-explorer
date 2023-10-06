@@ -11,6 +11,7 @@ const BlockDAGBox = () => {
 
     const [blockCount, setBlockCount] = useState();
     const [headerCount, setHeaderCount] = useState("");
+    const [networkName, setNetworkName] = useState("");
     const [virtualDaaScore, setVirtualDaaScore] = useState("");
     const [hashrate, setHashrate] = useState("");
 
@@ -21,6 +22,7 @@ const BlockDAGBox = () => {
 
         setBlockCount(dag_info.blockCount)
         setHeaderCount(dag_info.headerCount)
+        setNetworkName(dag_info.networkName?.replaceAll('-', ' ').toUpperCase())
         setVirtualDaaScore(dag_info.virtualDaaScore)
         setHashrate((dag_info.difficulty * 2 / 1000000000000).toFixed(2))
     }
@@ -107,7 +109,7 @@ const BlockDAGBox = () => {
                         Network name
                     </td>
                     <td className="pt-1 text-nowrap">
-                        KASPA MAINNET
+                        {networkName}
                     </td>
                 </tr>
                 <tr>
