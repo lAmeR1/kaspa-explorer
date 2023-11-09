@@ -22,7 +22,6 @@ import TransactionInfo from './components/TransactionInfo';
 import TxPage from './components/TxPage';
 import Dashboard from './Dashboard';
 import { getBlock } from './kaspa-api-client';
-import { Analytics } from '@vercel/analytics/react';
 // import 'moment/min/locales';
 
 // var locale = window.navigator.userLanguage || window.navigator.language || "en";
@@ -157,7 +156,6 @@ function App() {
       <PriceContext.Provider value={{ price, marketData }}>
         <BlueScoreContext.Provider value={{ blueScore }}>        
           <div className="big-page">
-          <Analytics />
             <Navbar expand="md" bg="dark" variant="dark" sticky="top" id="navbar_top" className={location.pathname == "/" ? "" : "fixed-top"}>
               <Container id="navbar-container" fluid>
                 <div className="navbar-title">
