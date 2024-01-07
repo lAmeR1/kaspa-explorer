@@ -17,7 +17,6 @@ const BlockDAGBox = () => {
     const initBox = async () => {
         const dag_info = await getBlockdagInfo()
 
-        console.log('DAG Info ', dag_info)
 
         setBlockCount(dag_info.blockCount)
         setHeaderCount(dag_info.headerCount)
@@ -32,9 +31,8 @@ const BlockDAGBox = () => {
             setBlockCount(dag_info.blockCount)
             setHeaderCount(dag_info.headerCount)
             setVirtualDaaScore(dag_info.virtualDaaScore)
-            console.log("hier", (dag_info.difficulty * 2 / 1000000).toFixed(2))
             setHashrate((dag_info.difficulty * 2 / 1000000).toFixed(2))
-        }, 600)
+        }, 60000)
         return (async () => {
             clearInterval(updateInterval)
         })
