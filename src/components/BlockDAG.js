@@ -32,8 +32,9 @@ const BlockDAGBox = () => {
             setBlockCount(dag_info.blockCount)
             setHeaderCount(dag_info.headerCount)
             setVirtualDaaScore(dag_info.virtualDaaScore)
-            setHashrate((dag_info.difficulty * 2 / 1000000000000).toFixed(2))
-        }, 60000)
+            console.log("hier", (dag_info.difficulty * 2 / 1000000).toFixed(2))
+            setHashrate((dag_info.difficulty * 2 / 1000000).toFixed(2))
+        }, 600)
         return (async () => {
             clearInterval(updateInterval)
         })
@@ -139,7 +140,7 @@ const BlockDAGBox = () => {
                         Hashrate
                     </td>
                     <td className="pt-1" id="hashrate">
-                        {(hashrate * 1000 * 1000 * 1000 * 1000 * 1000).toFixed(3)} MH/s
+                        {(hashrate * 1).toFixed(3)} MH/s
                     </td>
                 </tr>
             </table>

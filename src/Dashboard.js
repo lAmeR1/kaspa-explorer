@@ -97,7 +97,6 @@ function Dashboard() {
             </div></Col>
             <Col sm={12} md={6} xl={3}><div className="infoBox"><BlockDAGBox /></div></Col>
             <Col sm={12} md={6} xl={3}><div className="infoBox"><KaspadInfoBox /></div></Col>
-            <Col sm={12} md={6} xl={3}><div className="infoBox"><MarketDataBox /></div></Col>
           </Row>
         </Container>
       </div>

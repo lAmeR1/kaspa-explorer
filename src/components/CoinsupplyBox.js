@@ -45,7 +45,7 @@ const CBox = () => {
         await fetch('https://de4.kaspa.org/info/blockreward')
             .then((response) => response.json())
             .then(d => {
-                setBlockReward(d.blockreward.toFixed(2))
+                setBlockReward("-")
 
             })
             .catch(err => console.log("Error", err))
@@ -107,7 +107,7 @@ const CBox = () => {
                             </span>
                         </OverlayTrigger> */}
                     </td>
-                    <td className="pt-1">{halvingDate}<br /><div className="text-end w-100 pe-3 pt-1" style={{ fontSize: "small" }}>to {halvingAmount} KAS</div></td>
+                    <td className="pt-1">-</td>
                 </tr>
             </table>
         </div>

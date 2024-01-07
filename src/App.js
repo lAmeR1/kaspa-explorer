@@ -44,7 +44,7 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 });
 
-const socket = io("ws://de4.kaspa.org:8101", {
+const socket = io("wss://de4.kaspa.org", {
   path: '/ws/socket.io'
 });
 
@@ -94,7 +94,7 @@ function App() {
     })
       .then(response => response.json())
       .then(data => {
-        setPrice(data['current_price']['usd'].toFixed(4));
+        setPrice(0);
         setMarketData(data);
       })
       .catch(r => console.log(r))
