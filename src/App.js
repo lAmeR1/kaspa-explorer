@@ -89,7 +89,7 @@ function App() {
   }
 
   const updatePrice = () => {
-    fetch(`http://de4.kaspa.org:8100/info/market-data`, {
+    fetch(`https://de4.kaspa.org/info/market-data`, {
       headers: { "Cache-Control": "no-cache" }
     })
       .then(response => response.json())
@@ -163,7 +163,7 @@ function App() {
                     <Link to="/">
                       <div className="navbar-brand">
                         <img className="shake" src="/k-icon-glow.png" style={{ "marginRight": ".5rem", width: "4rem", height: "4rem" }} />
-                        <div className="navbar-brand-text text-start">KASPA<br />EXPLORER TESTNET</div>
+                        <div className="navbar-brand-text text-start">KASPA<br />EXPLORER TN11</div>
                       </div>
                     </Link>
                   </Navbar.Brand>

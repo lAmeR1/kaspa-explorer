@@ -1,4 +1,4 @@
-const API_BASE = "http://de4.kaspa.org:8100/"
+const API_BASE = "https://de4.kaspa.org/"
 
 export async function getBlock(hash) {
     const res = await fetch(`${API_BASE}blocks/${hash}`, { headers: { 'Access-Control-Allow-Origin': '*' } })
