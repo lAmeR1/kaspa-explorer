@@ -21,7 +21,7 @@ const BlockDAGBox = () => {
         setBlockCount(dag_info.blockCount)
         setHeaderCount(dag_info.headerCount)
         setVirtualDaaScore(dag_info.virtualDaaScore)
-        setHashrate((dag_info.difficulty * 2 / 1000000000000).toFixed(2))
+        setHashrate((dag_info.difficulty * 2 / 1000000).toFixed(2))
     }
 
     useEffect(() => {
