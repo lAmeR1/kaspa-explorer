@@ -154,7 +154,7 @@ function App() {
   return (
     <LastBlocksContext.Provider value={{ blocks, isConnected }}>
       <PriceContext.Provider value={{ price, marketData }}>
-        <BlueScoreContext.Provider value={{ blueScore }}>
+        <BlueScoreContext.Provider value={{ blueScore }}>        
           <div className="big-page">
             <Navbar expand="md" bg="dark" variant="dark" sticky="top" id="navbar_top" className={location.pathname == "/" ? "" : "fixed-top"}>
               <Container id="navbar-container" fluid>

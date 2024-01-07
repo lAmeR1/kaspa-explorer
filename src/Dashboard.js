@@ -111,8 +111,8 @@ function Dashboard() {
       <div className="row4">
         <Container className="fourthRow webpage" fluid>
           <Row>
-            <Col className="" xs={12} lg={6}><BlockOverview lines={20} small/></Col>
-            <Col className="mt-5 mt-lg-0"  xs={12} lg={6}><TxOverview lines={20}  /></Col>
+            <Col className="" xs={12} lg={6}><BlockOverview lines={12} small/></Col>
+            <Col className="mt-5 mt-lg-0"  xs={12} lg={6}><TxOverview lines={12}  /></Col>
           </Row>
         </Container>
       </div>
