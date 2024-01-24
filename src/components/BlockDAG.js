@@ -94,7 +94,7 @@ const BlockDAGBox = () => {
                 <tr>
                     <td colspan='2' className="text-center" style={{ "fontSize": "4rem" }}>
                         <FontAwesomeIcon icon={faDiagramProject} />
-                        <div className="cardLight" />
+                        <div />
                     </td>
                 </tr>
                 <tr>
@@ -106,7 +106,7 @@ const BlockDAGBox = () => {
                     <td className="cardBoxElement">
                         Network name
                     </td>
-                    <td className="pt-1 text-nowrap">
+                    <td className="pt-1 text-nowrap text-end">
                         KASPA MAINNET
                     </td>
                 </tr>
@@ -114,7 +114,7 @@ const BlockDAGBox = () => {
                     <td className="cardBoxElement">
                         Block count
                     </td>
-                    <td className="pt-1" id="blockCount">
+                    <td className="pt-1 text-end" id="blockCount">
                         {blockCount}
                     </td>
                 </tr>
@@ -122,7 +122,7 @@ const BlockDAGBox = () => {
                     <td className="cardBoxElement">
                         Header count
                     </td>
-                    <td className="pt-1" id="headerCount">
+                    <td className="pt-1 text-end" id="headerCount">
                         {headerCount}
                     </td>
                 </tr>
@@ -130,7 +130,7 @@ const BlockDAGBox = () => {
                     <td className="cardBoxElement">
                         Virtual DAA Score
                     </td>
-                    <td className="pt-1 align-top" id="virtualDaaScore">
+                    <td className="pt-1 align-top text-end" id="virtualDaaScore">
                         {virtualDaaScore}
                     </td>
                 </tr>
@@ -138,7 +138,7 @@ const BlockDAGBox = () => {
                     <td className="cardBoxElement">
                         Hashrate
                     </td>
-                    <td className="pt-1" id="hashrate">
+                    <td className="pt-1 text-end" id="hashrate">
                         {(hashrate / 1000).toFixed(3)} PH/s
                     </td>
                 </tr>

@@ -27,7 +27,7 @@ const KaspadInfoBox = () => {
                 <tr>
                     <td colspan='2' className="text-center" style={{ "fontSize": "4rem" }}>
                         <FontAwesomeIcon icon={faMemory} />
-                        <div className="cardLight" />
+                        <div />
                     </td>
                 </tr>
                 <tr>
@@ -39,7 +39,7 @@ const KaspadInfoBox = () => {
                     <td className="cardBoxElement">
                         Mempool size
                     </td>
-                    <td className="">
+                    <td className="text-end">
                         {data.mempoolSize}
                     </td>
                 </tr>
@@ -47,7 +47,7 @@ const KaspadInfoBox = () => {
                     <td className="cardBoxElement">
                         Server version
                     </td>
-                    <td className="">
+                    <td className="text-end">
                         {data.serverVersion}
                     </td>
                 </tr>

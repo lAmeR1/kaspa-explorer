@@ -158,15 +158,10 @@ function App() {
           <div className="big-page">
             <Navbar expand="md" bg="dark" variant="dark" sticky="top" id="navbar_top" className={location.pathname == "/" ? "" : "fixed-top"}>
               <Container id="navbar-container" fluid>
-                <div className="navbar-title">
-                  <Navbar.Brand >
+                <div className="navbar-logo">
                     <Link to="/">
-                      <div className="navbar-brand">
-                        <img className="shake" src="/k-icon-glow.png" style={{ "marginRight": ".5rem", width: "4rem", height: "4rem" }} />
-                        <div className="navbar-brand-text text-start">KASPA<br />EXPLORER</div>
-                      </div>
+                        <img src="/logo.png" />
                     </Link>
-                  </Navbar.Brand>
                 </div>
 
                 <Navbar.Toggle aria-controls="responsive-navbar-nav" />
@@ -176,7 +171,7 @@ function App() {
                     <Nav.Item><NavLink className="nav-link fs-5" onClick={closeMenuIfNeeded} to={"/blocks"}>Blocks</NavLink></Nav.Item>
                     <Nav.Item><NavLink className="nav-link fs-5" onClick={closeMenuIfNeeded} to={"/txs"}>Transactions</NavLink></Nav.Item>
                   </Nav>
-                  <div className='ms-auto navbar-price'>${price} <span className="text-light">/ KAS</span></div>
+                  <div className='ms-auto navbar-price'>${price} <span >/ RAS</span></div>
                 </Navbar.Collapse>
               </Container>
             </Navbar>
@@ -185,7 +180,7 @@ function App() {
                 <Row><Col xs={12}>
                   <Form onSubmit={search} className="">
                     <InputGroup className="mt-4 mb-4 search-box-group">
-                      <Form.Control className="d-inline-block bg-light text-dark shadow-none" name="searchbox" id="search-box-high" type="text" placeholder="Search for kaspa:address or block" />
+                      <Form.Control className="d-inline-block bg-light text-dark shadow-none" name="searchbox" id="search-box-high" type="text" placeholder="Search for raspa:address or block" />
                       <Button type="submit" className="shadow-none searchButton" variant="dark"><i className='fa fa-search' /></Button>
                     </InputGroup>
                   </Form>
@@ -226,7 +221,7 @@ function App() {
               </Row>
               <Row className="d-sm-none px-0">
                 <Col className="px-0">
-                  Made with <font className="fs-5" color="red">♥</font> by Kaspa developers
+                  Made with <font className="fs-5" color="red">♥</font> by Raspa developers
                 </Col>
               </Row>
               <Row className="py-1 d-sm-none px-0">

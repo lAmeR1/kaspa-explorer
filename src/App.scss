@@ -7,21 +7,21 @@
 
 
 $color1: #F6F5F4;
-$color2: #14F1D9;
-$color3: #519AA3;
+$color2: #00C6F7;
+$color3: #171D26;
 $color4: #7F8994;
-$color5: #181D30;
+$color5: #202630;
 $superdark: $color5;
 
 $theme-colors: (
-  "primary": $color2,
-  "info": #181d30,
-  "success": #4ea969,
-  "warning": #cb9931,
-  "danger": #f44336,
-  "dark": $color5,
-  "light": $color1,
-  "secondary": $color3
+        "primary": $color2,
+        "info": #181d30,
+        "success": #4ea969,
+        "warning": #cb9931,
+        "danger": #f44336,
+        "dark": $color5,
+        "light": $color1,
+        "secondary": $color3
 );
 
 $border-radius: 0.8rem;
@@ -34,8 +34,8 @@ $nav-link-color: $color1;
 body {
   margin: 0;
   font-family: 'Rubik', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+  sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background-color: $superdark;
@@ -50,6 +50,10 @@ body {
   color: $color2;
   font-size: 1.15rem;
   padding: 0rem 2rem;
+
+  & span {
+    color: #758195
+  }
 }
 
 .navbar-title {
@@ -65,7 +69,7 @@ body {
 }
 
 .search-row {
-  background-color: rgba($color3, 0.6);
+  background-color: $color3;
 
 }
 
@@ -134,10 +138,10 @@ body {
 }
 
 
-
 .searchButton {
-  height: 100%;
-  background-color: $color5;
+  height: 110%;
+  background-color: $color2;
+  border: 1px solid $color2;
   color: $color1;
 }
 
@@ -147,7 +151,7 @@ body {
 
 
 .bigfont {
-  color: $color1  !important;
+  color: $color1 !important;
   font-family: 'Righteous', sans-serif;
   // font: bold 80px/0.9em;
   font-weight: normal;
@@ -217,19 +221,19 @@ body {
 }
 
 
-#navbar_top {
-  border-bottom: 2px solid $color1;
+.navbar {
+  padding: 27px;
 }
 
 
-.navbar-title {
-  width: fit-content;
-}
+.navbar-logo {
 
-.navbar-brand {
-  display: flex;
-  flex-direction: row;
-  width: fit-content;
+  margin-right: 70px;
+
+  & img {
+    max-width: 160px;
+    width: 100%;
+  }
 }
 
 .navbar-brand a {
@@ -289,13 +293,13 @@ body {
   text-decoration: none;
 }
 
-.navbar-brand-text>a {
+.navbar-brand-text > a {
   text-decoration: none;
   font-style: none;
 
 }
 
-.colsize>div {
+.colsize > div {
   max-width: 1300px;
 }
 
@@ -305,9 +309,7 @@ body {
 
 .row1 {
   color: $color3;
-  background-color: rgba($color3, 0.5);
-  border-bottom: 2px solid $color1;
-  padding: 2rem;
+  background-color: $color3;
   display: flex;
   justify-content: start;
 }
@@ -341,7 +343,6 @@ body {
     padding: 3rem
   }
 }
-
 
 
 .cardText {
@@ -399,6 +400,7 @@ body {
   /* border-radius: 1rem; */
   overflow: hidden;
   /* font-size: small;  */
+
 }
 
 .rotate {
@@ -463,7 +465,7 @@ body {
     font-size: x-small;
     padding: 0.7rem 0.5rem;
   }
-  
+
 
   .styled-table thead th {
     font-size: x-small;
@@ -475,7 +477,7 @@ body {
   .styled-table td {
     font-size: medium;
   }
-  
+
 
   .styled-table thead th {
     font-size: medium;
@@ -483,12 +485,12 @@ body {
 }
 
 .styled-table thead tr {
-  border-bottom: 2px solid $color3;
+  border-bottom: 2px solid $color2;
 }
 
 
 .styled-table tbody tr {
-  border-bottom: 1px solid $color3;
+  border-bottom: 1px solid #758195;
   animation: anim;
   animation-duration: 0.4s;
   text-align: left;
@@ -496,9 +498,7 @@ body {
   width: auto !important;
 }
 
-.styled-table tbody tr:last-of-type {
-  border-bottom: 2px solid $color1;
-}
+
 
 .styled-table tbody tr:hover {
   color: $color2;
@@ -508,16 +508,12 @@ body {
 
 .blockinfo-content {
   display: flex;
-  flex-direction: column;
-  ;
+  flex-direction: column;;
   justify-content: center;
 }
 
 
 
-.blockinfo-row:nth-of-type(even) {
-  background-color: rgba($superdark, 0.4)
-}
 
 // .blockinfo-table tr:nth-of-type(even) {
 //   background-color: rgba($superdark, 0.4)
@@ -526,7 +522,6 @@ body {
 .icon {
   // width: 10px;
 }
-
 
 
 .cardBox {
@@ -557,14 +552,13 @@ body {
 }
 
 
-
 .cardBoxElement {
   font-family: 'Rubik';
   padding-right: 1rem;
   text-transform: none;
   font-size: 1.2rem;
+  color: #9FAEC6;
 }
-
 
 
 .blockDagVis {
@@ -633,8 +627,7 @@ body {
 }
 
 .rank {
-  background-color: #d63328;
-  background-color: #398851;
+  background-color: #249246;
   padding: 0.2rem 0.5rem;
   border-radius: 1rem;
   font-size: small;

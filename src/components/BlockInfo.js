@@ -206,7 +206,7 @@ const BlockInfo = () => {
                                     <Col className="blockinfo-key" lg={2}>Pruning Point</Col>
                                     <Col className="blockinfo-value-mono" lg={10}><Link className="blockinfo-link" to={`/blocks/${blockInfo.header.pruningPoint}`}>{blockInfo.header.pruningPoint}</Link></Col>
                                 </Row>
-                                <Row className="blockinfo-row border-bottom-0">
+                                <Row className="blockinfo-row">
                                     <Col className="blockinfo-key" lg={2}>Miner Info</Col>
                                     <Col className="blockinfo-value-mono md-3" lg={10}>
                                         <div className="blockinfo-value">{minerName}</div>

@@ -66,14 +66,12 @@ function Dashboard() {
         <Modal.Body className="d-flex flex-row justify-content-center" style={{backgroundColor: "#181D30"}}>
           <Spinner animation="border" variant="primary" size="xl" /></Modal.Body>
       </Modal>
-      <div className="row1">
+      <div className="row1 p-4 p-sm-5">
         <Container className="firstRow webpage" fluid>
           <Row>
             <Col md={12} className='d-flex flex-row justify-content-start text-light d-xs-none align-items-center'>
-              <img className="big-kaspa-icon" src="/k-icon-glow.png" />
-              <div className="bigfont">
-                KASPA<br />EXPLORER
-              </div>
+              <img className="d-md-none" src="/logo-mobile.png" />
+              <img className="d-none d-md-block" src="/logo.png" />
             </Col>
           </Row>
           <Row>

@@ -153,7 +153,7 @@ const TransactionInfo = () => {
                                         }
                                     </Col>
                                 </Row>}
-                                <Row className="blockinfo-row border-bottom-0">
+                                <Row className="blockinfo-row ">
                                     <Col className="blockinfo-key" md={2}>Details</Col>
                                     <Col className="blockinfo-value mt-2 d-flex flex-row flex-wrap" md={10} lg={10} style={{ marginBottom: "-1rem" }}>
                                         {txInfo.is_accepted ? <div className="accepted-true me-3 mb-3">accepted</div> :
@@ -181,7 +181,8 @@ const TransactionInfo = () => {
                 <Col>
                     {!!txInfo && txInfo?.detail !== "Transaction not found" ?
                         <div className="blockinfo-content mt-4 mb-5">
-                            <div className="blockinfo-header"><h4>Inputs</h4></div>
+                            <div className="blockinfo-header">
+                                <h4>Inputs</h4></div>
                             <Container className="webpage utxo-box" fluid>
                                 {
                                     (txInfo.inputs || []).map((tx_input) => <>
