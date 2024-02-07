@@ -195,6 +195,7 @@ const AddressInfo = () => {
             if (res.length === 0) {
                 // page was too high. Set page 1
                 setActiveTx(1);
+                setLoadingTxs(false);
                 return
             }
             console.log("loading done.")
@@ -329,7 +330,8 @@ const AddressInfo = () => {
                         onChange={(e) => { setDetailedView(e.target.checked) }} /><span className="text-light ms-2">Show details</span></div>
                 </Col>
                 <Col xs={12} md={6} className="d-flex flex-row justify-content-end ms-auto">
-                    {!!txCount ? <UtxoPagination active={activeTx} total={Math.ceil(txCount / 20)} setActive={setActiveTx} /> : <Spinner className="m-3" animation="border" variant="primary" />}
+                    {console.log("txc", txCount)}
+                    {txCount !== null ? <UtxoPagination active={activeTx} total={Math.ceil(txCount / 20)} setActive={setActiveTx} /> : <Spinner className="m-3" animation="border" variant="primary" />}
 
                 </Col>
             </Row>
