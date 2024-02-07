@@ -201,6 +201,15 @@ body {
   }
 }
 
+@include media-breakpoint-down(md) {
+  .kas-badge {
+    width: 0;
+    height: 0;
+    display: none;
+    
+  }
+}
+
 /* The animation code */
 @keyframes rotate-icon {
   from {
