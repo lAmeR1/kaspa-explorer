@@ -127,7 +127,10 @@ const BlockInfo = () => {
 
                     {!!blockInfo ?
                         <div className="blockinfo-content">
-                            <div className="blockinfo-header"><h4 className="d-flex flex-row align-items-center">block details {isBlueBlock === null ? <Spinner className="ms-3" animation="grow" /> : <BlockLamp isBlue={isBlueBlock} />}</h4></div>
+                            <div className="blockinfo-header"><h4 className="d-flex flex-row align-items-center">block details 
+                            {blockInfo.verboseData.isChainBlock !== null && <>{ isBlueBlock === null ? <Spinner className="ms-3" animation="grow" /> : <BlockLamp isBlue={isBlueBlock} />}</>}
+                            
+                            </h4></div>
                             {/* <font className="blockinfo-header-id">{id.substring(0, 20)}...</font> */}
                             <Container className="blockinfo-table mx-0" fluid>
                                 <Row className="blockinfo-row">
