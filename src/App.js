@@ -44,7 +44,7 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 });
 
-const socket = io("wss://de4.kaspa.org", {
+const socket = io("wss://api-tn11.kaspa.org", {
   path: '/ws/socket.io'
 });
 
@@ -89,7 +89,7 @@ function App() {
   }
 
   const updatePrice = () => {
-    fetch(`https://de4.kaspa.org/info/market-data`, {
+    fetch(`https://api-tn11.kaspa.org/info/market-data`, {
       headers: { "Cache-Control": "no-cache" }
     })
       .then(response => response.json())
