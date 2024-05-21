@@ -255,8 +255,6 @@ const AddressInfo = () => {
       getAddressTxCount(addr).then((totalCount) => {
         setTxCount(totalCount);
       });
-    }
-    if (view === "utxos") {
       getAddressUtxos(addr).then((res) => {
         setLoadingUtxos(false);
         setUtxos(res);
