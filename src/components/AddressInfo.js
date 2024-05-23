@@ -1,6 +1,8 @@
+import * as jsonexport from "jsonexport/dist";
 import moment from "moment";
-import { useContext, useEffect, useRef, useState } from 'react';
+import {useCallback, useContext, useEffect, useMemo, useRef, useState} from 'react';
 import { Button, Col, Container, Dropdown, Form, Row, Spinner } from "react-bootstrap";
+import { CSVLink } from "react-csv";
 import { BiGhost } from "react-icons/bi";
 import { useParams } from "react-router";
 import { Link, useSearchParams } from "react-router-dom";
@@ -16,6 +18,18 @@ import UtxoPagination from "./UtxoPagination.js";
 import QRCodeStyling from "qr-code-styling";
 import QrButton from "./QrButton";
 
+
+const getFileName = (view, limit, addr, utxosCount) => {
+    const date = moment(new Date).format("YYYY-MM-DD-HH-mm-ss");
+    const address = `address=${addr.substring(addr.length - 6)}`;
+
+    if(view === 'transactions') {
+        return `txs${date}count=${limit}${address}`
+    }
+    if(view === 'utxos') {
+        return `utxos${date}count=${utxosCount}${address}`
+    }
+}
 
 const AddressInfoPage = () => {
     const { addr } = useParams();
@@ -43,6 +57,8 @@ const AddressInfo = () => {
     const [loadingTxs, setLoadingTxs] = useState(true)
     const [txCount, setTxCount] = useState(null);
     const [pageError, setPageError] = useState(false);
+    const [limit, setLimit] = useState("20");
+    const [csvData, setCsvData] = useState([]);
 
     const [errorLoadingUtxos, setErrorLoadingUtxos] = useState(false)
     const [active, setActive] = useState(1)
@@ -165,8 +181,7 @@ const AddressInfo = () => {
     }, [addressBalance])
 
     const handleViewSwitch = (dontknow, e) => {
-        const newValue = e.target.textContent
-
+        const newValue = e.target.textContent;
         if (newValue === "UTXOs") {
             setView("utxos")
         }
@@ -180,8 +195,8 @@ const AddressInfo = () => {
         setLoadingTxs(true)
         window.scrollTo(0, 0);
         if (prevActiveTx !== undefined)
-            loadTransactionsToShow(addr, 20, (activeTx - 1) * 20);
-    }, [activeTx])
+            loadTransactionsToShow(addr, limit, (activeTx - 1) * 20);
+    }, [activeTx, limit])
 
     function removeDuplicates(arr) {
         return arr.filter((item,
@@ -218,24 +233,23 @@ const AddressInfo = () => {
     }
 
     useEffect(() => {
-
         if (view === "transactions") {
-            loadTransactionsToShow(addr, 20, (activeTx - 1) * 20)
+            loadTransactionsToShow(addr, limit, (activeTx - 1) * 20)
             getAddressTxCount(addr).then((totalCount) => {
                 setTxCount(totalCount)
             })
             getAddressUtxos(addr).then(
                 (res) => {
-                    console.log("UTXOs loaded.")
                     setLoadingUtxos(false);
                     setUtxos(res);
                 }
             )
+            return;
         }
-        if (view === "utxos") {
-
+        if(view === 'utxos') {
+            setLimit('20');
         }
-    }, [view])
+    }, [view, limit])
 
 
     //     <div className="blockinfo-content">
@@ -255,6 +269,31 @@ const AddressInfo = () => {
     //         </tr>
     //     </table>
     // </div> : <>Loading Address info <Spinner animation="border" role="status" /></>}
+
+    const handleLimit = (event) => {
+        setLimit(event.target.value);
+    };
+
+    const convertJsonToCSV = useCallback((json) => {
+        if (!json) return;
+
+        jsonexport(json, (_err, csv) => {
+            if (!csv) return;
+            setCsvData(csv);
+        });
+    }, []);
+
+    const handleExport = useCallback(() => {
+        if(view === 'transactions' && txs.length) {
+            convertJsonToCSV(txs);
+        }
+
+        if(view === 'utxos' && utxos.length) {
+            convertJsonToCSV(utxos);
+        }
+    }, [view, txs, utxos]);
+
+    const fileName = useMemo(() => getFileName(view, limit, addr, utxos.length), [view, limit, addr, utxos]);
 
     return <div className="addressinfo-page">
         <Container className="webpage addressinfo-box" fluid>
@@ -303,8 +342,8 @@ const AddressInfo = () => {
 
         <Container className="webpage mt-4" fluid>
             <Row>
-                <Col className="mt- d-flex flex-row">
-                    <Dropdown className="d-inline mx-2" onSelect={handleViewSwitch}>
+                <Col className="mt- d-flex flex-row gap-2">
+                    <Dropdown className="d-inline" onSelect={handleViewSwitch}>
                         <Dropdown.Toggle id="dropdown-autoclose-true" variant="dark">
                             Change View
                         </Dropdown.Toggle>
@@ -314,7 +353,18 @@ const AddressInfo = () => {
                             <Dropdown.Item href="#">UTXOs</Dropdown.Item>
                         </Dropdown.Menu>
                     </Dropdown>
-
+                    <CSVLink filename={fileName} data={csvData || []}>
+                        <Button type="button" className="btn btn-dark" onClick={handleExport}>Export</Button>
+                    </CSVLink>
+                    {view === 'transactions' && (<div className="d-flex">
+                        <select className="form-select form-select-md" onChange={handleLimit}>
+                            <option defaultValue={20} value={20}>20</option>
+                            <option value={50}>50</option>
+                            <option value={100}>100</option>
+                            <option value={500}>500</option>
+                        </select>
+                    </div>
+                    )}
                 </Col>
             </Row>
         </Container>
@@ -330,9 +380,7 @@ const AddressInfo = () => {
                         onChange={(e) => { setDetailedView(e.target.checked) }} /><span className="text-light ms-2">Show details</span></div>
                 </Col>
                 <Col xs={12} md={6} className="d-flex flex-row justify-content-end ms-auto">
-                    {console.log("txc", txCount)}
-                    {txCount !== null ? <UtxoPagination active={activeTx} total={Math.ceil(txCount / 20)} setActive={setActiveTx} /> : <Spinner className="m-3" animation="border" variant="primary" />}
-
+                    {txCount !== null ? <UtxoPagination active={activeTx} total={Math.ceil(txCount / limit)} setActive={setActiveTx} /> : <Spinner className="m-3" animation="border" variant="primary" />}
                 </Col>
             </Row>
             {txCount === 0 && <Row className="utxo-value mt-3"><Col xs={12}>No transactions to show.</Col></Row>}
@@ -430,7 +478,7 @@ const AddressInfo = () => {
                     </div>
                 </Col>
                     <Col xs={12} sm={6} className="d-flex flex-row justify-content-end">
-                        <UtxoPagination className="ms-auto" active={activeTx} total={Math.ceil(txCount / 20)} setActive={setActiveTx} />
+                        <UtxoPagination className="ms-auto" active={activeTx} total={Math.ceil(txCount / limit)} setActive={setActiveTx} />
                         {/* </> : <Spinner className="m-3" animation="border" variant="primary" />} */}
 
                     </Col></Row>
@@ -443,7 +491,7 @@ const AddressInfo = () => {
                     <Col xs={1}>
                         <div className="utxo-title d-flex flex-row">UTXOs</div>
                     </Col>
-                    {utxos.length > 10 ? <Col xs={12} sm={11} className="d-flex flex-row justify-items-end">
+                    {utxos.length > 10 ? <Col xs={12} md={4} className="d-flex flex-row justify-content-end ms-auto">
                         <UtxoPagination active={active} total={Math.ceil(utxos.length / 10)} setActive={setActive} />
                     </Col> : <></>}
                 </Row>
