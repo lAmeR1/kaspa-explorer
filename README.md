@@ -1,4 +1,4 @@
-# KASPA EXPLORER
+# KASPA EXPLORER TESTNET
 
 This is the source code for Kaspa Explorer [https://explorer.kaspa.org](https://explorer.kaspa.org) written in JS with React.JS library.
 
