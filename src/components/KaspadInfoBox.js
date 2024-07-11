@@ -9,7 +9,7 @@ const KaspadInfoBox = () => {
     const [data, setData] = useState({});
 
     async function updateData() {
-        await fetch('https://api-tn11.kaspa.org/info/kaspad')
+        await fetch('https://api-tn10.kaspa.org/info/kaspad')
             .then((response) => response.json())
             .then(d => setData(d))
             .catch(err => console.log("Error", err))

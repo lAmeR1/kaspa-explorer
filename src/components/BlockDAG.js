@@ -106,7 +106,7 @@ const BlockDAGBox = () => {
                         Network name
                     </td>
                     <td className="pt-1 text-nowrap">
-                        KASPA TN11
+                        KASPA TN10
                     </td>
                 </tr>
                 <tr>

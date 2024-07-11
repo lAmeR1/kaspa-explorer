@@ -44,7 +44,7 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 });
 
-const socket = io("wss://api-tn11.kaspa.org", {
+const socket = io("wss://api-tn10.kaspa.org", {
   path: '/ws/socket.io'
 });
 
@@ -89,7 +89,7 @@ function App() {
   }
 
   const updatePrice = () => {
-    fetch(`https://api-tn11.kaspa.org/info/market-data`, {
+    fetch(`https://api-tn10.kaspa.org/info/market-data`, {
       headers: { "Cache-Control": "no-cache" }
     })
       .then(response => response.json())
@@ -163,7 +163,7 @@ function App() {
                     <Link to="/">
                       <div className="navbar-brand">
                         <img className="shake" src="/k-icon-glow.png" style={{ "marginRight": ".5rem", width: "4rem", height: "4rem" }} />
-                        <div className="navbar-brand-text text-start">KASPA<br />EXPLORER TN11</div>
+                        <div className="navbar-brand-text text-start">KASPA<br />EXPLORER TN10</div>
                       </div>
                     </Link>
                   </Navbar.Brand>
