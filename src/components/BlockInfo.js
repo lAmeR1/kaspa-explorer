@@ -71,10 +71,10 @@ const BlockInfo = () => {
 
     useEffect(() => {      
         if (!!blockInfo) {
-            if (blockInfo.verboseData?.extra?.color === "blue") {
+            if (blockInfo.extra?.color === "blue") {
                 setIsBlueBlock(true);
             }
-            else if (blockInfo.verboseData?.extra?.color === "red") {
+            else if (blockInfo.extra?.color === "red") {
                 setIsBlueBlock(false);
             }
             else {
