@@ -14,6 +14,11 @@ import CopyButton from "./CopyButton.js";
 import PriceContext from "./PriceContext.js";
 
 const BlockLamp = (props) => {
+    console.log("here", props.isBlue)
+    if (props.isBlue === "none") {
+        return <></>
+    }
+    
     return <OverlayTrigger overlay={<Tooltip>It is a {props.isBlue ? "blue" : "red"} block!</Tooltip>}>
         <div className={`ms-3 block-lamp-${props.isBlue ? "blue" : "red"}`} />
     </OverlayTrigger>
@@ -64,31 +69,9 @@ const BlockInfo = () => {
 
 
 
-    useEffect(() => {
-
-        setIsBlueBlock(null);
+    useEffect(() => {      
         if (!!blockInfo) {
-            async function isBlueBlock(startBlocks) {
-                var childListGlob = startBlocks
-
-                while (childListGlob.length > 0) {
-                    const hash = childListGlob.shift()
-                    const block = await getBlock(hash)
-                    if (block.verboseData.isChainBlock) {
-                        return block.verboseData.mergeSetBluesHashes.includes(blockInfo.verboseData.hash)
-                    } else {
-                        // console.log("PUSH", block.verboseData.childrenHashes)
-                        childListGlob.push(block.verbosedata.childrenHashes)
-                    }
-
-                }
-            }
-
-            isBlueBlock([...(blockInfo.verboseData.childrenHashes || [])])
-                .then((res) => setIsBlueBlock(res))
-                .catch((err) => console.log("ERROR", err))
-
-
+            setIsBlueBlock(blockInfo.extra?.color || "none");
             let [address, miner] = ["No miner info", "No miner info"]
 
             if (blockInfo.transactions[0]?.payload) {
@@ -127,7 +110,10 @@ const BlockInfo = () => {
 
                     {!!blockInfo ?
                         <div className="blockinfo-content">
-                            <div className="blockinfo-header"><h4 className="d-flex flex-row align-items-center">block details {isBlueBlock === null ? <Spinner className="ms-3" animation="grow" /> : <BlockLamp isBlue={isBlueBlock} />}</h4></div>
+                            <div className="blockinfo-header"><h4 className="d-flex flex-row align-items-center">block details 
+                            {blockInfo.verboseData.isChainBlock !== null && <>{ isBlueBlock === null ? <Spinner className="ms-3" animation="grow" /> : <BlockLamp isBlue={isBlueBlock} />}</>}
+                            
+                            </h4></div>
                             {/* <font className="blockinfo-header-id">{id.substring(0, 20)}...</font> */}
                             <Container className="blockinfo-table mx-0" fluid>
                                 <Row className="blockinfo-row">
