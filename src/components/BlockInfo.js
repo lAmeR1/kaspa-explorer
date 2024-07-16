@@ -71,7 +71,16 @@ const BlockInfo = () => {
 
     useEffect(() => {      
         if (!!blockInfo) {
-            setIsBlueBlock(blockInfo.extra?.color || "none");
+            if (blockInfo.verboseData?.extra?.color === "blue") {
+                setIsBlueBlock(true);
+            }
+            else if (blockInfo.verboseData?.extra?.color === "red") {
+                setIsBlueBlock(false);
+            }
+            else {
+                setIsBlueBlock("none");
+            }
+            
             let [address, miner] = ["No miner info", "No miner info"]
 
             if (blockInfo.transactions[0]?.payload) {
