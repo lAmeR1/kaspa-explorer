@@ -6,7 +6,6 @@ import { Col, Container, OverlayTrigger, Row, Spinner, Tooltip } from "react-boo
 import { BiNetworkChart } from "react-icons/bi";
 import { useParams } from "react-router";
 import { Link } from "react-router-dom";
-import { parsePayload } from "../bech32.js";
 import { numberWithCommas } from "../helper.js";
 import { getBlock, getTransactions } from '../kaspa-api-client.js';
 import BlueScoreContext from "./BlueScoreContext.js";
@@ -83,8 +82,9 @@ const BlockInfo = () => {
             
             let [address, miner] = ["No miner info", "No miner info"]
 
-            if (blockInfo.transactions[0]?.payload) {
-                [address, miner] = parsePayload(blockInfo.transactions[0].payload);
+            if (blockInfo.extra?.minerAddress) {
+                address = blockInfo.extra?.minerAddress
+                miner = blockInfo.extra?.minerInfo
             }
 
 
