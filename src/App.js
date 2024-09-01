@@ -31,6 +31,7 @@ import TransactionInfo from "./components/TransactionInfo";
 import TxPage from "./components/TxPage";
 import Dashboard from "./Dashboard";
 import { getBlock } from "./kaspa-api-client";
+import { useWs } from "./helper";
 // import 'moment/min/locales';
 
 // var locale = window.navigator.userLanguage || window.navigator.language || "en";
@@ -43,17 +44,17 @@ document.addEventListener("DOMContentLoaded", function () {
   window.addEventListener("scroll", function () {
     if (window.location.pathname == "/") {
       if (window.scrollY > 200) {
-        document.getElementById("navbar_top").classList.add("fixed-top");
+        document.getElementById("navbar_top")?.classList?.add("fixed-top");
       } else {
-        document.getElementById("navbar_top").classList.remove("fixed-top");
+        document.getElementById("navbar_top")?.classList?.remove("fixed-top");
       }
     }
   });
 });
 
-const websocket = new WebSocket("ws://localhost:3002/ws");
-
 function App() {
+  const { isReady, close, data, send } = useWs("ws://localhost:3002/ws");
+
   const [price, setPrice] = useState("");
   const [marketData, setMarketData] = useState("");
 
@@ -110,49 +111,43 @@ function App() {
       updatePrice();
     }, 60000);
 
-    websocket.onopen = function () {
-      setIsConnected(true);
-
-      websocket.onmessage = function (event) {
-        try {
-          const data = JSON.parse(event.data);
-
-          if (!Array.isArray(data)) {
-            return;
-          }
-
-          const eventType = data[0];
-          const eventPayload = data[1];
-          if (eventType === "new_block") {
-            setBlocks([...blocksRef.current, eventPayload].slice(-20));
-          } else if (eventType === "bluescore") {
-            setBlueScore(eventPayload.blueScore);
-          } else {
-            console.log("Unknown event type:", eventType);
-          }
-        } catch (error) {
-          console.error(error);
-        }
-      };
-
-      websocket.onclose = function () {
-        setIsConnected(false);
-      };
-    };
-
-    // @TODO: Not implmented yet
-    // socket.on("last-blocks", (e) => {
-    //   setBlocks(e);
-    //   socket.emit("join-room", "blocks");
-    // });
-
-    // socket.emit("last-blocks", "");
-
     return () => {
       clearInterval(intervalPrice);
-      websocket.close();
+      close();
     };
   }, []);
+
+  useEffect(() => {
+    setIsConnected(isReady);
+
+    if (isReady) {
+      send("get_last_blocks");
+    }
+  }, [isReady]);
+
+  useEffect(() => {
+    try {
+      const parsedData = JSON.parse(data);
+
+      if (!Array.isArray(parsedData)) {
+        return;
+      }
+
+      const eventType = parsedData[0];
+      const eventPayload = parsedData[1];
+      if (eventType === "new_block") {
+        setBlocks([...blocksRef.current, eventPayload].slice(-20));
+      } else if (eventType === "bluescore") {
+        setBlueScore(eventPayload.blueScore);
+      } else if (eventType === "last-blocks") {
+        setBlocks(eventPayload.map((b) => JSON.parse(b)));
+      } else {
+        console.log("Unknown event type:", eventType);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  }, [data]);
 
   const closeMenuIfNeeded = () => {
     if (
