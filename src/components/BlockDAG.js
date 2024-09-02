@@ -1,7 +1,7 @@
 import {faDiagramProject} from '@fortawesome/free-solid-svg-icons';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {useEffect, useState} from "react";
-import {getBlockdagInfo} from '../kaspa-api-client';
+import {getBlockdagInfo, getHashrateMax} from '../kaspa-api-client';
 
 
 const BlockDAGBox = () => {
@@ -13,24 +13,21 @@ const BlockDAGBox = () => {
     const [headerCount, setHeaderCount] = useState("");
     const [virtualDaaScore, setVirtualDaaScore] = useState("");
     const [hashrate, setHashrate] = useState("");
+    const [maxHashrate, setMaxHashrate] = useState("");
 
     const initBox = async () => {
         const dag_info = await getBlockdagInfo()
+        const hashrateMax = await getHashrateMax()
 
-        console.log('DAG Info ', dag_info)
-
-        setBlockCount(dag_info.blockCount)
-        setHeaderCount(dag_info.headerCount)
         setVirtualDaaScore(dag_info.virtualDaaScore)
         setHashrate((dag_info.difficulty * 2 / 1000000000000).toFixed(2))
+        setMaxHashrate(hashrateMax.hashrate)
     }
 
     useEffect(() => {
         initBox();
         const updateInterval = setInterval(async () => {
             const dag_info = await getBlockdagInfo()
-            setBlockCount(dag_info.blockCount)
-            setHeaderCount(dag_info.headerCount)
             setVirtualDaaScore(dag_info.virtualDaaScore)
             setHashrate((dag_info.difficulty * 2 / 1000000000000).toFixed(2))
         }, 60000)
@@ -39,29 +36,6 @@ const BlockDAGBox = () => {
         })
     }, [])
 
-    useEffect((e) => {
-        document.getElementById('blockCount').animate([
-            // keyframes
-            {opacity: '1'},
-            {opacity: '0.6'},
-            {opacity: '1'},
-        ], {
-            // timing options
-            duration: 300
-        });
-    }, [blockCount])
-
-    useEffect((e) => {
-        document.getElementById('headerCount').animate([
-            // keyframes
-            {opacity: '1'},
-            {opacity: '0.6'},
-            {opacity: '1'},
-        ], {
-            // timing options
-            duration: 300
-        });
-    }, [headerCount])
 
     useEffect((e) => {
         document.getElementById('virtualDaaScore').animate([
@@ -112,22 +86,6 @@ const BlockDAGBox = () => {
                 </tr>
                 <tr>
                     <td className="cardBoxElement">
-                        Block count
-                    </td>
-                    <td className="pt-1" id="blockCount">
-                        {blockCount}
-                    </td>
-                </tr>
-                <tr>
-                    <td className="cardBoxElement">
-                        Header count
-                    </td>
-                    <td className="pt-1" id="headerCount">
-                        {headerCount}
-                    </td>
-                </tr>
-                <tr>
-                    <td className="cardBoxElement">
                         Virtual DAA Score
                     </td>
                     <td className="pt-1 align-top" id="virtualDaaScore">
@@ -140,6 +98,14 @@ const BlockDAGBox = () => {
                     </td>
                     <td className="pt-1" id="hashrate">
                         {(hashrate / 1000).toFixed(3)} PH/s
+                    </td>
+                </tr>
+                <tr>
+                    <td className="cardBoxElement">
+                        Max Hashrate
+                    </td>
+                    <td className="pt-1" id="hashrate">
+                        {(maxHashrate / 1000 / 1000).toFixed(3)} EH/s
                     </td>
                 </tr>
             </table>

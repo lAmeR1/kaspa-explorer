@@ -27,6 +27,14 @@ export async function getBlockdagInfo() {
         })
     return res
 }
+export async function getHashrateMax() {
+    const res = await fetch(`${API_BASE}info/hashrate/max`, {headers: {'Access-Control-Allow-Origin': '*'}})
+        .then((response) => response.json())
+        .then(data => {
+            return data
+        })
+    return res
+}
 
 export async function getCoinSupply() {
     const res = await fetch(`${API_BASE}info/coinsupply`, {headers: {'Access-Control-Allow-Origin': '*'}})
