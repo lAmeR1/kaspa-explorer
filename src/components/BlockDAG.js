@@ -2,15 +2,11 @@ import {faDiagramProject} from '@fortawesome/free-solid-svg-icons';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {useEffect, useState} from "react";
 import {getBlockdagInfo, getHashrateMax} from '../kaspa-api-client';
+import {numberWithCommas} from "../helper";
 
 
 const BlockDAGBox = () => {
 
-    const [data, setData] = useState({});
-    const [isConnected, setIsConnected] = useState(false);
-
-    const [blockCount, setBlockCount] = useState();
-    const [headerCount, setHeaderCount] = useState("");
     const [virtualDaaScore, setVirtualDaaScore] = useState("");
     const [hashrate, setHashrate] = useState("");
     const [maxHashrate, setMaxHashrate] = useState("");
@@ -89,7 +85,7 @@ const BlockDAGBox = () => {
                         Virtual DAA Score
                     </td>
                     <td className="pt-1 align-top" id="virtualDaaScore">
-                        {virtualDaaScore}
+                        {numberWithCommas(virtualDaaScore)}
                     </td>
                 </tr>
                 <tr>
