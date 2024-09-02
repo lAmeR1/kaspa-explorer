@@ -128,10 +128,10 @@ const TransactionInfo = () => {
                                     <Col className="blockinfo-key" lg={2}>Compute mass</Col>
                                     <Col className="blockinfo-value" lg={10}>{txInfo.mass ? txInfo.mass : "-"}</Col>
                                 </Row>
-                                <Row className="blockinfo-row">
-                                    <Col className="blockinfo-key" lg={2}>Storage mass</Col>
-                                    <Col className="blockinfo-value" lg={10}>{storageMass ? storageMass : "..."}</Col>
-                                </Row>
+                                {/*<Row className="blockinfo-row">*/}
+                                {/*    <Col className="blockinfo-key" lg={2}>Storage mass</Col>*/}
+                                {/*    <Col className="blockinfo-value" lg={10}>{storageMass ? storageMass : "..."}</Col>*/}
+                                {/*</Row>*/}
                                 <Row className="blockinfo-row">
                                     <Col className="blockinfo-key" lg={2}>Block Hashes</Col>
                                     <Col className="blockinfo-value-mono" lg={10}>
