@@ -73,6 +73,14 @@ export async function getAddressUtxos(addr) {
         })
     return res
 }
+export async function getAddressName(addr) {
+    const res = await fetch(`${API_BASE}addresses/${addr}/name`, {headers: {'Access-Control-Allow-Origin': '*'}})
+        .then((response) => response.json())
+        .then(data => {
+            return data
+        })
+    return res
+}
 
 
 export async function getHalving() {

@@ -208,6 +208,18 @@
 
 }
 
+.address-name {
+  background-color: rgb(50, 115, 110);
+  font-size: small;
+  font-weight: lighter;
+  padding: .2rem .7rem;
+  margin-left: .8rem;
+  border-radius: .4rem;
+  word-wrap: none;
+  display: inline-block;
+
+}
+
 .utxo-amount-minus {
   background-color: rgb(195, 38, 38);
   padding: .2rem .7rem;

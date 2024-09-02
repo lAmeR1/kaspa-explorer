@@ -8,6 +8,7 @@ import Toggle from "react-toggle";
 import usePrevious, {floatToStr, numberWithCommas} from "../helper";
 import {
     getAddressBalance,
+    getAddressName,
     getAddressTxCount,
     getAddressUtxos,
     getBlock,
@@ -39,6 +40,8 @@ const AddressInfo = () => {
 
     const [view, setView] = useState("transactions")
     const [showQr, setShowQr] = useState(false);
+
+    const [addressName, setAddressName] = useState("");
 
     const [detailedView, setDetailedView] = useState(localStorage.getItem('detailedView') == "true")
 
@@ -146,6 +149,14 @@ const AddressInfo = () => {
         getAddressBalance(addr).then(
             (res) => {
                 setAddressBalance(res)
+            }
+        )
+
+        getAddressName(addr).then(
+            (res) => {
+                if (res.name) {
+                    setAddressName(res.name)
+                }
             }
         )
 
@@ -271,7 +282,8 @@ const AddressInfo = () => {
             <Row>
                 <Col md={12} className="mt-sm-4">
 
-                    <div className="addressinfo-header">Address</div>
+                    <div className="addressinfo-header">Address{addressName ?
+                        <span className="address-name">{addressName ? addressName : ""}</span> : ""}</div>
                     <div className="utxo-value-mono"><span
                         class="addressinfo-color">kaspa:</span>{addr.substring(6, addr.length - 8)}<span
                         class="addressinfo-color">{addr.substring(addr.length - 8)}</span>
