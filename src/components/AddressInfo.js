@@ -205,7 +205,6 @@ const AddressInfo = () => {
                 setLoadingTxs(false);
                 return
             }
-            console.log("loading done.")
             setLoadingTxs(false);
 
             getTransactions(removeDuplicates(res.map(item => item.inputs)
@@ -214,12 +213,10 @@ const AddressInfo = () => {
                 txs => {
                     var txInpObj = {}
                     txs.forEach(x => txInpObj[x.transaction_id] = x)
-                    console.log(txInpObj)
                     setTxsInpCache(txInpObj)
                 })
         })
             .catch(ex => {
-                console.log("nicht eroflgreich", ex)
                 setLoadingTxs(false);
             })
     }
@@ -233,7 +230,6 @@ const AddressInfo = () => {
             })
             getAddressUtxos(addr).then(
                 (res) => {
-                    console.log("UTXOs loaded.")
                     setLoadingUtxos(false);
                     setUtxos(res);
                 }
@@ -353,7 +349,6 @@ const AddressInfo = () => {
                         }}/><span className="text-light ms-2">Show details</span></div>
                 </Col>
                 <Col xs={12} md={6} className="d-flex flex-row justify-content-end ms-auto">
-                    {console.log("txc", txCount)}
                     {txCount !== null ?
                         <UtxoPagination active={activeTx} total={Math.ceil(txCount / 20)} setActive={setActiveTx}/> :
                         <Spinner className="m-3" animation="border" variant="primary"/>}

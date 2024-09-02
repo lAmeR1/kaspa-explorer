@@ -13,12 +13,7 @@ const CBox = () => {
     const [halvingAmount, setHalvingAmount] = useState("-");
 
     const initBox = async () => {
-
-        console.log("LS: ", localStorage.getItem("cacheCircCoins"))
-
-
         if (localStorage.getItem("cacheCircCoins")) {
-            console.log("HIER")
             setCircCoins(localStorage.getItem("cacheCircCoins"))
         }
 

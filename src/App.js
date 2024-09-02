@@ -76,7 +76,6 @@ function App() {
                     }
                 }
             ).catch((err) => {
-                console.log("hier")
             })
         }
         if (v.startsWith("kaspa:")) {
@@ -125,7 +124,6 @@ function App() {
         socket.on('bluescore', (e) => {
             setBlueScore(e.blueScore)
         })
-        console.log("join room bluescore")
         socket.emit("join-room", "bluescore")
 
         socket.on('new-block', (d) => {

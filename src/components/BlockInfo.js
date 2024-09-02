@@ -14,7 +14,6 @@ import CopyButton from "./CopyButton.js";
 import PriceContext from "./PriceContext.js";
 
 const BlockLamp = (props) => {
-    console.log("here", props.isBlue)
     if (props.isBlue === "none") {
         return <></>
     }
@@ -96,7 +95,6 @@ const BlockInfo = () => {
                         obj[cur["transaction_id"]] = cur
                         return obj;
                     }, {});
-                    console.log(respAsObj)
                     setTxInfo(respAsObj)
 
                 }

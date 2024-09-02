@@ -12,7 +12,6 @@ import CopyButton from "./CopyButton.js";
 import PriceContext from "./PriceContext.js";
 
 const getOutputFromIndex = (outputs, index) => {
-    console.log(outputs)
     for (const output of outputs) {
         if (output.index == index) {
             return output
@@ -64,17 +63,14 @@ const TransactionInfo = () => {
         // request TX input addresses
         if (!!txInfo && txInfo?.detail !== "Transaction not found") {
             const txToQuery = txInfo.inputs?.flatMap(txInput => txInput.previous_outpoint_hash).filter(x => x)
-            console.log("q", txToQuery)
             if (!!txToQuery) {
                 getTransactions(txToQuery, true, true).then(
                     resp => {
-                        console.log("Check all tx? ", txToQuery.length == resp.length)
                         setShowTxFee(txToQuery.length == resp.length)
                         const respAsObj = resp.reduce((obj, cur) => {
                             obj[cur["transaction_id"]] = cur
                             return obj;
                         }, {});
-                        console.log("additional info", respAsObj)
                         setAdditionalTxInfo(respAsObj)
                     }
                 ).catch(err => console.log("Error ", err))
@@ -84,13 +80,11 @@ const TransactionInfo = () => {
             retryCnt.current += 1
             if (retryCnt.current < 20) {
                 setTimeout(getTx, 1000);
-                console.log("retry", retryCnt)
             }
         }
 
 
         const timeDiff = (Date.now() - (txInfo?.block_time || Date.now())) / 1000
-        console.log("time diff", timeDiff)
 
         if (txInfo?.is_accepted === false && timeDiff < 60 && retryNotAccepted.current > 0) {
             retryNotAccepted.current -= 1
