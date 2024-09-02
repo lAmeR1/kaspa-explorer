@@ -1,7 +1,7 @@
 const API_BASE = "https://api.kaspa.org/"
 
 export async function getBlock(hash) {
-    const res = await fetch(`${API_BASE}blocks/${hash}`, { headers: { 'Access-Control-Allow-Origin': '*' } })
+    const res = await fetch(`${API_BASE}blocks/${hash}?includeColor=true`, { headers: { 'Access-Control-Allow-Origin': '*' } })
         .then((response) => response.json())
         .then(data => {
             return data
