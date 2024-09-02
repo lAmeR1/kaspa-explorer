@@ -7,17 +7,20 @@ import {numberWithCommas} from "../helper";
 
 const BlockDAGBox = () => {
 
-    const [virtualDaaScore, setVirtualDaaScore] = useState("");
-    const [hashrate, setHashrate] = useState("");
-    const [maxHashrate, setMaxHashrate] = useState("");
+    const [virtualDaaScore, setVirtualDaaScore] = useState(localStorage.getItem("cacheVirtualDaaScore") || "");
+    const [hashrate, setHashrate] = useState(localStorage.getItem("cacheHashrate"));
+    const [maxHashrate, setMaxHashrate] = useState(localStorage.getItem("cacheHashrateMax"));
 
     const initBox = async () => {
         const dag_info = await getBlockdagInfo()
         const hashrateMax = await getHashrateMax()
 
         setVirtualDaaScore(dag_info.virtualDaaScore)
+        localStorage.setItem("cacheVirtualDaaScore", dag_info.virtualDaaScore)
         setHashrate((dag_info.difficulty * 2 / 1000000000000).toFixed(2))
+        localStorage.setItem("cacheHashrate", (dag_info.difficulty * 2 / 1000000000000).toFixed(2))
         setMaxHashrate(hashrateMax.hashrate)
+        localStorage.setItem("cacheHashrateMax", hashrateMax.hashrate)
     }
 
     useEffect(() => {
@@ -26,6 +29,7 @@ const BlockDAGBox = () => {
             const dag_info = await getBlockdagInfo()
             setVirtualDaaScore(dag_info.virtualDaaScore)
             setHashrate((dag_info.difficulty * 2 / 1000000000000).toFixed(2))
+            localStorage.setItem("cacheHashrate", (dag_info.difficulty * 2 / 1000000000000).toFixed(2))
         }, 60000)
         return (async () => {
             clearInterval(updateInterval)
@@ -57,6 +61,15 @@ const BlockDAGBox = () => {
         });
     }, [hashrate])
 
+
+    function hashrateToStr(inHashrate) {
+        if (inHashrate / 1000 < 1000) {
+            return `${(inHashrate / 1000).toFixed(3)} PH/s`
+        } else {
+            return `${(inHashrate / 1000 / 1000).toFixed(3)} EH/s`
+        }
+
+    }
 
     return <>
         <div className="cardBox mx-0">
@@ -93,7 +106,7 @@ const BlockDAGBox = () => {
                         Hashrate
                     </td>
                     <td className="pt-1" id="hashrate">
-                        {(hashrate / 1000).toFixed(3)} PH/s
+                        {hashrateToStr(hashrate)}
                     </td>
                 </tr>
                 <tr>

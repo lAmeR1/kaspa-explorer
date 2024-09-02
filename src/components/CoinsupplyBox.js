@@ -13,15 +13,40 @@ const CBox = () => {
     const [halvingAmount, setHalvingAmount] = useState("-");
 
     const initBox = async () => {
+
+        console.log("LS: ", localStorage.getItem("cacheCircCoins"))
+
+
+        if (localStorage.getItem("cacheCircCoins")) {
+            console.log("HIER")
+            setCircCoins(localStorage.getItem("cacheCircCoins"))
+        }
+
+        if (localStorage.getItem("cacheBlockReward")) {
+            setBlockReward(localStorage.getItem("cacheBlockReward"))
+        }
+
+        if (localStorage.getItem("cacheHalvingDate")) {
+            setHalvingDate(localStorage.getItem("cacheHalvingDate"))
+        }
+
+        if (localStorage.getItem("cacheHalvingAmount")) {
+            setHalvingAmount(localStorage.getItem("cacheHalvingAmount"))
+        }
+
+
         const coinSupplyResp = await getCoinSupply()
         getBlockReward();
 
         getHalving().then((d) => {
             setHalvingDate(moment(d.nextHalvingTimestamp * 1000).format("YYYY-MM-DD HH:mm"))
             setHalvingAmount(d.nextHalvingAmount.toFixed(2))
+            localStorage.setItem("cacheHalvingDate", moment(d.nextHalvingTimestamp * 1000).format("YYYY-MM-DD HH:mm"))
+            localStorage.setItem("cacheHalvingAmount", d.nextHalvingAmount.toFixed(2))
         })
 
         setCircCoins(Math.round(coinSupplyResp.circulatingSupply / 100000000))
+        localStorage.setItem("cacheCircCoins", Math.round(coinSupplyResp.circulatingSupply / 100000000))
     }
 
     useEffect(() => {
@@ -45,6 +70,7 @@ const CBox = () => {
             .then((response) => response.json())
             .then(d => {
                 setBlockReward(d.blockreward.toFixed(2))
+                localStorage.setItem("cacheBlockReward", d.blockreward.toFixed(2))
 
             })
             .catch(err => console.log("Error", err))
