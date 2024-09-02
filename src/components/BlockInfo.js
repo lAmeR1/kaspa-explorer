@@ -61,32 +61,24 @@ const BlockInfo = () => {
             }
         )
             .catch(() => {
-                setError(true);
-                setBlockInfo(null);
-            }
+                    setError(true);
+                    setBlockInfo(null);
+                }
             )
     }, [id])
 
 
 
     useEffect(() => {
-
-        setIsBlueBlock(null);
         if (!!blockInfo) {
-            async function isBlueBlock(startBlocks) {
-                var childListGlob = startBlocks
-
-                while (childListGlob.length > 0) {
-                    const hash = childListGlob.shift()
-                    const block = await getBlock(hash)
-                    if (block.verboseData.isChainBlock) {
-                        return block.verboseData.mergeSetBluesHashes.includes(blockInfo.verboseData.hash)
-                    } else {
-                        // console.log("PUSH", block.verboseData.childrenHashes)
-                        childListGlob.push(block.verbosedata.childrenHashes)
-                    }
-
-                }
+            if (blockInfo.extra?.color === "blue") {
+                setIsBlueBlock(true);
+            }
+            else if (blockInfo.extra?.color === "red") {
+                setIsBlueBlock(false);
+            }
+            else {
+                setIsBlueBlock("none");
             }
 
             let [address, miner] = ["No miner info", "No miner info"]
@@ -127,9 +119,9 @@ const BlockInfo = () => {
 
                     {!!blockInfo ?
                         <div className="blockinfo-content">
-                            <div className="blockinfo-header"><h4 className="d-flex flex-row align-items-center">block details 
-                            {blockInfo.verboseData.isChainBlock !== null && <>{ isBlueBlock === null ? <Spinner className="ms-3" animation="grow" /> : <BlockLamp isBlue={isBlueBlock} />}</>}
-                            
+                            <div className="blockinfo-header"><h4 className="d-flex flex-row align-items-center">block details
+                                {blockInfo.verboseData.isChainBlock !== null && <>{ isBlueBlock === null ? <Spinner className="ms-3" animation="grow" /> : <BlockLamp isBlue={isBlueBlock} />}</>}
+
                             </h4></div>
                             {/* <font className="blockinfo-header-id">{id.substring(0, 20)}...</font> */}
                             <Container className="blockinfo-table mx-0" fluid>
@@ -247,12 +239,12 @@ const BlockInfo = () => {
                                                     <Container className="utxo-value-mono" fluid>
                                                         {(tx.inputs || []).map((txInput) => <Row>
                                                             {!!txInfo && txInfo[txInput.previousOutpoint.transactionId] ? <>
-                                                                <Col xs={12} sm={8} md={9} lg={9} xl={8} xxl={7} className="text-truncate">
-                                                                    <Link to={`/addresses/${getAddrFromOutputs(txInfo[txInput.previousOutpoint.transactionId]["outputs"], txInput.previousOutpoint.index || 0)}`} className="blockinfo-link">
-                                                                        {getAddrFromOutputs(txInfo[txInput.previousOutpoint.transactionId]["outputs"], txInput.previousOutpoint.index || 0)}
-                                                                    </Link>
-                                                                    <CopyButton text={getAddrFromOutputs(txInfo[txInput.previousOutpoint.transactionId]["outputs"], txInput.previousOutpoint.index || 0)} />
-                                                                </Col><Col className="block-utxo-amount-minus" xs={12} sm={4} md={2}>
+                                                                    <Col xs={12} sm={8} md={9} lg={9} xl={8} xxl={7} className="text-truncate">
+                                                                        <Link to={`/addresses/${getAddrFromOutputs(txInfo[txInput.previousOutpoint.transactionId]["outputs"], txInput.previousOutpoint.index || 0)}`} className="blockinfo-link">
+                                                                            {getAddrFromOutputs(txInfo[txInput.previousOutpoint.transactionId]["outputs"], txInput.previousOutpoint.index || 0)}
+                                                                        </Link>
+                                                                        <CopyButton text={getAddrFromOutputs(txInfo[txInput.previousOutpoint.transactionId]["outputs"], txInput.previousOutpoint.index || 0)} />
+                                                                    </Col><Col className="block-utxo-amount-minus" xs={12} sm={4} md={2}>
                                                                     -{numberWithCommas(getAmountFromOutputs(txInfo[txInput.previousOutpoint.transactionId]["outputs"], txInput.previousOutpoint.index || 0))}&nbsp;KAS
                                                                 </Col></>
                                                                 :
