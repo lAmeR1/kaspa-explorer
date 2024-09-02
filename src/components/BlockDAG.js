@@ -1,7 +1,7 @@
-import { faDiagramProject } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useEffect, useState } from "react";
-import { getBlockdagInfo } from '../kaspa-api-client';
+import {faDiagramProject} from '@fortawesome/free-solid-svg-icons';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import {useEffect, useState} from "react";
+import {getBlockdagInfo} from '../kaspa-api-client';
 
 
 const BlockDAGBox = () => {
@@ -42,9 +42,9 @@ const BlockDAGBox = () => {
     useEffect((e) => {
         document.getElementById('blockCount').animate([
             // keyframes
-            { opacity: '1' },
-            { opacity: '0.6' },
-            { opacity: '1' },
+            {opacity: '1'},
+            {opacity: '0.6'},
+            {opacity: '1'},
         ], {
             // timing options
             duration: 300
@@ -54,9 +54,9 @@ const BlockDAGBox = () => {
     useEffect((e) => {
         document.getElementById('headerCount').animate([
             // keyframes
-            { opacity: '1' },
-            { opacity: '0.6' },
-            { opacity: '1' },
+            {opacity: '1'},
+            {opacity: '0.6'},
+            {opacity: '1'},
         ], {
             // timing options
             duration: 300
@@ -66,9 +66,9 @@ const BlockDAGBox = () => {
     useEffect((e) => {
         document.getElementById('virtualDaaScore').animate([
             // keyframes
-            { opacity: '1' },
-            { opacity: '0.6' },
-            { opacity: '1' },
+            {opacity: '1'},
+            {opacity: '0.6'},
+            {opacity: '1'},
         ], {
             // timing options
             duration: 300
@@ -78,9 +78,9 @@ const BlockDAGBox = () => {
     useEffect((e) => {
         document.getElementById('hashrate').animate([
             // keyframes
-            { opacity: '1' },
-            { opacity: '0.6' },
-            { opacity: '1' },
+            {opacity: '1'},
+            {opacity: '0.6'},
+            {opacity: '1'},
         ], {
             // timing options
             duration: 300
@@ -90,11 +90,11 @@ const BlockDAGBox = () => {
 
     return <>
         <div className="cardBox mx-0">
-            <table style={{ fontSize: "1rem" }}>
+            <table style={{fontSize: "1rem"}}>
                 <tr>
-                    <td colspan='2' className="text-center" style={{ "fontSize": "4rem" }}>
-                        <FontAwesomeIcon icon={faDiagramProject} />
-                        <div className="cardLight" />
+                    <td colspan='2' className="text-center" style={{"fontSize": "4rem"}}>
+                        <FontAwesomeIcon icon={faDiagramProject}/>
+                        <div className="cardLight"/>
                     </td>
                 </tr>
                 <tr>

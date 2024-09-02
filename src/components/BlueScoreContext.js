@@ -1,4 +1,4 @@
-import { createContext } from "react";
+import {createContext} from "react";
 
 
 const BlueScoreContext = createContext({'blueScore': 0});

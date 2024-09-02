@@ -38,7 +38,7 @@ export function getNewBlocks(func, trimTo) {
 
                 blocksCache = blocksCache.concat(blocks)
                 blocksCache = uniqBy(blocksCache, (x) => x.hash)
-                blocksCache.sort((a,b) => b.blueScore - a.blueScore)
+                blocksCache.sort((a, b) => b.blueScore - a.blueScore)
                 blocksCache = blocksCache.splice(0, trimTo)
 
 

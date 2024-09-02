@@ -1,10 +1,9 @@
-import { faCoins } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {faCoins} from '@fortawesome/free-solid-svg-icons';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import moment from 'moment';
-import { useContext, useEffect, useState } from "react";
-import { numberWithCommas } from "../helper";
-import { getCoinSupply, getHalving } from '../kaspa-api-client';
-import PriceContext from "./PriceContext";
+import {useEffect, useState} from "react";
+import {numberWithCommas} from "../helper";
+import {getCoinSupply, getHalving} from '../kaspa-api-client';
 
 
 const CBox = () => {
@@ -55,9 +54,9 @@ const CBox = () => {
     useEffect(() => {
         document.getElementById('coins').animate([
             // keyframes
-            { opacity: '1' },
-            { opacity: '0.6' },
-            { opacity: '1' },
+            {opacity: '1'},
+            {opacity: '0.6'},
+            {opacity: '1'},
         ], {
             // timing options
             duration: 300
@@ -67,11 +66,11 @@ const CBox = () => {
 
     return <>
         <div className="cardBox mx-0">
-            <table style={{ fontSize: "1rem" }}>
+            <table style={{fontSize: "1rem"}}>
                 <tr>
-                    <td colspan='2' className="text-center" style={{ "fontSize": "4rem" }}>
-                        <FontAwesomeIcon icon={faCoins} />
-                        <div id="light1" className="cardLight" />
+                    <td colspan='2' className="text-center" style={{"fontSize": "4rem"}}>
+                        <FontAwesomeIcon icon={faCoins}/>
+                        <div id="light1" className="cardLight"/>
                     </td>
                 </tr>
                 <tr>
@@ -81,22 +80,23 @@ const CBox = () => {
                 </tr>
                 <tr>
                     <td className="cardBoxElement align-top">
-                        Total</td>
+                        Total
+                    </td>
                     <td className="">
-                        <div id="coins">{numberWithCommas(circCoins)} KAS
+                        <div id="coins">{numberWithCommas(circCoins)} KAS
                         </div>
                     </td>
                 </tr>
                 <tr>
                     <td className="cardBoxElement align-top">Max <span className="approx">(approx.)</span></td>
-                    <td className="pt-1">28,700,000,000 KAS</td>
+                    <td className="pt-1">28,700,000,000 KAS</td>
                 </tr>
                 <tr>
                     <td className="cardBoxElement align-top">Mined</td>
                     <td className="pt-1">{(circCoins / 28700000000 * 100).toFixed(2)} %</td>
                 </tr>
                 <tr>
-                    <td className="cardBoxElement align-top">Block reward</td>
+                    <td className="cardBoxElement align-top">Block reward</td>
                     <td className="pt-1">{blockReward} KAS</td>
                 </tr>
                 <tr>
@@ -107,7 +107,10 @@ const CBox = () => {
                             </span>
                         </OverlayTrigger> */}
                     </td>
-                    <td className="pt-1">{halvingDate}<br /><div className="text-end w-100 pe-3 pt-1" style={{ fontSize: "small" }}>to {halvingAmount} KAS</div></td>
+                    <td className="pt-1">{halvingDate}<br/>
+                        <div className="text-end w-100 pe-3 pt-1" style={{fontSize: "small"}}>to {halvingAmount} KAS
+                        </div>
+                    </td>
                 </tr>
             </table>
         </div>

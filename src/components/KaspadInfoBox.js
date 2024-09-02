@@ -1,8 +1,6 @@
-import { faMemory } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useEffect, useState } from "react";
-import { FaMemory } from 'react-icons/fa';
-
+import {faMemory} from '@fortawesome/free-solid-svg-icons';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import {useEffect, useState} from "react";
 
 
 const KaspadInfoBox = () => {
@@ -15,6 +13,7 @@ const KaspadInfoBox = () => {
             .catch(err => console.log("Error", err))
         setTimeout(updateData, 60000)
     }
+
     useEffect(() => {
 
         updateData()
@@ -25,9 +24,9 @@ const KaspadInfoBox = () => {
         <div className="cardBox mx-0">
             <table>
                 <tr>
-                    <td colspan='2' className="text-center" style={{ "fontSize": "4rem" }}>
-                        <FontAwesomeIcon icon={faMemory} />
-                        <div className="cardLight" />
+                    <td colspan='2' className="text-center" style={{"fontSize": "4rem"}}>
+                        <FontAwesomeIcon icon={faMemory}/>
+                        <div className="cardLight"/>
                     </td>
                 </tr>
                 <tr>
