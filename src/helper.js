@@ -26,6 +26,8 @@ export const useWs = (url) => {
   const [isReady, setIsReady] = useState(false);
   const [val, setVal] = useState(null);
 
+  const [reconnectCountTrigger, setReconnectCountTrigger] = useState(0);
+
   const ws = useRef(null);
 
   useEffect(() => {
@@ -43,7 +45,23 @@ export const useWs = (url) => {
     return () => {
       socket.close();
     };
-  }, [url]);
+  }, [url, reconnectCountTrigger]);
+
+  useEffect(() => {
+    if (ws.current !== null) {
+      // auto-reconnect each 5 seconds
+      const intervalId = setInterval(() => {
+        if (ws.current?.readyState === WebSocket.CLOSED) {
+          console.log("ws.current.readyState", ws.current.readyState);
+
+          ws.current = null;
+          setReconnectCountTrigger((prev) => prev + 1);
+        }
+      }, 5000);
+
+      return () => clearInterval(intervalId);
+    }
+  }, [ws]);
 
   return {
     isReady,
