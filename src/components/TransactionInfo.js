@@ -239,7 +239,12 @@ const TransactionInfo = () => {
 
                                     </>)
                                 }
-
+                                {(txInfo.inputs || []).length === 0 ? <Row className="utxo-border py-3">
+                                    <Col sm={12}>
+                                        <div className="blockinfo-key mt-0 mt-md-2 me-auto">FROM</div>
+                                        <div className="utxo-value mt-0 mt-md-2 me-auto">COINBASE ( New coins )</div>
+                                    </Col>
+                                </Row> : <></>}
                             </Container>
                             <div className="blockinfo-header mt-5"><h4>Outputs</h4></div>
                             <Container className="webpage utxo-box" fluid>

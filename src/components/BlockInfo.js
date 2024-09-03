@@ -276,9 +276,8 @@ const BlockInfo = () => {
                                                                            md={2}></Col>
                                                                 </>}
                                                         </Row>)}
-                                                        {!tx.inputs ? <Row><Col xs={12} sm={8} md="auto"
-                                                                                className="text-truncate">COINBASE (New
-                                                            coins)</Col></Row> : <></>}
+                                                        {tx.inputs.length === 0 ? <Row><Col xs={12} sm={8} md="auto"
+                                                                                className="text-truncate">COINBASE (New coins)</Col></Row> : <>{console.log(tx.inputs)}</>}
 
                                                     </Container>
 
