@@ -8,12 +8,7 @@
       "type": "image/x-icon"
     },
     {
-      "src": "kaspa-icon.png",
-      "type": "image/png",
-      "sizes": "192x192"
-    },
-    {
-      "src": "kaspa-icon.png",
+      "src": "k-icon-stroke-512x512.png",
       "type": "image/png",
       "sizes": "512x512"
     }
