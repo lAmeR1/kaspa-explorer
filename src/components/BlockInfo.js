@@ -315,7 +315,7 @@ const BlockInfo = () => {
                                             <Col sm={3} md={2}>
                                                 <div className="utxo-header mt-3">tx value</div>
                                                 <div
-                                                    className="utxo-value">{(tx.outputs.reduce((a, b) => (a || 0) + parseInt(b.amount), 0) / 100000000 * price).toFixed(2)} $
+                                                    className="utxo-value">{numberWithCommas((tx.outputs.reduce((a, b) => (a || 0) + parseInt(b.amount), 0) / 100000000 * price).toFixed(2))} $
                                                 </div>
                                             </Col>
                                             <Col sm={4} md={6}>
@@ -344,7 +344,6 @@ const BlockInfo = () => {
                         </div> : <></>}
                 </Col>
             </Row>
-
         </Container>
     </div>
 
