@@ -1,5 +1,4 @@
-import { useState } from "react";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export function numberWithCommas(x) {
   if (x === undefined) {

@@ -1,4 +1,4 @@
-import { Button, Form, Pagination } from "react-bootstrap";
+import {Pagination} from "react-bootstrap";
 
 const UtxoPagination = (props) => {
 
@@ -10,27 +10,32 @@ const UtxoPagination = (props) => {
     } else {
         if (props.active > props.total - 2) {
             createIndex = props.total - 2
-        }
-        else {
+        } else {
             createIndex = props.active;
         }
     }
 
     for (let i = Math.max(createIndex - 2, 1); i <= Math.min(createIndex + 2, props.total); i++) {
-        items.push(<Pagination.Item key={i} active={i === props.active} onClick={() => { props.setActive(i) }}>{i}</Pagination.Item>)
+        items.push(<Pagination.Item key={i} active={i === props.active} onClick={() => {
+            props.setActive(i)
+        }}>{i}</Pagination.Item>)
     }
 
     return <div className="pagination">
         <Pagination>
             {(Math.min(props.active, props.total - 2) - 2) > 1 ? <>
-                <Pagination.Item key={1} onClick={() => { props.setActive(1) }}>{1}</Pagination.Item>
-                {props.active > 4 && <Pagination.Ellipsis />}
+                <Pagination.Item key={1} onClick={() => {
+                    props.setActive(1)
+                }}>{1}</Pagination.Item>
+                {props.active > 4 && <Pagination.Ellipsis/>}
             </> : <></>}
             {items}
 
             {props.total > Math.max(3, props.active) + 2 ? <>
-                {props.active < (props.total - 3) && <Pagination.Ellipsis />}
-                <Pagination.Item key={props.total} onClick={() => { props.setActive(props.total) }}>{props.total}</Pagination.Item>
+                {props.active < (props.total - 3) && <Pagination.Ellipsis/>}
+                <Pagination.Item key={props.total} onClick={() => {
+                    props.setActive(props.total)
+                }}>{props.total}</Pagination.Item>
             </> : <></>}
         </Pagination>
     </div>

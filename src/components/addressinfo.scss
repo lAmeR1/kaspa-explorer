@@ -1,271 +1,268 @@
 .addressinfo-page {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    flex-direction: column;
-    background-color: $color3;
-    color: $color5;
-    padding: 1rem;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  flex-direction: column;
+  background-color: $color3;
+  color: $color5;
+  padding: 1rem;
 }
 
 .qr-code {
-    margin: 1rem 0rem;
+  margin: 1rem 0rem;
 }
 
 .addressinfo-color {
-    
-    color: $color2;
+
+  color: $color2;
 }
 
 .addressinfo-title {
-    color: $color2;
-    border-bottom: 1px solid $color1;
-    text-align: left;
-    text-transform: uppercase;
-    font-size: x-large;
-    font-weight: bolder;
-    padding-bottom: 1rem;
-    margin-bottom: 2rem;
+  color: $color2;
+  border-bottom: 1px solid $color1;
+  text-align: left;
+  text-transform: uppercase;
+  font-size: x-large;
+  font-weight: bolder;
+  padding-bottom: 1rem;
+  margin-bottom: 2rem;
 }
 
 .addressinfo-title-addr {
-    font-family: 'Courier New', Courier, monospace;
-    color: $color1;
-    font-size: 1.2rem;
-    text-transform: none;
-    // display: flex;
-    // flex-direction: row;
-    // justify-content: start;
-    word-wrap: break-word;
-    font-weight: normal;
+  font-family: 'Courier New', Courier, monospace;
+  color: $color1;
+  font-size: 1.2rem;
+  text-transform: none;
+  // display: flex;
+  // flex-direction: row;
+  // justify-content: start;
+  word-wrap: break-word;
+  font-weight: normal;
 }
 
 @keyframes spinIcon {
-    from {
-        transform: rotate(0);
-    }
+  from {
+    transform: rotate(0);
+  }
 
-    to {
-        transform: rotate(360deg);
-    }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .error-icon {
-    color: red;
-    font-size: xx-large;
+  color: red;
+  font-size: xx-large;
 }
 
 
 .copy-symbol-div {
-    // font-size: 1rem;
-    transform: translateY(-.1rem);
+  // font-size: 1rem;
+  transform: translateY(-.1rem);
 }
 
 .copy-symbol:hover {
-    color: $color2;
-    cursor: pointer;
+  color: $color2;
+  cursor: pointer;
 }
 
 .copy-symbol:hover {
-    animation: fadeIn 1s linear 0 5;
+  animation: fadeIn 1s linear 0 5;
 }
 
 .copy-symbol:active {
-    scale: 1.2;
+  scale: 1.2;
 }
 
 .copy-symbol-success {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    color: rgb(31, 221, 31);
-    cursor: default;
-    // transform: rotate(0.8turn);
-    // transition: transform 2s linear .2s; 
-    animation-name: spinIcon;
-    animation-duration: 0.3s;
-    // animation-iteration-count: infinite;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: rgb(31, 221, 31);
+  cursor: default;
+  // transform: rotate(0.8turn);
+  // transition: transform 2s linear .2s;
+  animation-name: spinIcon;
+  animation-duration: 0.3s;
+  // animation-iteration-count: infinite;
 }
 
 
 .addressinfo-box {
-    background-color: $color5;
-    border-radius: 0.8rem;
-    padding: 2rem;
-    overflow: hidden;
+  background-color: $color5;
+  border-radius: 0.8rem;
+  padding: 2rem;
+  overflow: hidden;
 }
 
 .addressinfo-header {
-    // border-bottom: 2px solid $color1;
-    color: $color1;
-    text-transform: uppercase;
-    text-align: left;
-    font-weight: bolder;
+  // border-bottom: 2px solid $color1;
+  color: $color1;
+  text-transform: uppercase;
+  text-align: left;
+  font-weight: bolder;
 
 }
 
 @include media-breakpoint-up(sm) {
-    .addressinfo-header-border {
-        border-top: 1px solid $color1;
-    }
+  .addressinfo-header-border {
+    border-top: 1px solid $color1;
+  }
 }
 
 .fa {
-    transform: translateY(-10%);
+  transform: translateY(-10%);
 }
 
 .addressinfo-value {
-    display: block;
-    color: $color1;
-    text-align: left;
-    font-family: 'Courier New', Courier, monospace;
-    word-wrap: break-word;
+  display: block;
+  color: $color1;
+  text-align: left;
+  font-family: 'Courier New', Courier, monospace;
+  word-wrap: break-word;
 }
-
-
 
 
 @include media-breakpoint-up(lg) {
-    .addressinfo-page {
-        padding: 5rem
-    }
+  .addressinfo-page {
+    padding: 5rem
+  }
 }
-
 
 
 .utxo-box {
-    background-color: $color5;
-    border-radius: 0.8rem;
-    padding: 0rem;
-    margin-top: 0rem;
-    overflow: hidden;
+  background-color: $color5;
+  border-radius: 0.8rem;
+  padding: 0rem;
+  margin-top: 0rem;
+  overflow: hidden;
 }
 
 @include media-breakpoint-up(sm) {
-    .utxo-box {
-        padding: 0rem 1rem;
-    }
+  .utxo-box {
+    padding: 0rem 1rem;
+  }
 }
 
 .utxo-title {
-    color: $color2;
-    // border-bottom: 1px solid $color1;
-    text-align: left;
-    // text-transform: uppercase;
-    font-size: x-large;
-    font-weight: bolder;
-    padding-bottom: 1rem;
-    // margin-bottom: 1rem;
+  color: $color2;
+  // border-bottom: 1px solid $color1;
+  text-align: left;
+  // text-transform: uppercase;
+  font-size: x-large;
+  font-weight: bolder;
+  padding-bottom: 1rem;
+  // margin-bottom: 1rem;
 }
 
 .utxo-header {
-    // border-bottom: 2px solid $color1;
-    color: $color1;
-    text-transform: uppercase;
-    text-align: left;
-    font-weight: bolder;
+  // border-bottom: 2px solid $color1;
+  color: $color1;
+  text-transform: uppercase;
+  text-align: left;
+  font-weight: bolder;
 
 }
 
 @include media-breakpoint-up(sm) {
-    .utxo-header-border {
-        border-top: 1px solid $color1;
-    }
+  .utxo-header-border {
+    border-top: 1px solid $color1;
+  }
 }
 
 .utxo-value {
-    color: $color1;
-    text-align: left;
-    font-family: 'Rubik', 'Courier New', Courier, monospace;
-    word-wrap: break-word;
-    width: 100%;
-    font-size: medium;
+  color: $color1;
+  text-align: left;
+  font-family: 'Rubik', 'Courier New', Courier, monospace;
+  word-wrap: break-word;
+  width: 100%;
+  font-size: medium;
 }
 
 .utxo-value-mono {
-    color: $color1;
-    text-align: left;
-    font-family: 'Roboto Mono', 'Courier New', Courier, monospace;
-    word-wrap: break-word;
-    width: 100%;
-    font-size: medium;
+  color: $color1;
+  text-align: left;
+  font-family: 'Roboto Mono', 'Courier New', Courier, monospace;
+  word-wrap: break-word;
+  width: 100%;
+  font-size: medium;
 }
 
 @include media-breakpoint-down(sm) {
-    .utxo-value {
-        font-size: small;
-    }
+  .utxo-value {
+    font-size: small;
+  }
 
-    .utxo-value-mono {
-        font-size: small;
-    }
+  .utxo-value-mono {
+    font-size: small;
+  }
 }
 
 .utxo-table {
-    color: $color1;
-    text-align: left;
-    overflow-x: scroll;
+  color: $color1;
+  text-align: left;
+  overflow-x: scroll;
 }
 
 .utxo-table tbody tr {
-    border: 0 0 0 0;
+  border: 0 0 0 0;
 }
 
 .scrollable {
-    overflow-x: scroll;
+  overflow-x: scroll;
 }
 
 .utxo-border {
-    border-bottom: 1px solid $color2;
+  border-bottom: 1px solid $color2;
 }
 
 .utxo-border:last-child {
-    border-bottom: none;
-    margin-bottom: 0 !important;
+  border-bottom: none;
+  margin-bottom: 0 !important;
 }
 
 .utxo-value-detail {
-    background-color: #4ea969;
-    height: 2rem;
-    width: fit-content;
-    padding: 0.5rem;
-    border-radius: 1rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  background-color: #4ea969;
+  height: 2rem;
+  width: fit-content;
+  padding: 0.5rem;
+  border-radius: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .pagination {
-    // border: 1px solid $color1;
-    // border-radius: .4rem;
+  // border: 1px solid $color1;
+  // border-radius: .4rem;
 }
 
 .page-link {
-    background-color: $color5  !important;
-    // border: none;
-    color: $color1;
+  background-color: $color5 !important;
+  // border: none;
+  color: $color1;
 }
 
 .page-link:any-link {
-    color: $color1;
+  color: $color1;
 }
 
 .page-item.active .page-link {
-    border-color: $color2;
+  border-color: $color2;
 }
 
 .tx-hash-list {
-    list-style-type: none;
-    list-style-position: inside;
-    padding: 0;
+  list-style-type: none;
+  list-style-position: inside;
+  padding: 0;
 }
 
 .highlight-addr {
-    color: $color3;
-    font-weight: bold;
+  color: $color3;
+  font-weight: bold;
 }
 
 .adressinfo-tx-overflow {
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
 }

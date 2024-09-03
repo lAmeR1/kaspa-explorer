@@ -42,19 +42,18 @@ const buildVersion = process.env.REACT_APP_VERCEL_GIT_COMMIT_SHA || "xxxxxx";
 
 document.addEventListener("DOMContentLoaded", function () {
   window.addEventListener("scroll", function () {
-    if (window.location.pathname == "/") {
+    if (window.location.pathname === "/") {
       if (window.scrollY > 200) {
-        document.getElementById("navbar_top")?.classList?.add("fixed-top");
+        document.getElementById("navbar_top").classList.add("fixed-top");
       } else {
-        document.getElementById("navbar_top")?.classList?.remove("fixed-top");
+        document.getElementById("navbar_top").classList.remove("fixed-top");
       }
     }
   });
 });
 
 function App() {
-  const { isReady, close, data, send } = useWs("ws://localhost:3002/ws");
-
+  const { close, data, isReady, send } = useWs("ws://localhost:3002/ws");
   const [price, setPrice] = useState("");
   const [marketData, setMarketData] = useState("");
 
@@ -72,7 +71,7 @@ function App() {
     e.preventDefault();
     const v = e.target.searchbox.value;
 
-    if (v.length == 64) {
+    if (v.length === 64) {
       getBlock(v)
         .then((data) => {
           if (data.detail == "Block not found") {
@@ -159,7 +158,6 @@ function App() {
     }
   };
 
-  //<Button variant="primary">Go!</Button>
   return (
     <LastBlocksContext.Provider value={{ blocks, isConnected }}>
       <PriceContext.Provider value={{ price, marketData }}>
@@ -171,7 +169,7 @@ function App() {
               variant="dark"
               sticky="top"
               id="navbar_top"
-              className={location.pathname == "/" ? "" : "fixed-top"}
+              className={location.pathname === "/" ? "" : "fixed-top"}
             >
               <Container id="navbar-container" fluid>
                 <div className="navbar-title">
@@ -186,6 +184,7 @@ function App() {
                             width: "4rem",
                             height: "4rem",
                           }}
+                          alt="Kaspa Logo"
                         />
                         <div className="navbar-brand-text text-start">
                           KASPA
@@ -235,7 +234,7 @@ function App() {
               </Container>
             </Navbar>
             <div className="search-row">
-              <Container className="webpage" hidden={location.pathname == "/"}>
+              <Container className="webpage" hidden={location.pathname === "/"}>
                 <Row>
                   <Col xs={12}>
                     <Form onSubmit={search} className="">
@@ -293,6 +292,7 @@ function App() {
                         className="blockinfo-link"
                         href="https://github.com/lAmeR1/kaspa-explorer"
                         target="_blank"
+                        rel="noreferrer"
                       >
                         <FaGithub size="1.3rem" />
                       </a>
@@ -316,6 +316,7 @@ function App() {
                         className="blockinfo-link ms-3"
                         href="https://api.kaspa.org/"
                         target="_blank"
+                        rel="noreferrer"
                       >
                         <SiFastapi size="1.3rem" />
                       </a>
@@ -347,6 +348,7 @@ function App() {
                         className="blockinfo-link"
                         href="https://github.com/lAmeR1/kaspa-explorer"
                         target="_blank"
+                        rel="noreferrer"
                       >
                         <FaGithub size="1.1rem" />
                       </a>
@@ -370,6 +372,7 @@ function App() {
                         className="blockinfo-link ms-2"
                         href="https://api.kaspa.org/"
                         target="_blank"
+                        rel="noreferrer"
                       >
                         <SiFastapi size="1.1rem" />
                       </a>
