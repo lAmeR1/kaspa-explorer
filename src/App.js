@@ -107,10 +107,11 @@ function App() {
         // socketio
         socket.on('connect', () => {
             setIsConnected(true);
+            socket.emit('last-blocks', "")
+            socket.emit("join-room", "bluescore")
         });
 
         socket.on('disconnect', () => {
-
             setIsConnected(false);
         });
 
@@ -119,12 +120,9 @@ function App() {
             socket.emit("join-room", "blocks")
         })
 
-        socket.emit('last-blocks', "")
-
         socket.on('bluescore', (e) => {
             setBlueScore(e.blueScore)
         })
-        socket.emit("join-room", "bluescore")
 
         socket.on('new-block', (d) => {
             setBlocks([...blocksRef.current, d].slice(-20))
