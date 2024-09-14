@@ -152,6 +152,14 @@ const BlockDAGBox = () => {
                         {feerate} KAS / gram
                     </td>
                 </tr>
+                <tr>
+                    <td className="cardBoxElement">
+                        Fee for regular TX
+                    </td>
+                    <td className="pt-1" id="hashrate">
+                        ~ {feerate * 3165 / 100000000} KAS
+                    </td>
+                </tr>
             </table>
         </div>
     </>
