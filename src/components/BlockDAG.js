@@ -1,7 +1,7 @@
 import {faDiagramProject} from '@fortawesome/free-solid-svg-icons';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {useEffect, useState} from "react";
-import {getBlockdagInfo, getHashrateMax} from '../kaspa-api-client';
+import {getBlockdagInfo, getFeeEstimate, getHashrateMax, getKaspadInfo} from '../kaspa-api-client';
 import {numberWithCommas} from "../helper";
 
 
@@ -10,10 +10,14 @@ const BlockDAGBox = () => {
     const [virtualDaaScore, setVirtualDaaScore] = useState(localStorage.getItem("cacheVirtualDaaScore") || "");
     const [hashrate, setHashrate] = useState(localStorage.getItem("cacheHashrate"));
     const [maxHashrate, setMaxHashrate] = useState(localStorage.getItem("cacheHashrateMax"));
+    const [feerate, setFeerate] = useState(localStorage.getItem("feerate"));
+    const [mempool, setMempool] = useState(localStorage.getItem("mempool"));
 
     const initBox = async () => {
         const dag_info = await getBlockdagInfo()
         const hashrateMax = await getHashrateMax()
+        const feeEstimate = await getFeeEstimate()
+        const kaspadInfo = await getKaspadInfo()
 
         setVirtualDaaScore(dag_info.virtualDaaScore)
         localStorage.setItem("cacheVirtualDaaScore", dag_info.virtualDaaScore)
@@ -21,6 +25,10 @@ const BlockDAGBox = () => {
         localStorage.setItem("cacheHashrate", (dag_info.difficulty * 2 / 1000000000000).toFixed(2))
         setMaxHashrate(hashrateMax.hashrate)
         localStorage.setItem("cacheHashrateMax", hashrateMax.hashrate)
+        setFeerate(feeEstimate.priorityBucket.feerate)
+        localStorage.setItem("feerate", feeEstimate.priorityBucket.feerate)
+        setMempool(kaspadInfo.mempoolSize)
+        localStorage.setItem("mempool", kaspadInfo.mempoolSize)
     }
 
     useEffect(() => {
@@ -31,8 +39,19 @@ const BlockDAGBox = () => {
             setHashrate((dag_info.difficulty * 2 / 1000000000000).toFixed(2))
             localStorage.setItem("cacheHashrate", (dag_info.difficulty * 2 / 1000000000000).toFixed(2))
         }, 60000)
+
+        const updateInterval2 = setInterval(async () => {
+            const feeEstimate = await getFeeEstimate()
+            const kaspadInfo = await getKaspadInfo()
+            setFeerate(feeEstimate.priorityBucket.feerate)
+            localStorage.setItem("feerate", feeEstimate.priorityBucket.feerate)
+            setMempool(kaspadInfo.mempoolSize)
+            localStorage.setItem("mempool", kaspadInfo.mempoolSize)
+        }, 5000)
+
         return (async () => {
             clearInterval(updateInterval)
+            clearInterval(updateInterval2)
         })
     }, [])
 
@@ -82,7 +101,7 @@ const BlockDAGBox = () => {
                 </tr>
                 <tr>
                     <td colspan="2" className="text-center">
-                        <h3>BLOCKDAG INFO</h3>
+                        <h3>NETWORK INFO</h3>
                     </td>
                 </tr>
                 <tr>
@@ -115,6 +134,22 @@ const BlockDAGBox = () => {
                     </td>
                     <td className="pt-1" id="hashrate">
                         {(maxHashrate / 1000 / 1000).toFixed(3)} EH/s
+                    </td>
+                </tr>
+                <tr>
+                    <td className="cardBoxElement">
+                        Mempool count
+                    </td>
+                    <td className="pt-1" id="hashrate">
+                        {mempool}
+                    </td>
+                </tr>
+                <tr>
+                    <td className="cardBoxElement">
+                        Current Prio Fee
+                    </td>
+                    <td className="pt-1" id="hashrate">
+                        {feerate} KAS / gram
                     </td>
                 </tr>
             </table>
