@@ -119,7 +119,7 @@ const CBox = () => {
                 </tr>
                 <tr>
                     <td className="cardBoxElement align-top">Block reward</td>
-                    <td className="pt-1">{blockReward} KAS</td>
+                    <td className="pt-1">{process.env.REACT_APP_NETWORK === "mainnet" ? `${blockReward} KAS` : '-'}</td>
                 </tr>
                 <tr>
                     <td className="cardBoxElement align-top">Reward reduction
@@ -129,9 +129,9 @@ const CBox = () => {
                             </span>
                         </OverlayTrigger> */}
                     </td>
-                    <td className="pt-1">{halvingDate}<br/>
+                    <td className="pt-1">{process.env.REACT_APP_NETWORK === "mainnet" ? <>{halvingDate}<br/>
                         <div className="text-end w-100 pe-3 pt-1" style={{fontSize: "small"}}>to {halvingAmount} KAS
-                        </div>
+                        </div></> : "-"}
                     </td>
                 </tr>
             </table>

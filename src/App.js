@@ -104,7 +104,6 @@ function App() {
     }
 
     useEffect(() => {
-        console.log("ENV: ", process.env)
         updatePrice()
 
         const intervalPrice = setInterval(() => {

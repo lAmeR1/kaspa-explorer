@@ -11,7 +11,7 @@ import CoinsupplyBox from './components/CoinsupplyBox';
 import MarketDataBox from './components/MarketDataBox';
 import TxOverview from './components/TxOverview';
 import {getBlock} from './kaspa-api-client';
-import {ADDRESS_PREFIX} from "./explorer_constants";
+import {ADDRESS_PREFIX, SUFFIX} from "./explorer_constants";
 
 
 function Dashboard() {
@@ -69,7 +69,7 @@ function Dashboard() {
                              className='d-flex flex-row justify-content-start text-light d-xs-none align-items-center'>
                             <img className="big-kaspa-icon" src="/k-icon-glow.png"/>
                             <div className="bigfont kas-badge">
-                                KASPA<br/>EXPLORER
+                                KASPA<br/>EXPLORER{SUFFIX}
                             </div>
                         </Col>
                     </Row>

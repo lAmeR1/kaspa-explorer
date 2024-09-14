@@ -3,6 +3,8 @@ let SUFFIX = ""
 let API_SERVER = process.env.REACT_APP_API_SERVER || ""
 let ADDRESS_PREFIX = "kaspa:"
 
+let BPS = 1
+
 
 switch (process.env.REACT_APP_NETWORK) {
     case "testnet-10":
@@ -20,6 +22,7 @@ switch (process.env.REACT_APP_NETWORK) {
             API_SERVER = "https://api-tn11.kaspa.org"
         }
         SUFFIX = " TN11"
+        BPS = 10
         break;
 
     // mainnet
@@ -31,4 +34,4 @@ switch (process.env.REACT_APP_NETWORK) {
         break;
 }
 
-export { SOCKET_SERVER, SUFFIX, API_SERVER, ADDRESS_PREFIX }
+export { SOCKET_SERVER, SUFFIX, API_SERVER, ADDRESS_PREFIX, BPS }
