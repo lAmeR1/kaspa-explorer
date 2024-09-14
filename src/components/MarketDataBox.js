@@ -8,7 +8,6 @@ import PriceContext from "./PriceContext";
 
 const MarketDataBox = () => {
     const [circCoinsMData, setCircCoinsMData] = useState("-");
-    const [isConnected, setIsConnected] = useState(false);
     const {price, marketData} = useContext(PriceContext);
 
     const initBox = async () => {

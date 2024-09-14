@@ -1,6 +1,6 @@
 import {API_SERVER} from "./explorer_constants";
 
-const API_BASE = API_SERVER
+const API_BASE = API_SERVER + "/"
 
 export async function getBlock(hash) {
     const res = await fetch(`${API_BASE}blocks/${hash}?includeColor=true`, {headers: {'Access-Control-Allow-Origin': '*'}})
