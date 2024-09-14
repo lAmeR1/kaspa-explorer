@@ -9,6 +9,7 @@ const BlockDAGBox = () => {
 
     const [virtualDaaScore, setVirtualDaaScore] = useState(localStorage.getItem("cacheVirtualDaaScore") || "");
     const [hashrate, setHashrate] = useState(localStorage.getItem("cacheHashrate"));
+    const [mempoolView, setMempoolView] = useState(0);
     const [maxHashrate, setMaxHashrate] = useState(localStorage.getItem("cacheHashrateMax"));
     const [feerate, setFeerate] = useState(localStorage.getItem("feerate"));
     const [mempool, setMempool] = useState(localStorage.getItem("mempool"));
@@ -54,6 +55,46 @@ const BlockDAGBox = () => {
             clearInterval(updateInterval2)
         })
     }, [])
+
+
+    useEffect(() => {
+        // slowly in- or decrease
+        let start = mempoolView;
+        let end = mempool;
+        let steps = 200;
+        let stepSize = (end - start) / (steps - 1);
+        let stepsArr = Array.from({length: steps}, (_, i) => Math.floor(start + i * stepSize));
+        var cnt = 0
+        var updaterInterval = setInterval(() => {
+
+            setMempoolView(stepsArr[cnt])
+
+            if (++cnt === 50) {
+                clearInterval(updaterInterval)
+            }
+        }, 25)
+    }, [mempool])
+
+    useEffect((e) => {
+        document.getElementById('feerate').animate([
+            // keyframes
+            {opacity: '1'},
+            {opacity: '0.6'},
+            {opacity: '1'},
+        ], {
+            // timing options
+            duration: 300
+        });
+        document.getElementById('feerateReg').animate([
+            // keyframes
+            {opacity: '1'},
+            {opacity: '0.6'},
+            {opacity: '1'},
+        ], {
+            // timing options
+            duration: 300
+        });
+    }, [feerate])
 
 
     useEffect((e) => {
@@ -138,18 +179,26 @@ const BlockDAGBox = () => {
                 </tr>
                 <tr>
                     <td className="cardBoxElement">
-                        Mempool count
+                        Mempool size
                     </td>
-                    <td className="pt-1" id="hashrate">
-                        {mempool}
+                    <td className="pt-1" id="mempool">
+                        {mempoolView}
                     </td>
                 </tr>
                 <tr>
                     <td className="cardBoxElement">
                         Current Prio Fee
                     </td>
-                    <td className="pt-1" id="hashrate">
+                    <td className="pt-1" id="feerate">
                         {feerate} KAS / gram
+                    </td>
+                </tr>
+                <tr>
+                    <td className="cardBoxElement">
+                        Fee for regular TX
+                    </td>
+                    <td className="pt-1" id="feerateReg">
+                        ~ {feerate * 3165 / 100000000} KAS
                     </td>
                 </tr>
             </table>
