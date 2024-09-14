@@ -11,7 +11,6 @@ export async function getBlock(hash) {
     return res
 }
 
-
 export async function getTransaction(hash) {
     const res = await fetch(`${API_BASE}transactions/${hash}`, {headers: {'Access-Control-Allow-Origin': '*'}})
         .then((response) => response.json())
