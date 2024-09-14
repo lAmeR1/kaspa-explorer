@@ -2,8 +2,6 @@ import {API_SERVER} from "./explorer_constants";
 
 const API_BASE = API_SERVER + "/"
 
-console.log("api server", API_SERVER)
-
 export async function getBlock(hash) {
     const res = await fetch(`${API_BASE}blocks/${hash}?includeColor=true`, {headers: {'Access-Control-Allow-Origin': '*'}})
         .then((response) => response.json())
@@ -119,10 +117,8 @@ export async function getHalving() {
 export async function getTransactionsFromAddress(addr, limit = 20, offset = 0) {
     const res = await fetch(`${API_BASE}addresses/${addr}/full-transactions?limit=${limit}&offset=${offset}`, {
         headers: {
-            'Access-Control-Allow-Origin': '*',
-            'content-type': 'application/json'
-        },
-        method: "GET"
+            'Access-Control-Allow-Origin': '*', 'content-type': 'application/json'
+        }, method: "GET"
     })
         .then((response) => response.json())
         .then(data => {
@@ -135,11 +131,8 @@ export async function getTransactionsFromAddress(addr, limit = 20, offset = 0) {
 export async function getTransactions(tx_list, inputs, outputs) {
     const res = await fetch(`${API_BASE}transactions/search`, {
         headers: {
-            'Access-Control-Allow-Origin': '*',
-            'content-type': 'application/json'
-        },
-        method: "POST",
-        body: JSON.stringify({"transactionIds": tx_list})
+            'Access-Control-Allow-Origin': '*', 'content-type': 'application/json'
+        }, method: "POST", body: JSON.stringify({"transactionIds": tx_list})
     })
         .then((response) => response.json())
         .then(data => {
