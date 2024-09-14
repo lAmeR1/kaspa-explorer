@@ -4,6 +4,7 @@ import moment from 'moment';
 import {useEffect, useState} from "react";
 import {numberWithCommas} from "../helper";
 import {getCoinSupply, getHalving} from '../kaspa-api-client';
+import {API_SERVER} from "../explorer_constants";
 
 
 const CBox = () => {
@@ -61,7 +62,7 @@ const CBox = () => {
     }, [])
 
     async function getBlockReward() {
-        await fetch('https://api.kaspa.org/info/blockreward')
+        await fetch(`${API_SERVER}/info/blockreward`)
             .then((response) => response.json())
             .then(d => {
                 setBlockReward(d.blockreward.toFixed(2))
