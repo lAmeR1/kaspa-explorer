@@ -23,6 +23,15 @@ const BlockLamp = (props) => {
     </OverlayTrigger>
 }
 
+const sompiOrKas = (inp) => {
+    // console.log("in", inp)
+    if (inp < 0.001) {
+        return `${Math.round(inp * 100000000)} Sompi`
+    } else {
+        return `${inp} KAS`
+    }
+}
+
 const getAddrFromOutputs = (outputs, i) => {
     for (const o of outputs) {
         if (o.index == i) {
@@ -31,6 +40,9 @@ const getAddrFromOutputs = (outputs, i) => {
     }
 }
 const getAmountFromOutputs = (outputs, i) => {
+    if (!outputs) {
+        return 0
+    }
     for (const o of outputs) {
         if (o.index == i) {
             return o.amount / 100000000
@@ -304,12 +316,21 @@ const BlockInfo = () => {
                                                     </Container>
                                                 </Col>
                                             </Col>
-                                            <Col sm={5} md={4}>
+                                            <Col sm={5} md={4} lg={3}>
                                                 <div className="utxo-header mt-3">tx amount</div>
                                                 <div className="utxo-value d-flex flex-row">
                                                     <div
                                                         className="utxo-amount">{(numberWithCommas(tx.outputs.reduce((a, b) => (a || 0) + parseInt(b.amount), 0) / 100000000))} KAS
                                                     </div>
+                                                </div>
+                                            </Col>
+                                            <Col sm={3} md={2}>
+                                                <div className="utxo-header mt-3">tx fee</div>
+                                                <div className="utxo-value d-flex flex-row">
+                                                    {tx.inputs.length > 0 ?
+                                                    <div
+                                                        className="">{sompiOrKas((!!txInfo && tx.inputs.reduce((a, c) => a + getAmountFromOutputs(txInfo[c.previousOutpoint.transactionId]?.outputs, c.previousOutpoint.index), 0)) - (numberWithCommas(tx.outputs.reduce((a, b) => (a || 0) + parseInt(b.amount), 0) / 100000000)))}
+                                                    </div> : "0"}
                                                 </div>
                                             </Col>
                                             <Col sm={3} md={2}>
