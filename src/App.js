@@ -21,7 +21,7 @@ import TransactionInfo from './components/TransactionInfo';
 import TxPage from './components/TxPage';
 import Dashboard from './Dashboard';
 import {getBlock} from './kaspa-api-client';
-import {API_SERVER, SOCKET_SERVER, SUFFIX} from "./explorer_constants";
+import {ADDRESS_PREFIX, API_SERVER, SOCKET_SERVER, SUFFIX} from "./explorer_constants";
 // import 'moment/min/locales';
 
 // var locale = window.navigator.userLanguage || window.navigator.language || "en";
@@ -80,7 +80,7 @@ function App() {
             ).catch((err) => {
             })
         }
-        if (v.startsWith("kaspa:")) {
+        if (v.startsWith(ADDRESS_PREFIX)) {
             navigate(`/addresses/${v}`)
         }
 
@@ -194,7 +194,7 @@ function App() {
                                         <InputGroup className="mt-4 mb-4 search-box-group">
                                             <Form.Control className="d-inline-block bg-light text-dark shadow-none"
                                                           name="searchbox" id="search-box-high" type="text"
-                                                          placeholder="Search for kaspa:address or block"/>
+                                                          placeholder={`Search for ${ADDRESS_PREFIX}address or block`}/>
                                             <Button type="submit" className="shadow-none searchButton" variant="dark"><i
                                                 className='fa fa-search'/></Button>
                                         </InputGroup>

@@ -11,6 +11,7 @@ import CoinsupplyBox from './components/CoinsupplyBox';
 import MarketDataBox from './components/MarketDataBox';
 import TxOverview from './components/TxOverview';
 import {getBlock} from './kaspa-api-client';
+import {ADDRESS_PREFIX} from "./explorer_constants";
 
 
 function Dashboard() {
@@ -24,7 +25,7 @@ function Dashboard() {
     const [showLoadingModal, setShowLoadingModal] = useState(false)
 
     const [balance, setBalance] = useState(0);
-    const [address, setAddress] = useState("kaspa:");
+    const [address, setAddress] = useState(ADDRESS_PREFIX);
 
     const search = (e) => {
         e.preventDefault();
@@ -45,7 +46,7 @@ function Dashboard() {
             })
         }
 
-        if (v.startsWith("kaspa:")) {
+        if (v.startsWith(ADDRESS_PREFIX)) {
             navigate(`/addresses/${v}`)
         }
 
@@ -77,7 +78,7 @@ function Dashboard() {
                             <Form onSubmit={search}>
                                 <InputGroup className="ms-md-5 mt-5 me-5 dashboard-search-box">
                                     <Form.Control className="bg-light text-dark shadow-none" name="searchInput"
-                                                  type="text" placeholder="Search for kaspa:address or block"/>
+                                                  type="text" placeholder={`Search for ${ADDRESS_PREFIX}address or block`}/>
                                     <Button type="submit" className="shadow-none searchButton" variant="dark"><i
                                         className='fa fa-search'/></Button>
                                 </InputGroup>

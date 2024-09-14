@@ -23,6 +23,7 @@ import UtxoPagination from "./UtxoPagination.js";
 
 import QRCodeStyling from "qr-code-styling";
 import QrButton from "./QrButton";
+import {ADDRESS_PREFIX} from "../explorer_constants";
 
 
 const AddressInfoPage = () => {
@@ -285,7 +286,7 @@ const AddressInfo = () => {
                     <div className="addressinfo-header">Address{addressName ?
                         <span className="address-name">{addressName ? addressName : ""}</span> : ""}</div>
                     <div className="utxo-value-mono"><span
-                        class="addressinfo-color">kaspa:</span>{addr.substring(6, addr.length - 8)}<span
+                        class="addressinfo-color">{ADDRESS_PREFIX}</span>{addr.substring(6, addr.length - 8)}<span
                         class="addressinfo-color">{addr.substring(addr.length - 8)}</span>
                         <CopyButton size="2rem" text={addr}/>
                         <QrButton addr="{addr}" onClick={() => setShowQr(!showQr)}/>
@@ -348,12 +349,12 @@ const AddressInfo = () => {
             </Row>
         </Container>
 
-        {view == "transactions" && <Container className="webpage addressinfo-box mt-4" fluid>
+        {view === "transactions" && <Container className="webpage addressinfo-box mt-4" fluid>
             <Row className="border-bottom border-bottom-1">
                 <Col xs={6} className="d-flex flex-row align-items-center">
                     <div className="utxo-title d-flex flex-row">Transactions History</div>
                     <div className="ms-auto d-flex flex-row align-items-center"><Toggle
-                        defaultChecked={localStorage.getItem('detailedView') == "true"}
+                        defaultChecked={localStorage.getItem('detailedView') === "true"}
                         size={"1px"}
                         icons={false}
                         onChange={(e) => {
@@ -485,7 +486,7 @@ const AddressInfo = () => {
                 // </> : <Spinner className="m-3" animation="border" variant="primary"/>}
 
         </Container>}
-        {view == "utxos" &&
+        {view === "utxos" &&
             <Container className="webpage addressinfo-box mt-4" fluid>
                 <Row className="border-bottom border-bottom-1">
                     <Col xs={1}>
