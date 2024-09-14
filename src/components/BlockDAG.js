@@ -3,6 +3,7 @@ import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {useEffect, useState} from "react";
 import {getBlockdagInfo, getFeeEstimate, getHashrateMax, getKaspadInfo} from '../kaspa-api-client';
 import {numberWithCommas} from "../helper";
+import {BPS} from "../explorer_constants";
 
 
 const BlockDAGBox = () => {
@@ -22,9 +23,9 @@ const BlockDAGBox = () => {
 
         setVirtualDaaScore(dag_info.virtualDaaScore)
         localStorage.setItem("cacheVirtualDaaScore", dag_info.virtualDaaScore)
-        setHashrate((dag_info.difficulty * 2 / 1000000000000).toFixed(2))
-        localStorage.setItem("cacheHashrate", (dag_info.difficulty * 2 / 1000000000000).toFixed(2))
-        setMaxHashrate(hashrateMax.hashrate)
+        setHashrate((dag_info.difficulty * 2).toFixed(2))
+        localStorage.setItem("cacheHashrate", (dag_info.difficulty * 2).toFixed(2))
+        setMaxHashrate(hashrateMax.hashrate * 1000 * 1000 * 1000 * 1000)
         localStorage.setItem("cacheHashrateMax", hashrateMax.hashrate)
         setFeerate(feeEstimate.priorityBucket.feerate)
         localStorage.setItem("feerate", feeEstimate.priorityBucket.feerate)
@@ -37,7 +38,7 @@ const BlockDAGBox = () => {
         const updateInterval = setInterval(async () => {
             const dag_info = await getBlockdagInfo()
             setVirtualDaaScore(dag_info.virtualDaaScore)
-            setHashrate((dag_info.difficulty * 2 / 1000000000000).toFixed(2))
+            setHashrate((dag_info.difficulty * 2 * BPS / 1000000000000).toFixed(2))
             localStorage.setItem("cacheHashrate", (dag_info.difficulty * 2 / 1000000000000).toFixed(2))
         }, 60000)
 
@@ -61,18 +62,18 @@ const BlockDAGBox = () => {
         // slowly in- or decrease
         let start = mempoolView;
         let end = mempool;
-        let steps = 200;
+        let steps = 50;
         let stepSize = (end - start) / (steps - 1);
         let stepsArr = Array.from({length: steps}, (_, i) => Math.floor(start + i * stepSize));
         var cnt = 0
         var updaterInterval = setInterval(() => {
-
+            // console.log(stepsArr)
             setMempoolView(stepsArr[cnt])
 
-            if (++cnt === 50) {
+            if (++cnt === stepsArr.length) {
                 clearInterval(updaterInterval)
             }
-        }, 25)
+        }, 50)
     }, [mempool])
 
     useEffect((e) => {
@@ -123,12 +124,21 @@ const BlockDAGBox = () => {
 
 
     function hashrateToStr(inHashrate) {
-        if (inHashrate / 1000 < 1000) {
-            return `${(inHashrate / 1000).toFixed(3)} PH/s`
+        if (inHashrate < 1000) {
+            return `${(inHashrate / 1).toFixed(2)} H/s`
+        } else if (inHashrate < 1000 * 1000) {
+            return `${(inHashrate / 1000).toFixed(2)} KH/s`
+        } else if (inHashrate < 1000 * 1000 * 1000) {
+            return `${(inHashrate / 1000 / 1000).toFixed(2)} MH/s`
+        } else if (inHashrate < 1000 * 1000 * 1000 * 1000) {
+            return `${(inHashrate / 1000 / 1000 / 1000).toFixed(2)} GH/s`
+        } else if (inHashrate < 1000 * 1000 * 1000 * 1000 * 1000) {
+            return `${(inHashrate / 1000 / 1000 / 1000 / 1000).toFixed(2)} TH/s`
+        } else if (inHashrate < 1000 * 1000 * 1000 * 1000 * 1000 * 1000) {
+            return `${(inHashrate / 1000 / 1000 / 1000 / 1000 / 1000).toFixed(2)} PH/s`
         } else {
-            return `${(inHashrate / 1000 / 1000).toFixed(3)} EH/s`
+            return `${(inHashrate / 1000 / 1000 / 1000 / 1000 / 1000 / 1000).toFixed(2)} EH/s`
         }
-
     }
 
     return <>
@@ -150,7 +160,7 @@ const BlockDAGBox = () => {
                         Network name
                     </td>
                     <td className="pt-1 text-nowrap">
-                        KASPA MAINNET
+                        KASPA {process.env.REACT_APP_NETWORK.toUpperCase()}
                     </td>
                 </tr>
                 <tr>
@@ -174,7 +184,7 @@ const BlockDAGBox = () => {
                         Max Hashrate
                     </td>
                     <td className="pt-1" id="hashrate">
-                        {(maxHashrate / 1000 / 1000).toFixed(3)} EH/s
+                        {hashrateToStr(maxHashrate)}
                     </td>
                 </tr>
                 <tr>
@@ -182,7 +192,7 @@ const BlockDAGBox = () => {
                         Mempool size
                     </td>
                     <td className="pt-1" id="mempool">
-                        {mempoolView}
+                        {numberWithCommas(mempoolView)}
                     </td>
                 </tr>
                 <tr>
@@ -190,7 +200,7 @@ const BlockDAGBox = () => {
                         Current Prio Fee
                     </td>
                     <td className="pt-1" id="feerate">
-                        {feerate} KAS / gram
+                        {feerate} Sompi / gram
                     </td>
                 </tr>
                 <tr>
@@ -198,7 +208,7 @@ const BlockDAGBox = () => {
                         Fee for regular TX
                     </td>
                     <td className="pt-1" id="feerateReg">
-                        ~ {feerate * 3165 / 100000000} KAS
+                        ≈ {feerate * 3165 / 100000000} KAS
                     </td>
                 </tr>
             </table>

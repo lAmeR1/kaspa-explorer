@@ -4,6 +4,7 @@ import moment from 'moment';
 import {useEffect, useState} from "react";
 import {numberWithCommas} from "../helper";
 import {getCoinSupply, getHalving} from '../kaspa-api-client';
+import {API_SERVER} from "../explorer_constants";
 
 
 const CBox = () => {
@@ -61,7 +62,7 @@ const CBox = () => {
     }, [])
 
     async function getBlockReward() {
-        await fetch('https://api.kaspa.org/info/blockreward')
+        await fetch(`${API_SERVER}/info/blockreward`)
             .then((response) => response.json())
             .then(d => {
                 setBlockReward(d.blockreward.toFixed(2))
@@ -118,7 +119,7 @@ const CBox = () => {
                 </tr>
                 <tr>
                     <td className="cardBoxElement align-top">Block reward</td>
-                    <td className="pt-1">{blockReward} KAS</td>
+                    <td className="pt-1">{process.env.REACT_APP_NETWORK === "mainnet" ? `${blockReward} KAS` : '-'}</td>
                 </tr>
                 <tr>
                     <td className="cardBoxElement align-top">Reward reduction
@@ -128,9 +129,9 @@ const CBox = () => {
                             </span>
                         </OverlayTrigger> */}
                     </td>
-                    <td className="pt-1">{halvingDate}<br/>
+                    <td className="pt-1">{process.env.REACT_APP_NETWORK === "mainnet" ? <>{halvingDate}<br/>
                         <div className="text-end w-100 pe-3 pt-1" style={{fontSize: "small"}}>to {halvingAmount} KAS
-                        </div>
+                        </div></> : "-"}
                     </td>
                 </tr>
             </table>

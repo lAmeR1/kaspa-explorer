@@ -21,13 +21,15 @@ import TransactionInfo from './components/TransactionInfo';
 import TxPage from './components/TxPage';
 import Dashboard from './Dashboard';
 import {getBlock} from './kaspa-api-client';
+import {ADDRESS_PREFIX, API_SERVER, SOCKET_SERVER, SUFFIX} from "./explorer_constants";
 // import 'moment/min/locales';
 
 // var locale = window.navigator.userLanguage || window.navigator.language || "en";
 // moment.locale(locale);
 // moment.locale('en');
 
-const buildVersion = process.env.REACT_APP_VERCEL_GIT_COMMIT_SHA || "xxxxxx"
+const buildVersion = process.env.REACT_APP_VERCEL_GIT_COMMIT_SHA || "xxxxxx";
+
 
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -43,7 +45,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 
-const socket = io("wss://api.kaspa.org", {
+const socket = io(SOCKET_SERVER, {
     path: '/ws/socket.io'
 });
 
@@ -78,7 +80,7 @@ function App() {
             ).catch((err) => {
             })
         }
-        if (v.startsWith("kaspa:")) {
+        if (v.startsWith(ADDRESS_PREFIX)) {
             navigate(`/addresses/${v}`)
         }
 
@@ -86,12 +88,16 @@ function App() {
     }
 
     const updatePrice = () => {
-        fetch(`https://api.kaspa.org/info/market-data`, {
+        fetch(`${API_SERVER}/info/market-data`, {
             headers: {"Cache-Control": "no-cache"}
         })
             .then(response => response.json())
             .then(data => {
-                setPrice(data['current_price']['usd'].toFixed(4));
+                if (process.env.REACT_APP_NETWORK?.startsWith("testnet")) {
+                    setPrice(0)
+                } else {
+                    setPrice(data['current_price']['usd'].toFixed(4));
+                }
                 setMarketData(data);
             })
             .catch(r => console.log(r))
@@ -159,7 +165,8 @@ function App() {
                                             <div className="navbar-brand">
                                                 <img className="shake" src="/k-icon-glow.png"
                                                      style={{"marginRight": ".5rem", width: "4rem", height: "4rem"}}/>
-                                                <div className="navbar-brand-text text-start">KASPA<br/>EXPLORER</div>
+                                                <div className="navbar-brand-text text-start">KASPA<br/>EXPLORER{SUFFIX}
+                                                </div>
                                             </div>
                                         </Link>
                                     </Navbar.Brand>
@@ -169,11 +176,11 @@ function App() {
                                 <Navbar.Collapse id="responsive-navbar-nav">
                                     <Nav className="me-auto">
                                         <Nav.Item><NavLink className="nav-link fs-5" onClick={closeMenuIfNeeded}
-                                                           to={"/"}>Dashboard</NavLink></Nav.Item>
+                                                           to={`/`}>Dashboard</NavLink></Nav.Item>
                                         <Nav.Item><NavLink className="nav-link fs-5" onClick={closeMenuIfNeeded}
-                                                           to={"/blocks"}>Blocks</NavLink></Nav.Item>
+                                                           to={`/blocks`}>Blocks</NavLink></Nav.Item>
                                         <Nav.Item><NavLink className="nav-link fs-5" onClick={closeMenuIfNeeded}
-                                                           to={"/txs"}>Transactions</NavLink></Nav.Item>
+                                                           to={`/txs`}>Transactions</NavLink></Nav.Item>
                                     </Nav>
                                     <div className='ms-auto navbar-price'>${price} <span
                                         className="text-light">/ KAS</span></div>
@@ -187,7 +194,7 @@ function App() {
                                         <InputGroup className="mt-4 mb-4 search-box-group">
                                             <Form.Control className="d-inline-block bg-light text-dark shadow-none"
                                                           name="searchbox" id="search-box-high" type="text"
-                                                          placeholder="Search for kaspa:address or block"/>
+                                                          placeholder={`Search for ${ADDRESS_PREFIX}address or block`}/>
                                             <Button type="submit" className="shadow-none searchButton" variant="dark"><i
                                                 className='fa fa-search'/></Button>
                                         </InputGroup>
