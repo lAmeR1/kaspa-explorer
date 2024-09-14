@@ -93,7 +93,7 @@ function App() {
         })
             .then(response => response.json())
             .then(data => {
-                if (process.env.NETWORK?.startsWith("testnet")) {
+                if (process.env.REACT_APP_NETWORK?.startsWith("testnet")) {
                     setPrice(0)
                 } else {
                     setPrice(data['current_price']['usd'].toFixed(4));
@@ -104,6 +104,7 @@ function App() {
     }
 
     useEffect(() => {
+        console.log("ENV: ", process.env)
         updatePrice()
 
         const intervalPrice = setInterval(() => {

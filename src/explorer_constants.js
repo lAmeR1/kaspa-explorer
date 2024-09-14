@@ -1,10 +1,10 @@
-export let SOCKET_SERVER = process.env.WS_SERVER || "wss://api.kaspa.org";
-export let SUFFIX = ""
-export let API_SERVER = process.env.API_SERVER || ""
-export let ADDRESS_PREFIX = "kaspa:"
+let SOCKET_SERVER = process.env.WS_SERVER || "wss://api.kaspa.org";
+let SUFFIX = ""
+let API_SERVER = process.env.REACT_APP_API_SERVER || ""
+let ADDRESS_PREFIX = "kaspa:"
 
 
-switch (process.env.NETWORK) {
+switch (process.env.REACT_APP_NETWORK) {
     case "testnet-10":
         SOCKET_SERVER = "wss://api-tn10.kaspa.org";
         ADDRESS_PREFIX = "kaspatest:"
@@ -30,3 +30,5 @@ switch (process.env.NETWORK) {
         }
         break;
 }
+
+export { SOCKET_SERVER, SUFFIX, API_SERVER, ADDRESS_PREFIX }

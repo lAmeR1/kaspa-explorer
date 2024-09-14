@@ -150,7 +150,7 @@ const BlockDAGBox = () => {
                         Network name
                     </td>
                     <td className="pt-1 text-nowrap">
-                        KASPA MAINNET
+                        KASPA {process.env.REACT_APP_NETWORK.toUpperCase()}
                     </td>
                 </tr>
                 <tr>
@@ -190,7 +190,7 @@ const BlockDAGBox = () => {
                         Current Prio Fee
                     </td>
                     <td className="pt-1" id="feerate">
-                        {feerate} KAS / gram
+                        {feerate} Sompi / gram
                     </td>
                 </tr>
                 <tr>
