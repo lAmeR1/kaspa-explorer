@@ -24,11 +24,11 @@ const BlockLamp = (props) => {
 }
 
 const sompiOrKas = (inp) => {
-    // console.log("in", inp)
-    if (inp < 0.001) {
+    console.log("in", inp)
+    if (parseFloat(inp.toFixed(8)) < 0.00001) {
         return `${Math.round(inp * 100000000)} Sompi`
     } else {
-        return `${inp} KAS`
+        return `${parseFloat(inp.toFixed(8))} KAS`
     }
 }
 
@@ -328,9 +328,9 @@ const BlockInfo = () => {
                                                 <div className="utxo-header mt-3">tx fee</div>
                                                 <div className="utxo-value d-flex flex-row">
                                                     {tx.inputs.length > 0 ?
-                                                    <div
-                                                        className="">{sompiOrKas((!!txInfo && tx.inputs.reduce((a, c) => a + getAmountFromOutputs(txInfo[c.previousOutpoint.transactionId]?.outputs, c.previousOutpoint.index), 0)) - (numberWithCommas(tx.outputs.reduce((a, b) => (a || 0) + parseInt(b.amount), 0) / 100000000)))}
-                                                    </div> : "0"}
+                                                        <div
+                                                            className="">{!!txInfo && sompiOrKas((tx.inputs.reduce((a, c) => a + getAmountFromOutputs(txInfo[c.previousOutpoint.transactionId]?.outputs, c.previousOutpoint.index), 0)) - (tx.outputs.reduce((a, b) => (a || 0) + parseInt(b.amount), 0) / 100000000))}
+                                                        </div> : "0"}
                                                 </div>
                                             </Col>
                                             <Col sm={3} md={2}>
