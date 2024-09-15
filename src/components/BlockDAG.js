@@ -23,11 +23,11 @@ const BlockDAGBox = () => {
 
         setVirtualDaaScore(dag_info.virtualDaaScore)
         localStorage.setItem("cacheVirtualDaaScore", dag_info.virtualDaaScore)
-        setHashrate((dag_info.difficulty * 2).toFixed(2))
+        setHashrate((dag_info.difficulty * 2 * BPS))
         localStorage.setItem("cacheHashrate", (dag_info.difficulty * 2).toFixed(2))
         setMaxHashrate(hashrateMax.hashrate * 1000 * 1000 * 1000 * 1000)
         localStorage.setItem("cacheHashrateMax", hashrateMax.hashrate)
-        setFeerate(feeEstimate.priorityBucket.feerate)
+        setFeerate(feeEstimate.normalBuckets[0].feerate)
         localStorage.setItem("feerate", feeEstimate.priorityBucket.feerate)
         setMempool(kaspadInfo.mempoolSize)
         localStorage.setItem("mempool", kaspadInfo.mempoolSize)
@@ -38,14 +38,14 @@ const BlockDAGBox = () => {
         const updateInterval = setInterval(async () => {
             const dag_info = await getBlockdagInfo()
             setVirtualDaaScore(dag_info.virtualDaaScore)
-            setHashrate((dag_info.difficulty * 2 * BPS / 1000000000000).toFixed(2))
+            setHashrate((dag_info.difficulty * 2 * BPS))
             localStorage.setItem("cacheHashrate", (dag_info.difficulty * 2 / 1000000000000).toFixed(2))
         }, 60000)
 
         const updateInterval2 = setInterval(async () => {
             const feeEstimate = await getFeeEstimate()
             const kaspadInfo = await getKaspadInfo()
-            setFeerate(feeEstimate.priorityBucket.feerate)
+            setFeerate(feeEstimate.normalBuckets[0].feerate)
             localStorage.setItem("feerate", feeEstimate.priorityBucket.feerate)
             setMempool(kaspadInfo.mempoolSize)
             localStorage.setItem("mempool", kaspadInfo.mempoolSize)
@@ -62,7 +62,7 @@ const BlockDAGBox = () => {
         // slowly in- or decrease
         let start = mempoolView;
         let end = mempool;
-        let steps = 50;
+        let steps = 400;
         let stepSize = (end - start) / (steps - 1);
         let stepsArr = Array.from({length: steps}, (_, i) => Math.floor(start + i * stepSize));
         var cnt = 0
@@ -73,7 +73,7 @@ const BlockDAGBox = () => {
             if (++cnt === stepsArr.length) {
                 clearInterval(updaterInterval)
             }
-        }, 50)
+        }, 10)
     }, [mempool])
 
     useEffect((e) => {
@@ -197,7 +197,7 @@ const BlockDAGBox = () => {
                 </tr>
                 <tr>
                     <td className="cardBoxElement">
-                        Current Prio Fee
+                        Current Normal Fee
                     </td>
                     <td className="pt-1" id="feerate">
                         {feerate} Sompi / gram
