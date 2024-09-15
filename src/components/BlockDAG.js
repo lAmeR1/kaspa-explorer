@@ -208,7 +208,7 @@ const BlockDAGBox = () => {
                         Fee for regular TX
                     </td>
                     <td className="pt-1" id="feerateReg">
-                        ≈ {feerate * 3165 / 100000000} KAS
+                        ≈ {feerate > 300 ? (feerate * 3165 / 100000000).toFixed(2) : (feerate * 3165 / 100000000)} KAS
                     </td>
                 </tr>
             </table>
