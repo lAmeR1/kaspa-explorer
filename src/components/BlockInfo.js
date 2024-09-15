@@ -324,15 +324,15 @@ const BlockInfo = () => {
                                                     </div>
                                                 </div>
                                             </Col>
-                                            <Col sm={3} md={2}>
-                                                <div className="utxo-header mt-3">tx fee</div>
-                                                <div className="utxo-value d-flex flex-row">
-                                                    {tx.inputs.length > 0 ?
-                                                        <div
-                                                            className="">{!!txInfo && sompiOrKas((tx.inputs.reduce((a, c) => a + getAmountFromOutputs(txInfo[c.previousOutpoint.transactionId]?.outputs, c.previousOutpoint.index), 0)) - (tx.outputs.reduce((a, b) => (a || 0) + parseInt(b.amount), 0) / 100000000))}
-                                                        </div> : "0"}
-                                                </div>
-                                            </Col>
+                                            {/*<Col sm={3} md={2}>*/}
+                                            {/*    <div className="utxo-header mt-3">tx fee</div>*/}
+                                            {/*    <div className="utxo-value d-flex flex-row">*/}
+                                            {/*        {tx.inputs.length > 0 ?*/}
+                                            {/*            <div*/}
+                                            {/*                className="">{!!txInfo && tx.inputs.length === txInfo.length && sompiOrKas((tx.inputs.reduce((a, c) => a + getAmountFromOutputs(txInfo[c.previousOutpoint.transactionId]?.outputs, c.previousOutpoint.index), 0)) - (tx.outputs.reduce((a, b) => (a || 0) + parseInt(b.amount), 0) / 100000000))}*/}
+                                            {/*            </div> : "0"}*/}
+                                            {/*    </div>*/}
+                                            {/*</Col>*/}
                                             <Col sm={3} md={2}>
                                                 <div className="utxo-header mt-3">tx value</div>
                                                 <div
