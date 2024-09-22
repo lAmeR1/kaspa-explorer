@@ -20,6 +20,15 @@ const getOutputFromIndex = (outputs, index) => {
     }
 }
 
+const signatureScriptToAscii = (s) => {
+    let ascii = '';
+    for (let i = 0; i < s.length; i += 2) {
+      ascii += String.fromCharCode(parseInt(s.substr(i, 2), 16));
+
+    }
+    return ascii
+}
+
 
 const TransactionInfo = () => {
     const {id} = useParams();
@@ -206,6 +215,10 @@ const TransactionInfo = () => {
                                                 <div className="blockinfo-key mt-2">Signature Script</div>
                                                 <div className="utxo-value-mono">
                                                     {tx_input.signature_script}
+                                                    <p style={{marginTop: "1rem"}}>
+                                                    <div className="blockinfo-key mt-0 mt-md-2">Signature Script (as ASCII)</div>
+                                                    {signatureScriptToAscii(tx_input.signature_script)}
+                                                    </p>
                                                 </div>
                                             </Col>
                                             {!!additionalTxInfo && additionalTxInfo[tx_input.previous_outpoint_hash] &&
