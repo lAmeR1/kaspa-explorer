@@ -3,7 +3,7 @@ import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {useEffect, useState} from "react";
 import {getBlockdagInfo, getFeeEstimate, getHashrateMax, getKaspadInfo} from '../kaspa-api-client';
 import {numberWithCommas} from "../helper";
-import {BPS} from "../explorer_constants";
+import {BPS, KASPA_UNIT} from "../explorer_constants";
 
 
 const BlockDAGBox = () => {
@@ -208,7 +208,7 @@ const BlockDAGBox = () => {
                         Fee for regular TX
                     </td>
                     <td className="pt-1" id="feerateReg">
-                        ≈ {feerate > 300 ? (feerate * 3165 / 100000000).toFixed(2) : (feerate * 3165 / 100000000)} KAS
+                        ≈ {feerate > 300 ? (feerate * 3165 / 100000000).toFixed(2) : (feerate * 3165 / 100000000)} {KASPA_UNIT}
                     </td>
                 </tr>
             </table>

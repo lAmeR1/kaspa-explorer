@@ -4,7 +4,7 @@ import moment from 'moment';
 import {useEffect, useState} from "react";
 import {numberWithCommas} from "../helper";
 import {getCoinSupply, getHalving} from '../kaspa-api-client';
-import {API_SERVER} from "../explorer_constants";
+import {API_SERVER, KASPA_UNIT} from "../explorer_constants";
 
 
 const CBox = () => {
@@ -105,13 +105,13 @@ const CBox = () => {
                         Total
                     </td>
                     <td className="">
-                        <div id="coins">{numberWithCommas(circCoins)} KAS
+                        <div id="coins">{numberWithCommas(circCoins)} {KASPA_UNIT}
                         </div>
                     </td>
                 </tr>
                 <tr>
                     <td className="cardBoxElement align-top">Max <span className="approx">(approx.)</span></td>
-                    <td className="pt-1">28,700,000,000 KAS</td>
+                    <td className="pt-1">28,700,000,000 {KASPA_UNIT}</td>
                 </tr>
                 <tr>
                     <td className="cardBoxElement align-top">Mined</td>
@@ -119,7 +119,7 @@ const CBox = () => {
                 </tr>
                 <tr>
                     <td className="cardBoxElement align-top">Block reward</td>
-                    <td className="pt-1">{process.env.REACT_APP_NETWORK === "mainnet" ? `${blockReward} KAS` : '-'}</td>
+                    <td className="pt-1">{process.env.REACT_APP_NETWORK === "mainnet" ? `${blockReward} ${KASPA_UNIT}` : '-'}</td>
                 </tr>
                 <tr>
                     <td className="cardBoxElement align-top">Reward reduction
@@ -130,7 +130,7 @@ const CBox = () => {
                         </OverlayTrigger> */}
                     </td>
                     <td className="pt-1">{process.env.REACT_APP_NETWORK === "mainnet" ? <>{halvingDate}<br/>
-                        <div className="text-end w-100 pe-3 pt-1" style={{fontSize: "small"}}>to {halvingAmount} KAS
+                        <div className="text-end w-100 pe-3 pt-1" style={{fontSize: "small"}}>to {halvingAmount} {KASPA_UNIT}
                         </div></> : "-"}
                     </td>
                 </tr>

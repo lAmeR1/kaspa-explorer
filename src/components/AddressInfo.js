@@ -23,7 +23,7 @@ import UtxoPagination from "./UtxoPagination.js";
 
 import QRCodeStyling from "qr-code-styling";
 import QrButton from "./QrButton";
-import {ADDRESS_PREFIX} from "../explorer_constants";
+import {ADDRESS_PREFIX, KASPA_UNIT} from "../explorer_constants";
 
 
 const AddressInfoPage = () => {
@@ -301,7 +301,7 @@ const AddressInfo = () => {
                     <div className="addressinfo-header mt-4">balance</div>
                     <div className="utxo-value d-flex">
                         {addressBalance !== undefined ?
-                            <div className="utxo-amount">+{numberWithCommas(addressBalance / 100000000)} KAS</div> :
+                            <div className="utxo-amount">+{numberWithCommas(addressBalance / 100000000)} {KASPA_UNIT}</div> :
                             <Spinner animation="border" variant="primary"/>}</div>
                 </Col>
                 <Col sm={6} md={4}>
@@ -391,9 +391,9 @@ const AddressInfo = () => {
                                 <Link className="blockinfo-link" to={`/txs/${x.transaction_id}`}>
                                     {getAmount(x.outputs, x.inputs) > 0 ?
                                         <span
-                                            className="utxo-amount">+{numberWithCommas(floatToStr(getAmount(x.outputs, x.inputs)))}&nbsp;KAS</span> :
+                                            className="utxo-amount">+{numberWithCommas(floatToStr(getAmount(x.outputs, x.inputs)))}&nbsp;{KASPA_UNIT}</span> :
                                         <span
-                                            className="utxo-amount-minus">{numberWithCommas(floatToStr(getAmount(x.outputs, x.inputs)))}&nbsp;KAS</span>}
+                                            className="utxo-amount-minus">{numberWithCommas(floatToStr(getAmount(x.outputs, x.inputs)))}&nbsp;{kASPA_UNIT}</span>}
                                 </Link>
                             </div>
                         </Col>
@@ -420,7 +420,7 @@ const AddressInfo = () => {
                                                         </Link>
                                                     </Col>
                                                     <Col xs={5}><span
-                                                        className="block-utxo-amount-minus">-{numberWithCommas(getAmountFromOutputs(txsInpCache[x.previous_outpoint_hash]["outputs"], x.previous_outpoint_index))}&nbsp;KAS</span></Col></Row></> :
+                                                        className="block-utxo-amount-minus">-{numberWithCommas(getAmountFromOutputs(txsInpCache[x.previous_outpoint_hash]["outputs"], x.previous_outpoint_index))}&nbsp;{KASPA_UNIT}</span></Col></Row></> :
                                             <li key={`${x.previous_outpoint_hash}${x.previous_outpoint_index}`}>{x.previous_outpoint_hash} #{x.previous_outpoint_index}</li>
                                     }) : "COINBASE (New coins)"}
 
@@ -440,7 +440,7 @@ const AddressInfo = () => {
                                             </Link>
                                         </Col>
                                         <Col xs={5}><span
-                                            className="block-utxo-amount">+{numberWithCommas(x.amount / 100000000)}&nbsp;KAS</span></Col></Row>)}
+                                            className="block-utxo-amount">+{numberWithCommas(x.amount / 100000000)}&nbsp;{KASPA_UNIT}</span></Col></Row>)}
                                 </div>
                             </Col>
                             <Col md={12}>
@@ -516,7 +516,7 @@ const AddressInfo = () => {
                         <Col sm={6} md={4}>
                             <div className="utxo-header mt-3">amount</div>
                             <div className="utxo-value d-flex flex-row">
-                                <div className="utxo-amount">+{numberWithCommas(x.utxoEntry.amount / 100000000)} KAS
+                                <div className="utxo-amount">+{numberWithCommas(x.utxoEntry.amount / 100000000)} {KASPA_UNIT}
                                 </div>
                             </div>
                         </Col>

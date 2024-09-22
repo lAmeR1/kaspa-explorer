@@ -2,6 +2,7 @@ let SOCKET_SERVER = process.env.WS_SERVER || "wss://api.kaspa.org";
 let SUFFIX = ""
 let API_SERVER = process.env.REACT_APP_API_SERVER || ""
 let ADDRESS_PREFIX = "kaspa:"
+let KASPA_UNIT = "KAS"
 
 let BPS = 1
 
@@ -14,6 +15,7 @@ switch (process.env.REACT_APP_NETWORK) {
             API_SERVER = "https://api-tn10.kaspa.org"
         }
         SUFFIX = " TN10"
+        KASPA_UNIT = "TKAS"
         break;
     case "testnet-11":
         SOCKET_SERVER = "wss://api-tn11.kaspa.org";
@@ -22,6 +24,7 @@ switch (process.env.REACT_APP_NETWORK) {
             API_SERVER = "https://api-tn11.kaspa.org"
         }
         SUFFIX = " TN11"
+        KASPA_UNIT = "TKAS"
         BPS = 10
         break;
 
@@ -34,4 +37,4 @@ switch (process.env.REACT_APP_NETWORK) {
         break;
 }
 
-export { SOCKET_SERVER, SUFFIX, API_SERVER, ADDRESS_PREFIX, BPS }
+export { SOCKET_SERVER, SUFFIX, API_SERVER, ADDRESS_PREFIX, BPS, KASPA_UNIT }

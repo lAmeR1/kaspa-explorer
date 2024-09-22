@@ -28,7 +28,7 @@ const sompiOrKas = (inp) => {
     if (parseFloat(inp.toFixed(8)) < 0.00001) {
         return `${Math.round(inp * 100000000)} Sompi`
     } else {
-        return `${parseFloat(inp.toFixed(8))} KAS`
+        return `${parseFloat(inp.toFixed(8))} {KASPA_UNIT}`
     }
 }
 
@@ -273,7 +273,7 @@ const BlockInfo = () => {
                                                                             text={getAddrFromOutputs(txInfo[txInput.previousOutpoint.transactionId]["outputs"], txInput.previousOutpoint.index || 0)}/>
                                                                     </Col><Col className="block-utxo-amount-minus" xs={12}
                                                                                sm={4} md={2}>
-                                                                    -{numberWithCommas(getAmountFromOutputs(txInfo[txInput.previousOutpoint.transactionId]["outputs"], txInput.previousOutpoint.index || 0))}&nbsp;KAS
+                                                                    -{numberWithCommas(getAmountFromOutputs(txInfo[txInput.previousOutpoint.transactionId]["outputs"], txInput.previousOutpoint.index || 0))}&nbsp;{KASPA_UNIT}
                                                                 </Col></>
                                                                 :
                                                                 <><Col xs={12} sm={8} md={9} lg={9} xl={8} xxl={7}
@@ -311,7 +311,7 @@ const BlockInfo = () => {
                                                                 <CopyButton
                                                                     text={txOutput.verboseData.scriptPublicKeyAddress}/>
                                                             </Col><Col className="block-utxo-amount" xs={12} sm={4}
-                                                                       md={3}>+{numberWithCommas(txOutput.amount / 100000000)}&nbsp;KAS</Col>
+                                                                       md={3}>+{numberWithCommas(txOutput.amount / 100000000)}&nbsp;{KASPA_UNIT}</Col>
                                                         </Row>)}
                                                     </Container>
                                                 </Col>
@@ -320,7 +320,7 @@ const BlockInfo = () => {
                                                 <div className="utxo-header mt-3">tx amount</div>
                                                 <div className="utxo-value d-flex flex-row">
                                                     <div
-                                                        className="utxo-amount">{(numberWithCommas(tx.outputs.reduce((a, b) => (a || 0) + parseInt(b.amount), 0) / 100000000))} KAS
+                                                        className="utxo-amount">{(numberWithCommas(tx.outputs.reduce((a, b) => (a || 0) + parseInt(b.amount), 0) / 100000000))} {KASPA_UNIT}
                                                     </div>
                                                 </div>
                                             </Col>
