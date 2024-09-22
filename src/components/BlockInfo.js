@@ -7,6 +7,7 @@ import {BiNetworkChart} from "react-icons/bi";
 import {useParams} from "react-router";
 import {Link} from "react-router-dom";
 import {parsePayload} from "../bech32.js";
+import { KASPA_UNIT } from "../explorer_constants.js";
 import {numberWithCommas} from "../helper.js";
 import {getBlock, getTransactions} from '../kaspa-api-client.js';
 import BlueScoreContext from "./BlueScoreContext.js";

@@ -1,6 +1,7 @@
 import {useContext, useEffect, useState} from "react";
 import {HiCurrencyDollar} from 'react-icons/hi';
 import {IoMdTrendingDown, IoMdTrendingUp} from 'react-icons/io';
+import { KASPA_UNIT } from "../explorer_constants";
 import {numberWithCommas} from "../helper";
 import {getCoinSupply} from '../kaspa-api-client';
 import PriceContext from "./PriceContext";
@@ -36,7 +37,7 @@ const MarketDataBox = () => {
                 </tr>
                 <tr>
                     <td className="cardBoxElement">Price</td>
-                    <td>$ {price} / KAS</td>
+                    <td>$ {price} / {KASPA_UNIT}</td>
                 </tr>
                 <tr>
                     <td style={{fontSize: "small"}} className="cardBoxElement" align="right">1h %</td>

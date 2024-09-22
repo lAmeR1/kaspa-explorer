@@ -393,7 +393,7 @@ const AddressInfo = () => {
                                         <span
                                             className="utxo-amount">+{numberWithCommas(floatToStr(getAmount(x.outputs, x.inputs)))}&nbsp;{KASPA_UNIT}</span> :
                                         <span
-                                            className="utxo-amount-minus">{numberWithCommas(floatToStr(getAmount(x.outputs, x.inputs)))}&nbsp;{kASPA_UNIT}</span>}
+                                            className="utxo-amount-minus">{numberWithCommas(floatToStr(getAmount(x.outputs, x.inputs)))}&nbsp;{KASPA_UNIT}</span>}
                                 </Link>
                             </div>
                         </Col>
