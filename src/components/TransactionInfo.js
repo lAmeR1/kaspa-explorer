@@ -5,12 +5,13 @@ import {useContext, useEffect, useRef, useState} from 'react';
 import {Col, Container, Row, Spinner} from "react-bootstrap";
 import {useParams} from "react-router";
 import {Link} from "react-router-dom";
-import { KASPA_UNIT } from "../explorer_constants.js";
+import {KASPA_UNIT} from "../explorer_constants.js";
 import {numberWithCommas} from "../helper.js";
 import {getTransaction, getTransactions} from '../kaspa-api-client.js';
 import BlueScoreContext from "./BlueScoreContext.js";
 import CopyButton from "./CopyButton.js";
 import PriceContext from "./PriceContext.js";
+import {parseSignatureScript} from "../inscriptions";
 
 const getOutputFromIndex = (outputs, index) => {
     for (const output of outputs) {
@@ -19,16 +20,6 @@ const getOutputFromIndex = (outputs, index) => {
         }
     }
 }
-
-const signatureScriptToAscii = (s) => {
-    let ascii = '';
-    for (let i = 0; i < s.length; i += 2) {
-      ascii += String.fromCharCode(parseInt(s.substr(i, 2), 16));
-
-    }
-    return ascii
-}
-
 
 const TransactionInfo = () => {
     const {id} = useParams();
@@ -215,11 +206,15 @@ const TransactionInfo = () => {
                                                 <div className="blockinfo-key mt-2">Signature Script</div>
                                                 <div className="utxo-value-mono">
                                                     {tx_input.signature_script}
-                                                    <p style={{marginTop: "1rem"}}>
-                                                    <div className="blockinfo-key mt-0 mt-md-2">Signature Script (as ASCII)</div>
-                                                    {signatureScriptToAscii(tx_input.signature_script)}
-                                                    </p>
                                                 </div>
+                                                {tx_input.signature_script.includes('6b6173706c6578') && (
+                                                    <>
+                                                        <div className="blockinfo-key mt-2">KRC-20</div>
+                                                        <div className="utxo-value-mono" style={{ whiteSpace: "pre-wrap" }}>
+                                                            {parseSignatureScript(tx_input.signature_script).findLast(s => s.indexOf('OP_PUSH') === 0).split(' ')[1]}
+                                                        </div>
+                                                    </>
+                                                )}
                                             </Col>
                                             {!!additionalTxInfo && additionalTxInfo[tx_input.previous_outpoint_hash] &&
                                                 <Col sm={12} md={12} lg={3}>
