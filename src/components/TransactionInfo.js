@@ -5,7 +5,7 @@ import {useContext, useEffect, useRef, useState} from 'react';
 import {Col, Container, Row, Spinner} from "react-bootstrap";
 import {useParams} from "react-router";
 import {Link} from "react-router-dom";
-import { KASPA_UNIT } from "../explorer_constants.js";
+import {KASPA_UNIT} from "../explorer_constants.js";
 import {numberWithCommas} from "../helper.js";
 import {getTransaction, getTransactions} from '../kaspa-api-client.js';
 import BlueScoreContext from "./BlueScoreContext.js";
@@ -20,15 +20,70 @@ const getOutputFromIndex = (outputs, index) => {
     }
 }
 
-const signatureScriptToAscii = (s) => {
-    let ascii = '';
-    for (let i = 0; i < s.length; i += 2) {
-      ascii += String.fromCharCode(parseInt(s.substr(i, 2), 16));
-
+const hexToBytes = (hex) => {
+    const bytes = [];
+    for (let i = 0; i < hex.length; i += 2) {
+        bytes.push(parseInt(hex.substring(i, i + 2), 16));
     }
-    return ascii
+    return new Uint8Array(bytes);
+};
+
+const bytesToHex = (bytes) => {
+    return Array.from(bytes).map(b => b.toString(16).padStart(2, '0')).join('');
 }
 
+const bytesToString = (bytes) => {
+    return new TextDecoder().decode(bytes);
+}
+
+const parseSignatureScript = (hex, inner) => {
+    /* Attempt at decoding Kasplex deploy&mint */
+    /* Example deploy: 105424172e946f85daf87f50422e4a5a7f73d541a7a0eaf666cf40567a80ba5d */
+    /* Example mint: e2792d606f7cae9994cbc233a2cdb9c4d4541ad195852ae8ecfd787254613ded */
+    const bytes = hexToBytes(hex);
+    let offset = 0;
+    const result = [];
+    let keyFound = false;
+
+    while (offset < bytes.length) {
+        const opcode = bytes[offset];
+        offset += 1;
+        if (opcode >= 0x01 && opcode <= 0x4b) {
+            const dataLength = opcode;
+            const data = bytes.slice(offset, offset + dataLength);
+            offset += dataLength;
+            if (!keyFound) {
+                // result.push(`PUB_KEY ${bytesToHex(data)}`);
+                keyFound = true;
+            } else {
+                result.push(`OP_PUSH ${bytesToString(data)}`);
+            }
+        } else if (opcode === 0x4c) {
+            const dataLength = bytes[offset];
+            offset += 1;
+            const data = bytes.slice(offset, offset + dataLength);
+            if (data[0] !== 0x7b) { // FIXME: Need a better selector on when to recurse
+                result.push(parseSignatureScript(bytesToHex(data), true));
+            } else {
+                result.push(`OP_PUSH ${bytesToString(data)}`)
+            }
+            offset += dataLength;
+        } else if (opcode === 0x00) {
+            // result.push('OP_0')
+        } else if (opcode === 0x51) {
+            // result.push('OP_1')
+        } else if (opcode === 0x63) {
+            // result.push('OP_IF')
+        } else if (opcode === 0x68) {
+            // result.push('OP_ENDIF')
+        } else if (opcode === 0xac) {
+            // result.push('OP_CHECKSIG')
+        } else {
+            // result.push(`UNKNOWN ${opcode.toString(16)}`)
+        }
+    }
+    return result.join('\n');
+}
 
 const TransactionInfo = () => {
     const {id} = useParams();
@@ -215,11 +270,15 @@ const TransactionInfo = () => {
                                                 <div className="blockinfo-key mt-2">Signature Script</div>
                                                 <div className="utxo-value-mono">
                                                     {tx_input.signature_script}
-                                                    <p style={{marginTop: "1rem"}}>
-                                                    <div className="blockinfo-key mt-0 mt-md-2">Signature Script (as ASCII)</div>
-                                                    {signatureScriptToAscii(tx_input.signature_script)}
-                                                    </p>
                                                 </div>
+                                                {tx_input.signature_script.includes('6b6173706c6578') && (
+                                                    <>
+                                                        <div className="blockinfo-key mt-2">Signature Script Decode</div>
+                                                        <div className="utxo-value-mono" style={{ whiteSpace: "pre-wrap" }}>
+                                                            {parseSignatureScript(tx_input.signature_script)}
+                                                        </div>
+                                                    </>
+                                                )}
                                             </Col>
                                             {!!additionalTxInfo && additionalTxInfo[tx_input.previous_outpoint_hash] &&
                                                 <Col sm={12} md={12} lg={3}>
