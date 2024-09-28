@@ -1,20 +1,20 @@
 import {useEffect, useRef} from "react";
 
 export function numberWithCommas(num) {
-  const [integerPart, fractionalPart] = (num || '').toString().split('.');
+    const [integerPart, fractionalPart] = (num || '').toString().split('.');
 
-  if (!integerPart) return '';
+    if (!integerPart) return "0";
 
-  return (
-    <span>
+    return (
+        <span>
       <span>
         {integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
       </span>
-      {fractionalPart && 
-        <span style={{ fontSize: "80%" }}>.{fractionalPart}</span>
-      }
+            {fractionalPart &&
+                <span style={{fontSize: "80%"}}>.{fractionalPart}</span>
+            }
     </span>
-  );
+    );
 }
 
 export function floatToStr(floatNo, maxPrecision = 8) {
