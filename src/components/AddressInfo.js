@@ -306,7 +306,7 @@ const AddressInfo = () => {
                 </Col>
                 <Col sm={6} md={4}>
                     <div className="addressinfo-header mt-4 ms-sm-5">UTXOs count</div>
-                    <div className="utxo-value ms-sm-5">{!loadingUtxos ? numberWithCommas(utxos.length) :
+                    <div className="utxo-value ms-sm-5">{!loadingUtxos ? utxos.length :
                         <Spinner animation="border" variant="primary"/>}{errorLoadingUtxos &&
                         <BiGhost className="error-icon"/>}</div>
                 </Col>
