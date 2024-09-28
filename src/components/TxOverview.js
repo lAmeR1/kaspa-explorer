@@ -4,6 +4,7 @@ import {BiHide} from "react-icons/bi";
 import {FaPause, FaPlay} from "react-icons/fa";
 import {RiMoneyDollarCircleFill} from 'react-icons/ri';
 import {useNavigate} from "react-router-dom";
+import { KASPA_UNIT } from "../explorer_constants";
 import {numberWithCommas} from "../helper";
 import LastBlocksContext from "./LastBlocksContext";
 
@@ -83,7 +84,7 @@ const TxOverview = (props) => {
                             key={x.address + x.txId + x.outputIndex}
                         >
                             <td onClick={onClickRow}>{x.txId.slice(0, 10)}</td>
-                            <td onClick={onClickRow} align="right">{numberWithCommas(x.amount / 100000000)}&nbsp;KAS
+                            <td onClick={onClickRow} align="right">{numberWithCommas(x.amount / 100000000)}&nbsp;{KASPA_UNIT}
                             </td>
                             <td className="hashh" onClick={onClickAddr}>{x.address}</td>
                         </tr>

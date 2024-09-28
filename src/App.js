@@ -21,7 +21,7 @@ import TransactionInfo from './components/TransactionInfo';
 import TxPage from './components/TxPage';
 import Dashboard from './Dashboard';
 import {getBlock} from './kaspa-api-client';
-import {ADDRESS_PREFIX, API_SERVER, SOCKET_SERVER, SUFFIX} from "./explorer_constants";
+import {ADDRESS_PREFIX, API_SERVER, KASPA_UNIT, SOCKET_SERVER, SUFFIX} from "./explorer_constants";
 // import 'moment/min/locales';
 
 // var locale = window.navigator.userLanguage || window.navigator.language || "en";
@@ -183,7 +183,7 @@ function App() {
                                                            to={`/txs`}>Transactions</NavLink></Nav.Item>
                                     </Nav>
                                     <div className='ms-auto navbar-price'>${price} <span
-                                        className="text-light">/ KAS</span></div>
+                                        className="text-light">/ {KASPA_UNIT}</span></div>
                                 </Navbar.Collapse>
                             </Container>
                         </Navbar>
