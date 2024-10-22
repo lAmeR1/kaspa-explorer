@@ -93,19 +93,12 @@ const AddressInfo = () => {
     e.preventDefault();
   };
 
-  const getAddrFromOutputs = (outputs, i) => {
-    for (const o of outputs) {
-      if (o.index === i) {
-        return o.script_public_key_address;
-      }
-    }
+  const getAddrFromOutputs = (outputs, index) => {
+    return outputs?.[index]?.script_public_key_address;
   };
-  const getAmountFromOutputs = (outputs, i) => {
-    for (const o of outputs) {
-      if (o.index === i) {
-        return o.amount / 100000000;
-      }
-    }
+
+  const getAmountFromOutputs = (outputs, index) => {
+    return outputs?.[index]?.amount / 100000000;
   };
 
   const getAmount = (outputs, inputs) => {
@@ -125,7 +118,7 @@ const AddressInfo = () => {
         balance =
           balance -
           getAmountFromOutputs(
-            txsInpCache[i.previous_outpoint_hash]["outputs"],
+            txsInpCache[i.previous_outpoint_hash]?.outputs,
             i.previous_outpoint_index,
           );
       }
@@ -498,8 +491,18 @@ const AddressInfo = () => {
                         >
                           {x.inputs?.length > 0
                             ? x.inputs.map((x) => {
-                                return txsInpCache &&
-                                  txsInpCache[x.previous_outpoint_hash] ? (
+                                const inputOutputs =
+                                  txsInpCache[x.previous_outpoint_hash]
+                                    ?.outputs || [];
+                                const address = getAddrFromOutputs(
+                                  inputOutputs,
+                                  x.previous_outpoint_index,
+                                );
+                                const amount = getAmountFromOutputs(
+                                  inputOutputs,
+                                  x.previous_outpoint_index,
+                                );
+                                return address ? (
                                   <>
                                     <Row
                                       id={`N${x.previous_outpoint_hash}${x.previous_outpoint_index}`}
@@ -510,40 +513,22 @@ const AddressInfo = () => {
                                       >
                                         <Link
                                           className="blockinfo-link"
-                                          to={`/addresses/${getAddrFromOutputs(txsInpCache[x.previous_outpoint_hash]["outputs"], x.previous_outpoint_index)}`}
+                                          to={`/addresses/${address}`}
                                         >
                                           <span
                                             className={
-                                              getAddrFromOutputs(
-                                                txsInpCache[
-                                                  x.previous_outpoint_hash
-                                                ]["outputs"],
-                                                x.previous_outpoint_index,
-                                              ) === addr
+                                              address === addr
                                                 ? "highlight-addr"
                                                 : ""
                                             }
                                           >
-                                            {getAddrFromOutputs(
-                                              txsInpCache[
-                                                x.previous_outpoint_hash
-                                              ]["outputs"],
-                                              x.previous_outpoint_index,
-                                            )}
+                                            {address}
                                           </span>
                                         </Link>
                                       </Col>
                                       <Col xs={5}>
                                         <span className="block-utxo-amount-minus">
-                                          -
-                                          {numberWithCommas(
-                                            getAmountFromOutputs(
-                                              txsInpCache[
-                                                x.previous_outpoint_hash
-                                              ]["outputs"],
-                                              x.previous_outpoint_index,
-                                            ),
-                                          )}
+                                          -{numberWithCommas(amount)}
                                           &nbsp;{KASPA_UNIT}
                                         </span>
                                       </Col>

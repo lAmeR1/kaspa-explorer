@@ -11,11 +11,7 @@ import CopyButton from "./CopyButton.js";
 import { parseSignatureScript } from "../inscriptions";
 
 const getOutputFromIndex = (outputs, index) => {
-  for (const output of outputs) {
-    if (output.index === index) {
-      return output;
-    }
-  }
+  return outputs[index];
 };
 
 const TransactionInfo = () => {
@@ -24,7 +20,7 @@ const TransactionInfo = () => {
   //  const [storageMass, setStorageMass] = useState();
   const [additionalTxInfo, setAdditionalTxInfo] = useState();
   const [showTxFee, setShowTxFee] = useState(false);
-  const setError = useState(false);
+  const [, setError] = useState(false);
 
   const retryCnt = useRef(0);
   const retryNotAccepted = useRef(6);
@@ -40,7 +36,7 @@ const TransactionInfo = () => {
         setTxInfo(undefined);
         throw err;
       });
-  }, [id, setError]);
+  }, [id]);
 
   useEffect(() => {
     setError(false);
@@ -201,12 +197,12 @@ const TransactionInfo = () => {
                                     additionalTxInfo[
                                       tx_input.previous_outpoint_hash
                                     ]?.outputs || [],
-                                    tx_input.previous_outpoint_index,
+                                    tx_input?.previous_outpoint_index,
                                   )?.amount || 0,
                               )
                               .reduce((a, b) => a + b) -
                               (
-                                txInfo.outputs?.map((v) => v.amount) || [0]
+                                txInfo.outputs?.map((v) => v?.amount) || [0]
                               ).reduce((a, b) => a + b)) /
                               100000000}{" "}
                             {KASPA_UNIT}
@@ -338,8 +334,8 @@ const TransactionInfo = () => {
                                       additionalTxInfo[
                                         tx_input.previous_outpoint_hash
                                       ].outputs,
-                                      tx_input.previous_outpoint_index,
-                                    ).amount / 100000000,
+                                      tx_input?.previous_outpoint_index,
+                                    )?.amount / 100000000,
                                   )}
                                   &nbsp;{KASPA_UNIT}
                                 </span>
@@ -351,7 +347,7 @@ const TransactionInfo = () => {
                             Previous Outpoint Index + Hash
                           </div>
                           <div className="utxo-value-mono">
-                            #{tx_input.previous_outpoint_index}{" "}
+                            #{tx_input?.previous_outpoint_index}{" "}
                             {tx_input.previous_outpoint_hash}
                           </div>
                         </Col>
@@ -369,8 +365,8 @@ const TransactionInfo = () => {
                                         additionalTxInfo[
                                           tx_input.previous_outpoint_hash
                                         ].outputs,
-                                        tx_input.previous_outpoint_index,
-                                      ).script_public_key_address
+                                        tx_input?.previous_outpoint_index,
+                                      )?.script_public_key_address
                                     }`}
                                     className="blockinfo-link"
                                   >
@@ -379,8 +375,8 @@ const TransactionInfo = () => {
                                         additionalTxInfo[
                                           tx_input.previous_outpoint_hash
                                         ].outputs,
-                                        tx_input.previous_outpoint_index,
-                                      ).script_public_key_address
+                                        tx_input?.previous_outpoint_index,
+                                      )?.script_public_key_address
                                     }
                                   </Link>
                                 </div>
@@ -429,7 +425,7 @@ const TransactionInfo = () => {
                         <div className="blockinfo-key mt-2 mt-lg-0">Amount</div>
                         <div className="utxo-value">
                           <span className="utxo-amount">
-                            +{numberWithCommas(tx_output.amount / 100000000)}
+                            +{numberWithCommas(tx_output?.amount / 100000000)}
                             &nbsp;{KASPA_UNIT}
                           </span>
                         </div>
@@ -448,10 +444,10 @@ const TransactionInfo = () => {
                         </div>
                         <div className="utxo-value-mono">
                           <Link
-                            to={`/addresses/${tx_output.script_public_key_address}`}
+                            to={`/addresses/${tx_output?.script_public_key_address}`}
                             className="blockinfo-link"
                           >
-                            {tx_output.script_public_key_address}
+                            {tx_output?.script_public_key_address}
                           </Link>
                         </div>
                       </Col>
