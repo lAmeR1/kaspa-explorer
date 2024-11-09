@@ -22,6 +22,7 @@ import TxPage from './components/TxPage';
 import Dashboard from './Dashboard';
 import {getBlock} from './kaspa-api-client';
 import {ADDRESS_PREFIX, API_SERVER, KASPA_UNIT, SOCKET_SERVER, SUFFIX} from "./explorer_constants";
+import MempoolContext from "./components/MempoolContext";
 // import 'moment/min/locales';
 
 // var locale = window.navigator.userLanguage || window.navigator.language || "en";
@@ -29,7 +30,6 @@ import {ADDRESS_PREFIX, API_SERVER, KASPA_UNIT, SOCKET_SERVER, SUFFIX} from "./e
 // moment.locale('en');
 
 const buildVersion = process.env.REACT_APP_VERCEL_GIT_COMMIT_SHA || "xxxxxx";
-
 
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -55,6 +55,7 @@ function App() {
 
     const [blocks, setBlocks] = useState([]);
     const [blueScore, setBlueScore] = useState(0);
+    const [mempool, setMempool] = useState(0);
     const [isConnected, setIsConnected] = useState();
 
     const location = useLocation()
@@ -115,6 +116,7 @@ function App() {
             setIsConnected(true);
             socket.emit('last-blocks', "")
             socket.emit("join-room", "bluescore")
+            socket.emit("join-room", "mempool")
         });
 
         socket.on('disconnect', () => {
@@ -126,8 +128,12 @@ function App() {
             socket.emit("join-room", "blocks")
         })
 
+
         socket.on('bluescore', (e) => {
             setBlueScore(e.blueScore)
+        })
+        socket.on('mempool', (e) => {
+            setMempool(e)
         })
 
         socket.on('new-block', (d) => {
@@ -155,71 +161,78 @@ function App() {
         <LastBlocksContext.Provider value={{blocks, isConnected}}>
             <PriceContext.Provider value={{price, marketData}}>
                 <BlueScoreContext.Provider value={{blueScore}}>
-                    <div className="big-page">
-                        <Navbar expand="md" bg="dark" variant="dark" sticky="top" id="navbar_top"
-                                className={location.pathname == "/" ? "" : "fixed-top"}>
-                            <Container id="navbar-container" fluid>
-                                <div className="navbar-title">
-                                    <Navbar.Brand>
-                                        <Link to="/">
-                                            <div className="navbar-brand">
-                                                <img className="shake" src="/k-icon-glow.png"
-                                                     style={{"marginRight": ".5rem", width: "4rem", height: "4rem"}}/>
-                                                <div className="navbar-brand-text text-start">KASPA<br/>EXPLORER{SUFFIX}
+                    <MempoolContext.Provider value={{mempool}}>
+                        <div className="big-page">
+                            <Navbar expand="md" bg="dark" variant="dark" sticky="top" id="navbar_top"
+                                    className={location.pathname == "/" ? "" : "fixed-top"}>
+                                <Container id="navbar-container" fluid>
+                                    <div className="navbar-title">
+                                        <Navbar.Brand>
+                                            <Link to="/">
+                                                <div className="navbar-brand">
+                                                    <img className="shake" src="/k-icon-glow.png"
+                                                         style={{
+                                                             "marginRight": ".5rem",
+                                                             width: "4rem",
+                                                             height: "4rem"
+                                                         }}/>
+                                                    <div
+                                                        className="navbar-brand-text text-start">KASPA<br/>EXPLORER{SUFFIX}
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </Link>
-                                    </Navbar.Brand>
-                                </div>
+                                            </Link>
+                                        </Navbar.Brand>
+                                    </div>
 
-                                <Navbar.Toggle aria-controls="responsive-navbar-nav"/>
-                                <Navbar.Collapse id="responsive-navbar-nav">
-                                    <Nav className="me-auto">
-                                        <Nav.Item><NavLink className="nav-link fs-5" onClick={closeMenuIfNeeded}
-                                                           to={`/`}>Dashboard</NavLink></Nav.Item>
-                                        <Nav.Item><NavLink className="nav-link fs-5" onClick={closeMenuIfNeeded}
-                                                           to={`/blocks`}>Blocks</NavLink></Nav.Item>
-                                        <Nav.Item><NavLink className="nav-link fs-5" onClick={closeMenuIfNeeded}
-                                                           to={`/txs`}>Transactions</NavLink></Nav.Item>
-                                    </Nav>
-                                    <div className='ms-auto navbar-price'>${price} <span
-                                        className="text-light">/ {KASPA_UNIT}</span></div>
-                                </Navbar.Collapse>
-                            </Container>
-                        </Navbar>
-                        <div className="search-row">
-                            <Container className="webpage" hidden={location.pathname == "/"}>
-                                <Row><Col xs={12}>
-                                    <Form onSubmit={search} className="">
-                                        <InputGroup className="mt-4 mb-4 search-box-group">
-                                            <Form.Control className="d-inline-block bg-light text-dark shadow-none"
-                                                          name="searchbox" id="search-box-high" type="text"
-                                                          placeholder={`Search for ${ADDRESS_PREFIX}address or block`}/>
-                                            <Button type="submit" className="shadow-none searchButton" variant="dark"><i
-                                                className='fa fa-search'/></Button>
-                                        </InputGroup>
-                                    </Form>
-                                </Col></Row>
-                            </Container>
+                                    <Navbar.Toggle aria-controls="responsive-navbar-nav"/>
+                                    <Navbar.Collapse id="responsive-navbar-nav">
+                                        <Nav className="me-auto">
+                                            <Nav.Item><NavLink className="nav-link fs-5" onClick={closeMenuIfNeeded}
+                                                               to={`/`}>Dashboard</NavLink></Nav.Item>
+                                            <Nav.Item><NavLink className="nav-link fs-5" onClick={closeMenuIfNeeded}
+                                                               to={`/blocks`}>Blocks</NavLink></Nav.Item>
+                                            <Nav.Item><NavLink className="nav-link fs-5" onClick={closeMenuIfNeeded}
+                                                               to={`/txs`}>Transactions</NavLink></Nav.Item>
+                                        </Nav>
+                                        <div className='ms-auto navbar-price'>${price} <span
+                                            className="text-light">/ {KASPA_UNIT}</span></div>
+                                    </Navbar.Collapse>
+                                </Container>
+                            </Navbar>
+                            <div className="search-row">
+                                <Container className="webpage" hidden={location.pathname == "/"}>
+                                    <Row><Col xs={12}>
+                                        <Form onSubmit={search} className="">
+                                            <InputGroup className="mt-4 mb-4 search-box-group">
+                                                <Form.Control className="d-inline-block bg-light text-dark shadow-none"
+                                                              name="searchbox" id="search-box-high" type="text"
+                                                              placeholder={`Search for ${ADDRESS_PREFIX}address or block`}/>
+                                                <Button type="submit" className="shadow-none searchButton"
+                                                        variant="dark"><i
+                                                    className='fa fa-search'/></Button>
+                                            </InputGroup>
+                                        </Form>
+                                    </Col></Row>
+                                </Container>
+                            </div>
+                            <Routes>
+                                <Route path="/" element={<Dashboard/>}/>
+                                <Route path="/blocks" element={<BlocksPage/>}/>
+                                <Route path="/blocks/:id" element={<BlockInfo/>}/>
+                                <Route path="/blocks/:id/:txview" element={<BlockInfo/>}/>
+                                <Route path="/addresses/:addr" element={<AddressInfoPage/>}/>
+                                <Route path="/txs" element={<TxPage/>}/>
+                                <Route path="/txs/:id" element={<TransactionInfo/>}/>
+                                <Route path="*" element={<NotFound/>}/>
+                            </Routes>
+                            {/* <div className="alpha">ALPHA VERSION</div> */}
                         </div>
-                        <Routes>
-                            <Route path="/" element={<Dashboard/>}/>
-                            <Route path="/blocks" element={<BlocksPage/>}/>
-                            <Route path="/blocks/:id" element={<BlockInfo/>}/>
-                            <Route path="/blocks/:id/:txview" element={<BlockInfo/>}/>
-                            <Route path="/addresses/:addr" element={<AddressInfoPage/>}/>
-                            <Route path="/txs" element={<TxPage/>}/>
-                            <Route path="/txs/:id" element={<TransactionInfo/>}/>
-                            <Route path="*" element={<NotFound/>}/>
-                        </Routes>
-                        {/* <div className="alpha">ALPHA VERSION</div> */}
-                    </div>
-                    <div className="text-light footerfull d-flex flex-row justify-content-center px-0">
-                        <Container className="footer webpage px-sm-5 py-3 text-center madewith" fluid>
-                            <Row className="d-none d-sm-block">
-                                <Col>
-                                    Made with <font className="fs-5" color="red">♥</font> by Kaspa developers
-                                    <span className="ms-3">
+                        <div className="text-light footerfull d-flex flex-row justify-content-center px-0">
+                            <Container className="footer webpage px-sm-5 py-3 text-center madewith" fluid>
+                                <Row className="d-none d-sm-block">
+                                    <Col>
+                                        Made with <font className="fs-5" color="red">♥</font> by Kaspa developers
+                                        <span className="ms-3">
                     <OverlayTrigger placement="left" overlay={<Tooltip id="github">Source code</Tooltip>}>
                       <a className="blockinfo-link" href="https://github.com/lAmeR1/kaspa-explorer"
                          target="_blank"><FaGithub size="1.3rem"/></a>
@@ -234,17 +247,17 @@ function App() {
                           size="1.3rem"/></a>
                     </OverlayTrigger>
                   </span>
-                                    <span className="px-3 build">|</span>
-                                    <span className="build">Build version: {buildVersion.substring(0, 8)}</span>
-                                </Col>
-                            </Row>
-                            <Row className="d-sm-none px-0">
-                                <Col className="px-0">
-                                    Made with <font className="fs-5" color="red">♥</font> by Kaspa developers
-                                </Col>
-                            </Row>
-                            <Row className="py-1 d-sm-none px-0">
-                                <Col>
+                                        <span className="px-3 build">|</span>
+                                        <span className="build">Build version: {buildVersion.substring(0, 8)}</span>
+                                    </Col>
+                                </Row>
+                                <Row className="d-sm-none px-0">
+                                    <Col className="px-0">
+                                        Made with <font className="fs-5" color="red">♥</font> by Kaspa developers
+                                    </Col>
+                                </Row>
+                                <Row className="py-1 d-sm-none px-0">
+                                    <Col>
                   <span className="ms-2">
                     <OverlayTrigger placement="left" overlay={<Tooltip id="github">Source code</Tooltip>}>
                       <a className="blockinfo-link" href="https://github.com/lAmeR1/kaspa-explorer"
@@ -260,15 +273,16 @@ function App() {
                           size="1.1rem"/></a>
                     </OverlayTrigger>
                   </span>
-                                </Col>
-                            </Row>
-                            <Row className="d-sm-none px-0">
-                                <Col>
-                                    <span className="build">Build version: {buildVersion.substring(0, 8)}</span>
-                                </Col>
-                            </Row>
-                        </Container>
-                    </div>
+                                    </Col>
+                                </Row>
+                                <Row className="d-sm-none px-0">
+                                    <Col>
+                                        <span className="build">Build version: {buildVersion.substring(0, 8)}</span>
+                                    </Col>
+                                </Row>
+                            </Container>
+                        </div>
+                    </MempoolContext.Provider>
                 </BlueScoreContext.Provider>
             </PriceContext.Provider>
         </LastBlocksContext.Provider>
