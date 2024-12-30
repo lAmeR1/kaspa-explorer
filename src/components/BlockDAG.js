@@ -1,6 +1,7 @@
 import {faDiagramProject} from '@fortawesome/free-solid-svg-icons';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {useEffect, useState} from "react";
+import moment from "moment";
 import {getBlockdagInfo, getFeeEstimate, getHashrateMax, getKaspadInfo} from '../kaspa-api-client';
 import {numberWithCommas} from "../helper";
 import {BPS, KASPA_UNIT} from "../explorer_constants";
@@ -12,6 +13,7 @@ const BlockDAGBox = () => {
     const [hashrate, setHashrate] = useState(localStorage.getItem("cacheHashrate"));
     const [mempoolView, setMempoolView] = useState(0);
     const [maxHashrate, setMaxHashrate] = useState(localStorage.getItem("cacheHashrateMax"));
+    const [maxHashrateTimestamp, setMaxHashrateTimestamp] = useState(localStorage.getItem("cacheMaxHashrateTimestamp"));
     const [feerate, setFeerate] = useState(localStorage.getItem("feerate"));
     const [mempool, setMempool] = useState(localStorage.getItem("mempool"));
 
@@ -27,6 +29,8 @@ const BlockDAGBox = () => {
         localStorage.setItem("cacheHashrate", (dag_info.difficulty * 2).toFixed(2))
         setMaxHashrate(hashrateMax.hashrate * 1000 * 1000 * 1000 * 1000)
         localStorage.setItem("cacheHashrateMax", hashrateMax.hashrate)
+        setMaxHashrateTimestamp(hashrateMax.blockheader.timestamp);
+        localStorage.setItem("cacheMaxHashrateTimestamp", hashrateMax.blockheader.timestamp);
         setFeerate(feeEstimate.normalBuckets[0].feerate)
         localStorage.setItem("feerate", feeEstimate.priorityBucket.feerate)
         setMempool(kaspadInfo.mempoolSize)
@@ -185,6 +189,17 @@ const BlockDAGBox = () => {
                     </td>
                     <td className="pt-1" id="hashrate">
                         {hashrateToStr(maxHashrate)}
+                    </td>
+                </tr>
+                <tr>
+                    <td className="cardBoxElement">Max Hashrate Time</td>
+                    <td className="pt-1">
+                        <div
+                            className="text-start w-100 pe-3 pt-1"
+                        >
+                            {maxHashrateTimestamp &&
+                                moment(maxHashrateTimestamp).format("YYYY-MM-DD HH:mm")}
+                        </div>
                     </td>
                 </tr>
                 <tr>
