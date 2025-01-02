@@ -1,10 +1,11 @@
 import {faDiagramProject} from '@fortawesome/free-solid-svg-icons';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import {useEffect, useState} from "react";
 import moment from "moment";
+import {useContext, useEffect, useState} from "react";
 import {getBlockdagInfo, getFeeEstimate, getHashrateMax, getKaspadInfo} from '../kaspa-api-client';
 import {numberWithCommas} from "../helper";
 import {BPS, KASPA_UNIT} from "../explorer_constants";
+import MempoolContext from "./MempoolContext";
 
 
 const BlockDAGBox = () => {
@@ -15,7 +16,7 @@ const BlockDAGBox = () => {
     const [maxHashrate, setMaxHashrate] = useState(localStorage.getItem("cacheHashrateMax"));
     const [maxHashrateTimestamp, setMaxHashrateTimestamp] = useState(localStorage.getItem("cacheMaxHashrateTimestamp"));
     const [feerate, setFeerate] = useState(localStorage.getItem("feerate"));
-    const [mempool, setMempool] = useState(localStorage.getItem("mempool"));
+    const {mempool} = useContext(MempoolContext);
 
     const initBox = async () => {
         const dag_info = await getBlockdagInfo()
@@ -33,8 +34,8 @@ const BlockDAGBox = () => {
         localStorage.setItem("cacheMaxHashrateTimestamp", hashrateMax.blockheader.timestamp);
         setFeerate(feeEstimate.normalBuckets[0].feerate)
         localStorage.setItem("feerate", feeEstimate.priorityBucket.feerate)
-        setMempool(kaspadInfo.mempoolSize)
-        localStorage.setItem("mempool", kaspadInfo.mempoolSize)
+        // setMempool(kaspadInfo.mempoolSize)
+        // localStorage.setItem("mempool", kaspadInfo.mempoolSize)
     }
 
     useEffect(() => {
@@ -51,8 +52,8 @@ const BlockDAGBox = () => {
             const kaspadInfo = await getKaspadInfo()
             setFeerate(feeEstimate.normalBuckets[0].feerate)
             localStorage.setItem("feerate", feeEstimate.priorityBucket.feerate)
-            setMempool(kaspadInfo.mempoolSize)
-            localStorage.setItem("mempool", kaspadInfo.mempoolSize)
+            // setMempool(kaspadInfo.mempoolSize)
+            // localStorage.setItem("mempool", kaspadInfo.mempoolSize)
         }, 5000)
 
         return (async () => {
@@ -66,7 +67,7 @@ const BlockDAGBox = () => {
         // slowly in- or decrease
         let start = mempoolView;
         let end = mempool;
-        let steps = 400;
+        let steps = 5;
         let stepSize = (end - start) / (steps - 1);
         let stepsArr = Array.from({length: steps}, (_, i) => Math.floor(start + i * stepSize));
         var cnt = 0
@@ -77,7 +78,7 @@ const BlockDAGBox = () => {
             if (++cnt === stepsArr.length) {
                 clearInterval(updaterInterval)
             }
-        }, 10)
+        }, 5)
     }, [mempool])
 
     useEffect((e) => {
