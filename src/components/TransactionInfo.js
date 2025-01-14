@@ -12,6 +12,7 @@ import BlueScoreContext from "./BlueScoreContext.js";
 import CopyButton from "./CopyButton.js";
 import PriceContext from "./PriceContext.js";
 import {parseSignatureScript} from "../inscriptions";
+import {useLocation} from "react-router";
 
 const getOutputFromIndex = (outputs, index) => {
     for (const output of outputs) {
@@ -23,6 +24,7 @@ const getOutputFromIndex = (outputs, index) => {
 
 const TransactionInfo = () => {
     const {id} = useParams();
+    const blockHash = new URLSearchParams(useLocation().search).get("blockHash") || null;
     const [txInfo, setTxInfo] = useState()
     const [storageMass, setStorageMass] = useState()
     const [additionalTxInfo, setAdditionalTxInfo] = useState()
@@ -36,7 +38,7 @@ const TransactionInfo = () => {
 
     const [blockColor, setBlockColor] = useState()
 
-    const getTx = () => getTransaction(id).then(
+    const getTx = () => getTransaction(id, blockHash).then(
         (res) => {
             setTxInfo(res)
         })

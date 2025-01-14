@@ -22,7 +22,8 @@ const TxOverview = (props) => {
     const navigate = useNavigate();
 
     const onClickRow = (e) => {
-        navigate(`/txs/${e.target.closest("tr").getAttribute("txid")}`)
+        const row = e.target.closest("tr");
+        navigate(`/txs/${row.getAttribute("txid")}?blockHash=${row.getAttribute("blockHash")}`)
     }
 
     const onClickAddr = (e) => {
@@ -73,6 +74,7 @@ const TxOverview = (props) => {
                                 "amount": output[1],
                                 "address": output[0],
                                 "txId": tx.txId,
+                                "blockHash": block.block_hash,
                                 outputIndex
                             }
                         })))
@@ -82,6 +84,7 @@ const TxOverview = (props) => {
                             id={x.address}
                             txid={x.txId}
                             key={x.address + x.txId + x.outputIndex}
+                            blockHash={x.blockHash}
                         >
                             <td onClick={onClickRow}>{x.txId.slice(0, 10)}</td>
                             <td onClick={onClickRow} align="right">{numberWithCommas(x.amount / 100000000)}&nbsp;{KASPA_UNIT}
