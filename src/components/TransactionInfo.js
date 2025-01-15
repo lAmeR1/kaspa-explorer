@@ -10,8 +10,10 @@ import {numberWithCommas} from "../helper.js";
 import {getTransaction, getTransactions} from '../kaspa-api-client.js';
 import BlueScoreContext from "./BlueScoreContext.js";
 import CopyButton from "./CopyButton.js";
+import NotAcceptedTooltip from "./NotAccepted.js";
 import PriceContext from "./PriceContext.js";
 import {parseSignatureScript} from "../inscriptions";
+import {useLocation} from "react-router";
 
 const getOutputFromIndex = (outputs, index) => {
     for (const output of outputs) {
@@ -23,6 +25,7 @@ const getOutputFromIndex = (outputs, index) => {
 
 const TransactionInfo = () => {
     const {id} = useParams();
+    const blockHash = new URLSearchParams(useLocation().search).get("blockHash") || null;
     const [txInfo, setTxInfo] = useState()
     const [storageMass, setStorageMass] = useState()
     const [additionalTxInfo, setAdditionalTxInfo] = useState()
@@ -36,7 +39,7 @@ const TransactionInfo = () => {
 
     const [blockColor, setBlockColor] = useState()
 
-    const getTx = () => getTransaction(id).then(
+    const getTx = () => getTransaction(id, blockHash).then(
         (res) => {
             setTxInfo(res)
         })
@@ -164,15 +167,28 @@ const TransactionInfo = () => {
                                 </Row>}
                                 <Row className="blockinfo-row border-bottom-0">
                                     <Col className="blockinfo-key" md={2}>Details</Col>
-                                    <Col className="blockinfo-value mt-2 d-flex flex-row flex-wrap" md={10} lg={10}
-                                         style={{marginBottom: "-1rem"}}>
-                                        {txInfo.is_accepted ? <div className="accepted-true me-3 mb-3">accepted</div> :
-                                            <span className="accepted-false mb-2 me-">not accepted</span>}
-                                        {txInfo.is_accepted && blueScore !== 0 && (blueScore - txInfo.accepting_block_blue_score) < 86400 &&
-                                            <div
-                                                className="confirmations mb-3">{Math.max(blueScore - txInfo.accepting_block_blue_score, 0)}&nbsp;confirmations</div>}
-                                        {txInfo.is_accepted && blueScore !== 0 && (blueScore - txInfo.accepting_block_blue_score) >= 86400 &&
-                                            <div className="confirmations mb-3">confirmed</div>}
+                                    <Col
+                                        className="blockinfo-value mt-2 d-flex flex-row flex-wrap"
+                                        md={10}
+                                        lg={10}
+                                        style={{ marginBottom: "-1rem" }}
+                                    >
+                                        {txInfo.is_accepted ? (
+                                            <div className="accepted-true me-3 mb-3">accepted</div>
+                                        ) : (
+                                            <>
+                                                <span className="accepted-false mb-2 me-">not accepted</span>
+                                                <NotAcceptedTooltip />
+                                            </>
+                                        )}
+                                        {txInfo.is_accepted && blueScore !== 0 && (blueScore - txInfo.accepting_block_blue_score) < 86400 && (
+                                            <div className="confirmations mb-3">
+                                                {Math.max(blueScore - txInfo.accepting_block_blue_score, 0)}&nbsp;confirmations
+                                            </div>
+                                        )}
+                                        {txInfo.is_accepted && blueScore !== 0 && (blueScore - txInfo.accepting_block_blue_score) >= 86400 && (
+                                            <div className="confirmations mb-3">confirmed</div>
+                                        )}
                                     </Col>
                                 </Row>
                             </Container>
