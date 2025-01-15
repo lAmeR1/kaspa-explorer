@@ -9,7 +9,7 @@ const NotAcceptedTooltip = () => {
 
     const tooltipText = `A transaction may appear unaccepted, as miners reward their parent blocks.
      In cases where parallel blocks are created with identical blue scores, only 
-     one reward transaction is accepted. Rarely, a double-spend transaction may also fail to be accepted.`;
+     one reward transaction is accepted. Rarely, a double-spend transaction may also be not accepted.`;
 
     return (
         <OverlayTrigger
