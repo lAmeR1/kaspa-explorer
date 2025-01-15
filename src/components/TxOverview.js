@@ -78,7 +78,11 @@ const TxOverview = (props) => {
                                 outputIndex
                             }
                         })))
-                    .filter((v, i, a) => a.findIndex(v2 => (JSON.stringify(v) === JSON.stringify(v2))) === i)
+                    .filter((v, i, a) => a.findIndex(v2 => {
+                        const { blockHash: _, ...vWithoutBlockHash } = v;
+                        const { blockHash: __, ...v2WithoutBlockHash } = v2;
+                        return (JSON.stringify(vWithoutBlockHash) === JSON.stringify(v2WithoutBlockHash))
+                }) === i)
                     .slice(0, props.lines).map(x => {
                         return <tr
                             id={x.address}
