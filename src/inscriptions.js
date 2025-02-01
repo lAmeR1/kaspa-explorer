@@ -1,12 +1,15 @@
 export const parseSignatureScript = (hex) => {
-    /* Decodes KRC-20 operations */
-    /* Example tx deploy: 105424172e946f85daf87f50422e4a5a7f73d541a7a0eaf666cf40567a80ba5d */
-    /* Example tx mint: e2792d606f7cae9994cbc233a2cdb9c4d4541ad195852ae8ecfd787254613ded */
-    /* Example tx transfer: 657a7a3dbe5c6af4e49eba4c0cf82753f01d5e721f458d356f62bebd0afd54c8 */
+    /* Decodes inscriptions */
+    /* KRC-20 tx deploy: 105424172e946f85daf87f50422e4a5a7f73d541a7a0eaf666cf40567a80ba5d */
+    /* KRC-20 tx mint: e2792d606f7cae9994cbc233a2cdb9c4d4541ad195852ae8ecfd787254613ded */
+    /* KRC-20 tx transfer: 657a7a3dbe5c6af4e49eba4c0cf82753f01d5e721f458d356f62bebd0afd54c8 */
+    /* KRC-721 tx transfer: ec13b8e75a8e82a2e13fe41cd03cff770978dd52d09a8d3b79c66625a8e3cb08 */
     if (!hex) {
         return;
     }
-    return parseSignature(hexToBytes(hex));
+    let parsedSignature = parseSignature(hexToBytes(hex));
+    // console.debug(parsedSignature);
+    return parsedSignature;
 }
 
 function parseSignature(bytes) {
@@ -20,9 +23,9 @@ function parseSignature(bytes) {
             const dataLength = opcode;
             const data = bytes.slice(offset, offset + dataLength);
             if (isHumanReadable(data)) {
-                result.push(`OP_PUSH ${bytesToString(data)}`);
+                result.push(['OP_PUSH', bytesToString(data)]);
             } else {
-                result.push(`OP_PUSH ${bytesToHex(data)}`);
+                result.push(['OP_PUSH', bytesToHex(data)]);
             }
             offset += dataLength;
         } else if (opcode === 0x4c) {
@@ -30,23 +33,23 @@ function parseSignature(bytes) {
             offset += 1;
             const data = bytes.slice(offset, offset + dataLength);
             if (isHumanReadable(data)) {
-                result.push(`OP_PUSHDATA1 ${bytesToString(data)}`);
+                result.push(['OP_PUSHDATA1', bytesToString(data)]);
             } else {
                 result = result.concat(parseSignature(data));
             }
             offset += dataLength;
         } else if (opcode === 0x00) {
-            result.push('OP_0')
+            result.push(['OP_0'])
         } else if (opcode === 0x51) {
-            result.push('OP_1')
+            result.push(['OP_1'])
         } else if (opcode === 0x63) {
-            result.push('OP_IF')
+            result.push(['OP_IF'])
         } else if (opcode === 0x68) {
-            result.push('OP_ENDIF')
+            result.push(['OP_ENDIF'])
         } else if (opcode === 0xac) {
-            result.push('OP_CHECKSIG')
+            result.push(['OP_CHECKSIG'])
         } else {
-            result.push(`OP_UNKNOWN ${bytesToHex(opcode)}`)
+            result.push(['OP_UNKNOWN', bytesToHex(opcode)])
         }
     }
     return result;
