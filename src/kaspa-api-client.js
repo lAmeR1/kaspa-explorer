@@ -80,7 +80,7 @@ export async function getAddressTxCount(addr) {
     const res = await fetch(`${API_BASE}addresses/${addr}/transactions-count`, {headers: {'Access-Control-Allow-Origin': '*'}})
         .then((response) => response.json())
         .then(data => {
-            return data.total
+            return data
         })
     return res
 }
