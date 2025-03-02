@@ -157,6 +157,14 @@ const TransactionInfo = () => {
                                     </Col>
                                 </Row>
                                 <Row className="blockinfo-row">
+                                    <Col className="blockinfo-key" lg={2}>Accepting Block Time</Col>
+                                    <Col className="blockinfo-value" lg={10}>
+                                        {txInfo.accepting_block_time
+                                            ? `${moment(parseInt(txInfo.accepting_block_time)).format("YYYY-MM-DD HH:mm:ss")} (${txInfo.accepting_block_time})`
+                                            : "-"}
+                                    </Col>
+                                </Row>
+                                <Row className="blockinfo-row">
                                     <Col className="blockinfo-key" lg={2}>Payload</Col>
                                     <Col className="blockinfo-value-mono" lg={10}>
                                             {txInfo.payload || "-"}
