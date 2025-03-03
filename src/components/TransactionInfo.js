@@ -98,7 +98,10 @@ const TransactionInfo = () => {
         if (txInfo?.inputs) {
             txInfo.inputs.forEach(input => {
                 const parsedSignatureScript = parseSignatureScript(input.signature_script);
-                input.inscription = parsedSignatureScript?.findLast(s => s[0] === 'OP_PUSHDATA1')?.[1];
+                console.info(parsedSignatureScript);
+                if (parsedSignatureScript?.find(s => s[0] === 'OP_PUSH' && ['kasplex', 'kspr', 'kns'].includes(s[1]))) {
+                    input.inscription = parsedSignatureScript?.findLast(s => s[0].startsWith('OP_PUSH'))?.[1];
+                }
             })
         }
     }, [txInfo])
