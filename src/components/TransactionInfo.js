@@ -95,7 +95,15 @@ const TransactionInfo = () => {
             setTimeout(getTx, 2000);
         }
 
-
+        if (txInfo?.inputs) {
+            txInfo.inputs.forEach(input => {
+                const parsedSignatureScript = parseSignatureScript(input.signature_script);
+                console.info(parsedSignatureScript);
+                if (parsedSignatureScript?.find(s => s[0] === 'OP_PUSH' && ['kasplex', 'kspr', 'kns'].includes(s[1]))) {
+                    input.inscription = parsedSignatureScript?.findLast(s => s[0].startsWith('OP_PUSH'))?.[1];
+                }
+            })
+        }
     }, [txInfo])
 
 
@@ -237,11 +245,11 @@ const TransactionInfo = () => {
                                                 <div className="utxo-value-mono">
                                                     {tx_input.signature_script}
                                                 </div>
-                                                {tx_input.signature_script.includes('6b6173706c6578') && (
+                                                {tx_input.inscription && (
                                                     <>
-                                                        <div className="blockinfo-key mt-2">KRC-20</div>
+                                                        <div className="blockinfo-key mt-2">Inscription</div>
                                                         <div className="utxo-value-mono" style={{ whiteSpace: "pre-wrap" }}>
-                                                            {parseSignatureScript(tx_input.signature_script).findLast(s => s.indexOf('OP_PUSH') === 0).split(' ')[1]}
+                                                            {tx_input.inscription}
                                                         </div>
                                                     </>
                                                 )}
