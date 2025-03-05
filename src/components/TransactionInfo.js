@@ -151,6 +151,12 @@ const TransactionInfo = () => {
                                         </Link>
                                     </Col>
                                 </Row>
+                                <Row className="blockinfo-row">
+                                    <Col className="blockinfo-key" lg={2}>Payload</Col>
+                                    <Col className="blockinfo-value-mono" lg={10}>
+                                            {txInfo.payload || "-"}
+                                    </Col>
+                                </Row>
                                 {showTxFee && <Row className="blockinfo-row">
                                     <Col className="blockinfo-key" lg={2}>Transaction fee</Col>
                                     <Col className="blockinfo-value-mono" lg={10}>
