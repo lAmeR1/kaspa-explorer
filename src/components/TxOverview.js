@@ -20,15 +20,6 @@ const TxOverview = (props) => {
 
     const {blocks, isConnected} = useContext(LastBlocksContext);
 
-    // const onClickRow = (e) => {
-    //     const row = e.target.closest("tr");
-    //     navigate(`/txs/${row.getAttribute("txid")}?blockHash=${row.getAttribute("blockHash")}`)
-    // }
-
-    // const onClickAddr = (e) => {
-    //     navigate(`/addresses/${e.target.closest("tr").getAttribute("id")}`)
-    // }
-
     useEffect(() => {
         if (keepUpdatingRef.current) {
             setTempBlocks(blocks);
