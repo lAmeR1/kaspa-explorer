@@ -3,10 +3,10 @@ import {OverlayTrigger, Tooltip} from "react-bootstrap";
 import {BiHide} from "react-icons/bi";
 import {FaPause, FaPlay} from "react-icons/fa";
 import {RiMoneyDollarCircleFill} from 'react-icons/ri';
-import {useNavigate} from "react-router-dom";
 import { KASPA_UNIT } from "../explorer_constants";
 import {numberWithCommas} from "../helper";
 import LastBlocksContext from "./LastBlocksContext";
+import {Link} from "react-router-dom"
 
 
 const TxOverview = (props) => {
@@ -19,16 +19,6 @@ const TxOverview = (props) => {
     keepUpdatingRef.current = keepUpdating
 
     const {blocks, isConnected} = useContext(LastBlocksContext);
-    const navigate = useNavigate();
-
-    const onClickRow = (e) => {
-        const row = e.target.closest("tr");
-        navigate(`/txs/${row.getAttribute("txid")}?blockHash=${row.getAttribute("blockHash")}`)
-    }
-
-    const onClickAddr = (e) => {
-        navigate(`/addresses/${e.target.closest("tr").getAttribute("id")}`)
-    }
 
     useEffect(() => {
         if (keepUpdatingRef.current) {
@@ -90,10 +80,9 @@ const TxOverview = (props) => {
                             key={x.address + x.txId + x.outputIndex}
                             blockHash={x.blockHash}
                         >
-                            <td onClick={onClickRow}>{x.txId.slice(0, 10)}</td>
-                            <td onClick={onClickRow} align="right">{numberWithCommas(x.amount / 100000000)}&nbsp;{KASPA_UNIT}
-                            </td>
-                            <td className="hashh" onClick={onClickAddr}>{x.address}</td>
+                            <Link key={x.block_hash} to={`/txs/${x.txId}?blockHash=${x.blockHash}`} className="table-cell-link-styled">{x.txId.slice(0, 10)}</Link>
+                            <Link key={x.block_hash} to={`/txs/${x.txId}?blockHash=${x.blockHash}`} className="table-cell-link-styled">{numberWithCommas(x.amount / 100000000)}&nbsp;{KASPA_UNIT}</Link>
+                            <Link key={x.block_hash} to={`/addresses/${x.address}`} className="table-cell-link-styled">{x.address}</Link>
                         </tr>
                     })}
 
