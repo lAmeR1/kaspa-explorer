@@ -251,7 +251,7 @@ const BlockInfo = () => {
                                             <Col sm={12} md={12} lg={12}>
                                                 <div className="utxo-header">transaction id</div>
                                                 <div className="utxo-value-mono">
-                                                    <Link to={`/txs/${tx.verboseData.transactionId}`}
+                                                    <Link to={`/txs/${tx.verboseData.transactionId}?blockHash=${tx.verboseData.blockHash}`}
                                                           className="blockinfo-link">
                                                         {tx.verboseData.transactionId}
                                                     </Link>

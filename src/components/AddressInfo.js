@@ -54,6 +54,7 @@ const AddressInfo = () => {
     const [txsInpCache, setTxsInpCache] = useState([])
     const [loadingTxs, setLoadingTxs] = useState(true)
     const [txCount, setTxCount] = useState(null);
+    const [txCountLimitExceeded, setTxCountLimitExceeded] = useState(null);
     const [pageError, setPageError] = useState(false);
 
     const [errorLoadingUtxos, setErrorLoadingUtxos] = useState(false)
@@ -238,8 +239,9 @@ const AddressInfo = () => {
 
         if (view === "transactions") {
             loadTransactionsToShow(addr, 20, (activeTx - 1) * 20)
-            getAddressTxCount(addr).then((totalCount) => {
-                setTxCount(totalCount)
+            getAddressTxCount(addr).then((addressTxCount) => {
+                setTxCount(addressTxCount.total)
+                setTxCountLimitExceeded(addressTxCount.limit_exceeded)
             })
             getAddressUtxos(addr).then(
                 (res) => {
@@ -325,9 +327,17 @@ const AddressInfo = () => {
                         className="addressinfo-header addressinfo-header-border mt-4 mt-sm-4 pt-sm-4 ms-sm-5">Transactions
                         count
                     </div>
-                    <div className="utxo-value ms-sm-5">{txCount !== null ? numberWithCommas(txCount) :
-                        <Spinner animation="border" variant="primary"/>}{errorLoadingUtxos &&
-                        <BiGhost className="error-icon"/>}</div>
+                    <div className="utxo-value ms-sm-5">
+                        {txCount !== null ? (
+                            <>
+                                {txCountLimitExceeded && '>'}
+                                {numberWithCommas(txCount)}
+                            </>
+                        ) : (
+                            <Spinner animation="border" variant="primary"/>
+                        )}
+                        {errorLoadingUtxos && <BiGhost className="error-icon"/>}
+                    </div>
                 </Col>
             </Row>
         </Container>

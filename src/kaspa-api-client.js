@@ -39,6 +39,15 @@ export async function getKaspadInfo() {
     return res
 }
 
+export async function getHashrate() {
+    const res = await fetch(`${API_BASE}info/hashrate`, {headers: {'Access-Control-Allow-Origin': '*'}})
+        .then((response) => response.json())
+        .then(data => {
+            return data
+        })
+    return res
+}
+
 export async function getHashrateMax() {
     const res = await fetch(`${API_BASE}info/hashrate/max`, {headers: {'Access-Control-Allow-Origin': '*'}})
         .then((response) => response.json())
@@ -80,7 +89,7 @@ export async function getAddressTxCount(addr) {
     const res = await fetch(`${API_BASE}addresses/${addr}/transactions-count`, {headers: {'Access-Control-Allow-Origin': '*'}})
         .then((response) => response.json())
         .then(data => {
-            return data.total
+            return data
         })
     return res
 }
