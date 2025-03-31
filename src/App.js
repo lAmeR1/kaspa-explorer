@@ -46,7 +46,9 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 const socket = io(SOCKET_SERVER, {
-    path: '/ws/socket.io'
+    path: '/ws/socket.io',
+    reconnectionDelay: 1000,
+    reconnectionDelayMax: 5000
 });
 
 function App() {
