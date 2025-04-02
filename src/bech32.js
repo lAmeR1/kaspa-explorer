@@ -1,5 +1,7 @@
 /* global BigInt */
 
+import {scriptPublicKeyToAddress} from "./kaspaAddresses.ts";
+
 const charset = "qpzry9x8gf2tvdw0s3jn54khce6mua7l";
 
 const fromHex = (hex) => {
@@ -70,6 +72,9 @@ export const parsePayload = (payload) => {
     let version = buffer[16];
     const length = buffer[18];
     let script = buffer.slice(19, 19 + length);
+
+    const scriptHex = Buffer.from(script).toString('hex')
+
     if (script[0] == 0xaa) {
         version = 8;
         script = script.slice(1, script.length);
@@ -77,7 +82,7 @@ export const parsePayload = (payload) => {
     if (script[0] < 0x76) {
         const address_size = script[0];
         let address = script.slice(1, address_size + 1);
-        return [encodeAddress("kaspa", address, version), String.fromCharCode(...buffer.slice(19 + length, buffer.length))];
+        return [scriptPublicKeyToAddress(scriptHex), String.fromCharCode(...buffer.slice(19 + length, buffer.length))];
     }
     return [payload, ""];
 }
