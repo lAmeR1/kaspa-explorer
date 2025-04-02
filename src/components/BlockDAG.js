@@ -2,7 +2,7 @@ import {faDiagramProject} from '@fortawesome/free-solid-svg-icons';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import moment from "moment";
 import {useContext, useEffect, useState} from "react";
-import {getBlockdagInfo, getFeeEstimate, getHashrateMax, getKaspadInfo} from '../kaspa-api-client';
+import {getBlockdagInfo, getFeeEstimate, getHashrate, getHashrateMax, getKaspadInfo} from '../kaspa-api-client';
 import {numberWithCommas} from "../helper";
 import {BPS, KASPA_UNIT} from "../explorer_constants";
 import MempoolContext from "./MempoolContext";
@@ -20,14 +20,15 @@ const BlockDAGBox = () => {
 
     const initBox = async () => {
         const dag_info = await getBlockdagInfo()
+        const hashrate = await getHashrate()
         const hashrateMax = await getHashrateMax()
         const feeEstimate = await getFeeEstimate()
         const kaspadInfo = await getKaspadInfo()
 
         setVirtualDaaScore(dag_info.virtualDaaScore)
         localStorage.setItem("cacheVirtualDaaScore", dag_info.virtualDaaScore)
-        setHashrate((dag_info.difficulty * 2 * BPS))
-        localStorage.setItem("cacheHashrate", (dag_info.difficulty * 2).toFixed(2))
+        setHashrate(hashrate.hashrate * 1000 * 1000 * 1000 * 1000)
+        localStorage.setItem("cacheHashrate", hashrate.hashrate)
         setMaxHashrate(hashrateMax.hashrate * 1000 * 1000 * 1000 * 1000)
         localStorage.setItem("cacheHashrateMax", hashrateMax.hashrate)
         setMaxHashrateTimestamp(hashrateMax.blockheader.timestamp);
@@ -43,8 +44,9 @@ const BlockDAGBox = () => {
         const updateInterval = setInterval(async () => {
             const dag_info = await getBlockdagInfo()
             setVirtualDaaScore(dag_info.virtualDaaScore)
-            setHashrate((dag_info.difficulty * 2 * BPS))
-            localStorage.setItem("cacheHashrate", (dag_info.difficulty * 2 / 1000000000000).toFixed(2))
+            const hashrate = await getHashrate()
+            setHashrate(hashrate.hashrate * 1000 * 1000 * 1000 * 1000)
+            localStorage.setItem("cacheHashrate", hashrate.hashrate)
         }, 60000)
 
         const updateInterval2 = setInterval(async () => {

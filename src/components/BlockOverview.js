@@ -1,13 +1,10 @@
 import moment from "moment";
 import {useContext, useEffect, useRef, useState} from "react";
 import {FaDiceD20, FaPause, FaPlay} from 'react-icons/fa';
-import {useNavigate} from "react-router-dom";
 import LastBlocksContext from "./LastBlocksContext";
-
+import { Link } from "react-router-dom";
 
 const BlockOverview = (props) => {
-    const navigate = useNavigate();
-
     const {blocks, isConnected} = useContext(LastBlocksContext);
     const [tempBlocks, setTempBlocks] = useState([]);
     const [keepUpdating, setKeepUpdating] = useState(true);
@@ -15,9 +12,6 @@ const BlockOverview = (props) => {
     const keepUpdatingRef = useRef()
     keepUpdatingRef.current = keepUpdating
 
-    const onClickRow = (e) => {
-        navigate(`/blocks/${e.target.parentElement.id}`)
-    }
 
     useEffect(() => {
         if (keepUpdatingRef.current) {
@@ -44,13 +38,16 @@ const BlockOverview = (props) => {
                 </tr>
                 </thead>
                 <tbody>
-                {[...tempBlocks].sort((a, b) => b.blueScore - a.blueScore).slice(0, props.lines).map((x) => <tr
-                    id={x.block_hash} key={x.block_hash} onClick={onClickRow}>
-                    <td className="table-timestamp">{moment(parseInt(x.timestamp)).format("YYYY‑MM‑DD HH:mm:ss")}</td>
-                    {props.small ? <></> : <td>{x.blueScore}</td>}
-                    <td>{x.txCount}</td>
-                    <td className="hashh">{x.block_hash}</td>
-                </tr>)}
+                {   
+                    [...tempBlocks].sort((a, b) => b.blueScore - a.blueScore).slice(0, props.lines).map((x) => 
+                        <Link key={x.block_hash} to={`/blocks/${x.block_hash}`} className="table-row-link-styled">
+                                <td className="table-timestamp table-cell">{moment(parseInt(x.timestamp)).format("YYYY‑MM‑DD HH:mm:ss")}</td>
+                                {props.small ? <></> : <td>{x.blueScore}</td>}
+                                <td className="table-cell">{x.txCount}</td>
+                                <td className="hashh table-cell">{x.block_hash}</td>
+                        </Link>
+                    )
+                }
                 </tbody>
             </table>
         </div>

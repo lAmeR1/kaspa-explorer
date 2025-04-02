@@ -441,11 +441,31 @@ body {
   text-align: left;
 }
 
+.block-overview .table-row-link-styled {
+  color: $color1;
+  font-weight: bolder;
+  text-align: left;
+}
+
 .styled-table {
   // table-layout: auto !important;
   // width: 100%;
   color: $color5;
 
+}
+
+.table-row-link-styled {
+  display: table-row;
+  width: 100%;
+  text-decoration: inherit;
+
+  color: $color5;
+}
+
+.table-cell-link-styled, .table-cell-link-styled:hover {
+  display: table-cell;
+  text-decoration: inherit;
+  color: inherit;
 }
 
 @keyframes anim {
@@ -459,14 +479,16 @@ body {
 }
 
 .styled-table th,
-.styled-table td {
+.styled-table td,
+.styled-table .table-cell-link-styled {
   font-family: "Roboto Mono";
   font-size: small;
   padding: 0.7rem 1rem;
 }
 
 @include media-breakpoint-down(sm) {
-  .styled-table td {
+  .styled-table td,
+  .styled-table .table-cell-link-styled {
     font-size: x-small;
     padding: 0.7rem 0.5rem;
   }
@@ -479,7 +501,8 @@ body {
 }
 
 @include media-breakpoint-up(lg) {
-  .styled-table td {
+  .styled-table td,
+  .styled-table .table-cell-link-styled {
     font-size: medium;
   }
 
@@ -494,7 +517,8 @@ body {
 }
 
 
-.styled-table tbody tr {
+.styled-table tbody tr,
+.styled-table tbody .table-row-link-styled {
   border-bottom: 1px solid $color3;
   animation: anim;
   animation-duration: 0.4s;
