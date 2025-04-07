@@ -46,7 +46,8 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 const socket = io(SOCKET_SERVER, {
-    path: '/ws/socket.io'
+    path: '/ws/socket.io',
+    withCredentials: true // Supports session cookies on cross-origin requests
 });
 
 function App() {
