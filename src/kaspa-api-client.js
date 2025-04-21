@@ -12,7 +12,8 @@ export async function getBlock(hash) {
 }
 
 export async function getTransaction(hash, blockHash) {
-    const queryParams = blockHash ? `?blockHash=${blockHash}` : '';
+    let queryParams = "?resolve_previous_outpoints=light"
+    queryParams += blockHash ? `&blockHash=${blockHash}` : '';
     const res = await fetch(`${API_BASE}transactions/${hash}${queryParams}`, {headers: {'Access-Control-Allow-Origin': '*'}})
         .then((response) => response.json())
         .then(data => {
