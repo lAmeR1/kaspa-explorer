@@ -28,7 +28,6 @@ const TransactionInfo = () => {
     const blockHash = new URLSearchParams(useLocation().search).get("blockHash") || null;
     const [txInfo, setTxInfo] = useState()
     const [storageMass, setStorageMass] = useState()
-    const [additionalTxInfo, setAdditionalTxInfo] = useState()
     const [showTxFee, setShowTxFee] = useState(false);
     const [error, setError] = useState(false)
     const {price} = useContext(PriceContext);
@@ -64,29 +63,15 @@ const TransactionInfo = () => {
     }
 
     useEffect(() => {
-        // request TX input addresses
-        if (!!txInfo && txInfo?.detail !== "Transaction not found") {
-            const txToQuery = txInfo.inputs?.flatMap(txInput => txInput.previous_outpoint_hash).filter(x => x)
-            if (!!txToQuery) {
-                getTransactions(txToQuery, true, true).then(
-                    resp => {
-                        setShowTxFee(txToQuery.length == resp.length)
-                        const respAsObj = resp.reduce((obj, cur) => {
-                            obj[cur["transaction_id"]] = cur
-                            return obj;
-                        }, {});
-                        setAdditionalTxInfo(respAsObj)
-                    }
-                ).catch(err => console.log("Error ", err))
-            }
-        }
-        if (txInfo?.detail == "Transaction not found") {
+        // retry on missing TX input addresses
+        if (txInfo?.inputs && txInfo.inputs.every(i => i.previous_outpoint_amount)) {
+            setShowTxFee(true)
+        } else if (txInfo?.inputs) {
             retryCnt.current += 1
             if (retryCnt.current < 20) {
-                setTimeout(getTx, 1000);
+                setTimeout(getTx, retryCnt.current * 500);
             }
         }
-
 
         const timeDiff = (Date.now() - (txInfo?.block_time || Date.now())) / 1000
 
@@ -176,8 +161,8 @@ const TransactionInfo = () => {
                                 {showTxFee && <Row className="blockinfo-row">
                                     <Col className="blockinfo-key" lg={2}>Transaction fee</Col>
                                     <Col className="blockinfo-value-mono" lg={10}>
-                                        {txInfo && additionalTxInfo &&
-                                            <>{(txInfo.inputs.map((tx_input) => (getOutputFromIndex(additionalTxInfo[tx_input.previous_outpoint_hash]?.outputs || [], tx_input.previous_outpoint_index)?.amount || 0)).reduce((a, b) => a + b) - (txInfo.outputs?.map((v) => v.amount) || [0]).reduce((a, b) => a + b)) / 100000000} {KASPA_UNIT}</>
+                                        {txInfo &&
+                                            <>{(txInfo.inputs.map((tx_input) => (tx_input.previous_outpoint_amount || 0)).reduce((a, b) => a + b) - (txInfo.outputs?.map((v) => v.amount) || [0]).reduce((a, b) => a + b)) / 100000000} {KASPA_UNIT}</>
                                         }
                                     </Col>
                                 </Row>}
@@ -254,13 +239,12 @@ const TransactionInfo = () => {
                                                     </>
                                                 )}
                                             </Col>
-                                            {!!additionalTxInfo && additionalTxInfo[tx_input.previous_outpoint_hash] &&
+                                            {tx_input.previous_outpoint_amount &&
                                                 <Col sm={12} md={12} lg={3}>
                                                     <div className="blockinfo-key mt-2">Amount</div>
                                                     <div className="utxo-value">
                                                     <span
-                                                        className="utxo-amount-minus">-{numberWithCommas(getOutputFromIndex(additionalTxInfo[tx_input.previous_outpoint_hash]
-                                                        .outputs, tx_input.previous_outpoint_index).amount / 100000000)}&nbsp;{KASPA_UNIT}</span>
+                                                        className="utxo-amount-minus">-{numberWithCommas(tx_input.previous_outpoint_amount / 100000000)}&nbsp;{KASPA_UNIT}</span>
                                                     </div>
                                                 </Col>}
                                             <Col sm={12} md={12} lg={12}>
@@ -269,16 +253,14 @@ const TransactionInfo = () => {
                                                     #{tx_input.previous_outpoint_index} {tx_input.previous_outpoint_hash}
                                                 </div>
                                             </Col>
-                                            {additionalTxInfo && additionalTxInfo[tx_input.previous_outpoint_hash] && <>
+                                            {tx_input.previous_outpoint_address && <>
                                                 <Col sm={12} md={12} lg={12}>
                                                     <div className="blockinfo-key mt-2">Address</div>
                                                     <div className="utxo-value-mono">
                                                         <Link
-                                                            to={`/addresses/${getOutputFromIndex(additionalTxInfo[tx_input.previous_outpoint_hash]
-                                                                .outputs, tx_input.previous_outpoint_index).script_public_key_address}`}
+                                                            to={`/addresses/${tx_input.previous_outpoint_address}`}
                                                             className="blockinfo-link">
-                                                            {getOutputFromIndex(additionalTxInfo[tx_input.previous_outpoint_hash]
-                                                                .outputs, tx_input.previous_outpoint_index).script_public_key_address}
+                                                            {tx_input.previous_outpoint_address}
                                                         </Link>
                                                     </div>
                                                 </Col></>}
